@@ -1,0 +1,2932 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PoGo Events</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./android-chrome-192x192.png">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Fonte Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- CONFIGURAÇÕES GERAIS --- */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #0f172a;
+      /* Slate 900 */
+      color: #e2e8f0;
+      /* Slate 200 */
+    }
+
+    /* --- INPUTS & FORMS --- */
+    .event-input {
+      width: 100%;
+      background-color: #1e293b;
+      /* Slate 800 */
+      border: 1px solid #334155;
+      /* Slate 700 */
+      border-radius: 0.5rem;
+      padding: 0.6rem 1rem;
+      color: #f8fafc;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .event-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Loading Indicator inside input */
+    .input-loading {
+      background-image: url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%233b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-loader"%3E%3Cline x1="12" y1="2" x2="12" y2="6"%3E%3C/line%3E%3Cline x1="12" y1="18" x2="12" y2="22"%3E%3C/line%3E%3Cline x1="4.93" y1="4.93" x2="7.76" y2="7.76"%3E%3C/line%3E%3Cline x1="16.24" y1="16.24" x2="19.07" y2="19.07"%3E%3C/line%3E%3Cline x1="2" y1="12" x2="6" y2="12"%3E%3C/line%3E%3Cline x1="18" y1="12" x2="22" y2="12"%3E%3C/line%3E%3Cline x1="4.93" y1="19.07" x2="7.76" y2="16.24"%3E%3C/line%3E%3Cline x1="16.24" y1="7.76" x2="19.07" y2="4.93"%3E%3C/line%3E%3C/svg%3E');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 20px;
+      animation: spin 1s linear infinite;
+    }
+
+    /* --- LOADERS & ANIMATIONS --- */
+    .loader {
+      border: 3px solid #1e293b;
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* --- SCROLLBAR --- */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* --- NAVIGATION & UI ELEMENTS --- */
+    .nav-link.active {
+      color: #60a5fa;
+      border-bottom: 2px solid #60a5fa;
+    }
+
+    .event-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .event-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* --- LIGHTBOX --- */
+    .lightbox-open {
+      overflow: hidden;
+    }
+
+    #lightboxModal {
+      transition: opacity 0.3s ease;
+    }
+
+    #lightboxImage {
+      transition: transform 0.3s ease;
+    }
+
+    /* --- CATALOG ITEMS & EFFECTS --- */
+    .catalog-item {
+      transition: all 0.3s ease;
+      border: 1px solid #334155;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .catalog-item.completed {
+      background: linear-gradient(145deg, rgba(6, 78, 59, 0.4), rgba(15, 23, 42, 0.8));
+      border-color: #22c55e;
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.2), inset 0 0 20px rgba(34, 197, 94, 0.1);
+    }
+
+    .completion-check {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 5rem;
+      color: #22c55e;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .catalog-item.completed .completion-check {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.1;
+    }
+
+    /* --- VARIANT BUTTONS --- */
+    .variant-btn {
+      background-color: #0f172a;
+      color: #475569;
+      border: 1px solid #334155;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .variant-btn:hover {
+      background-color: #1e293b;
+      color: #94a3b8;
+      transform: translateY(-1px);
+    }
+
+    .variant-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Variant Active States */
+    .variant-btn.active-normal {
+      background-color: #dc2626;
+      color: white;
+      border-color: #ef4444;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+    }
+
+    .variant-btn.active-shiny {
+      background-color: #ca8a04;
+      color: white;
+      border-color: #eab308;
+      box-shadow: 0 0 8px rgba(234, 179, 8, 0.6);
+    }
+
+    .variant-btn.active-hundo {
+      background-color: #db2777;
+      color: white;
+      border-color: #f472b6;
+      box-shadow: 0 0 8px rgba(244, 114, 182, 0.6);
+    }
+
+    .variant-btn.active-xxl {
+      background-color: #2563eb;
+      color: white;
+      border-color: #60a5fa;
+      box-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
+    }
+
+    .variant-btn.active-xxs {
+      background-color: #0891b2;
+      color: white;
+      border-color: #22d3ee;
+      box-shadow: 0 0 8px rgba(34, 211, 238, 0.6);
+    }
+
+    .variant-btn.active-shadow {
+      background-color: #4c1d95;
+      color: white;
+      border-color: #8b5cf6;
+      box-shadow: 0 0 8px rgba(76, 29, 149, 0.6);
+    }
+
+    .variant-btn.active-purified {
+      background-color: #ffffff;
+      color: #4c1d95;
+      border-color: #e2e8f0;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    }
+
+    /* Shundo Button */
+    .shundo-btn {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 5px 0;
+      border-radius: 6px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #64748b;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .shundo-btn:hover {
+      background: #334155;
+      color: #94a3b8;
+    }
+
+    .shundo-btn.active-shundo {
+      background: linear-gradient(135deg, #facc15 0%, #a855f7 50%, #ec4899 100%);
+      border-color: transparent;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+      animation: shundoPulse 2.5s infinite;
+    }
+
+    @keyframes shundoPulse {
+      0% {
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.7), 0 0 5px rgba(250, 204, 21, 0.5);
+      }
+
+      100% {
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+      }
+    }
+
+    /* Move Checkbox */
+    .move-check {
+      transition: all 0.2s ease;
+      border: 1px solid #475569;
+      background-color: #1e293b;
+      color: transparent;
+      z-index: 20;
+    }
+
+    .move-check:hover {
+      border-color: #94a3b8;
+    }
+
+    .move-check.active {
+      background-color: #8b5cf6;
+      border-color: #7c3aed;
+      color: white;
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+    }
+
+    /* --- CALENDAR --- */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+
+    .calendar-day {
+      min-height: 100px;
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.2s;
+    }
+
+    .calendar-day:hover {
+      background-color: #334155;
+    }
+
+    .calendar-day.other-month {
+      opacity: 0.3;
+      background-color: #0f172a;
+    }
+
+    .calendar-day.today {
+      background-color: #1e3a8a;
+      border-color: #3b82f6;
+    }
+
+    .event-bar {
+      font-size: 0.65rem;
+      padding: 2px 4px;
+      border-radius: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: white;
+      margin-bottom: 2px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .event-bar:hover {
+      transform: scale(1.02);
+      z-index: 10;
+    }
+
+    /* --- TOAST --- */
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #1e293b;
+      border-left: 4px solid #3b82f6;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      border-color: #22c55e;
+    }
+
+    .toast.error {
+      border-color: #ef4444;
+    }
+
+    /* --- POPOVER (TOOLTIPS) --- */
+    #globalPopover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      max-width: 250px;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    #globalPopover.visible {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .popover-header {
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .popover-body {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    /* Popover Themes */
+    .pop-theme-shiny .popover-header {
+      color: #facc15;
+      text-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
+    }
+
+    .pop-theme-shiny {
+      border-color: rgba(250, 204, 21, 0.3) !important;
+      box-shadow: 0 10px 30px -5px rgba(250, 204, 21, 0.15) !important;
+    }
+
+    .pop-theme-hundo .popover-header {
+      color: #f472b6;
+      text-shadow: 0 0 10px rgba(244, 114, 182, 0.3);
+    }
+
+    .pop-theme-hundo {
+      border-color: rgba(244, 114, 182, 0.3) !important;
+      box-shadow: 0 10px 30px -5px rgba(244, 114, 182, 0.15) !important;
+    }
+
+    .pop-theme-shadow .popover-header {
+      color: #a78bfa;
+    }
+
+    .pop-theme-shadow {
+      border-color: rgba(167, 139, 250, 0.3) !important;
+    }
+
+    .pop-theme-normal .popover-header {
+      color: #ef4444;
+    }
+
+    .pop-theme-normal {
+      border-color: rgba(239, 68, 68, 0.3) !important;
+    }
+
+    .pop-theme-xxl .popover-header {
+      color: #60a5fa;
+    }
+
+    .pop-theme-xxl {
+      border-color: rgba(96, 165, 250, 0.3) !important;
+    }
+
+    .pop-theme-shundo .popover-header {
+      background: linear-gradient(135deg, #facc15, #d946ef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .pop-theme-shundo {
+      border-color: rgba(217, 70, 239, 0.4) !important;
+    }
+
+    /* --- MODAL TRANSITIONS --- */
+    #spawnDetailModal,
+    #variationModal {
+      transition: opacity 0.3s ease;
+    }
+
+    #spawnModalContent,
+    #variationModal>div {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* CARD STYLE 2 HOVER EFFECTS */
+    .egg-card-v2:hover .egg-card-v2-shiny {
+      opacity: 1;
+    }
+
+    .egg-card-v2:hover .egg-card-v2-normal {
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-900 min-h-screen text-slate-200">
+  <!-- Header Dark -->
+  <header class="bg-slate-800 shadow-lg sticky top-0 z-40 border-b border-slate-700">
+    <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('myEvents')"
+        onmouseenter="displayTooltip(this, 'PogoDex Creator', 'Voltar para a página inicial.', 'normal')"
+        onmouseleave="removeTooltip()">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" alt="Logo"
+          class="w-8 h-8 opacity-80">
+        <h1 class="text-xl font-bold text-slate-100 tracking-wide">Pogo<span class="text-blue-500">Events</span></h1>
+      </div>
+      <nav class="flex gap-6 font-bold text-slate-400 text-sm">
+        <button id="navMyEvents" onclick="switchView('myEvents')"
+          class="nav-link active py-1 hover:text-white transition">Meus Eventos</button>
+        <button id="navCalendar" onclick="switchView('calendar')"
+          class="nav-link py-1 hover:text-white transition">Calendário</button>
+        <button id="navEvents" onclick="switchView('events')" class="nav-link py-1 hover:text-white transition">Criar
+          Evento</button>
+      </nav>
+      <div class="hidden md:block w-1"></div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- === VIEW: EVENT CREATOR (Form) === -->
+    <div id="eventsView" class="hidden">
+      <div class="max-w-4xl mx-auto bg-slate-800 rounded-2xl border border-slate-700 shadow-xl overflow-hidden">
+        <div
+          class="h-32 bg-gradient-to-r from-blue-900 to-slate-900 flex items-center justify-between px-8 relative overflow-hidden">
+          <div class="absolute inset-0 opacity-20"
+            style="background-image: url('data:image/svg+xml;utf8,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E');">
+          </div>
+          <h2 class="text-3xl font-bold text-white relative z-10" id="formTitle"><i
+              class="fa-solid fa-calendar-plus mr-3"></i>Criar Evento</h2>
+          <button onclick="loadDecemberDemo()"
+            class="relative z-10 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3 py-2 rounded-lg border border-indigo-400/50 shadow-lg flex items-center gap-2"><i
+              class="fa-solid fa-wand-magic-sparkles"></i> Demo: Dez 2025</button>
+        </div>
+
+        <div class="p-8 space-y-8">
+          <section>
+            <h3 class="text-lg font-bold text-blue-400 mb-4 border-b border-slate-700 pb-2">Informações Gerais</h3>
+
+            <!-- Payment Info -->
+            <div class="bg-blue-900/20 border border-blue-900/50 p-4 rounded-xl mb-6">
+              <label class="block text-xs font-bold text-blue-300 uppercase mb-2">Modelo de Pagamento</label>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <select id="paymentType" class="event-input cursor-pointer" onchange="togglePaymentFields()">
+                  <option value="free">Gratuito</option>
+                  <option value="paid_event">Evento Pago</option>
+                  <option value="free_ticket">Gratuito + Ingresso Opcional</option>
+                </select>
+                <div id="eventCostContainer" class="hidden"><input type="text" id="eventCost" class="event-input"
+                    placeholder="Valor do Evento (ex: R$ 14,90)"></div>
+                <div id="ticketCostContainer" class="hidden"><input type="text" id="ticketCost" class="event-input"
+                    placeholder="Valor do Ingresso (ex: R$ 4,90)"></div>
+              </div>
+              <div id="ticketBonusesContainer" class="hidden mt-4 pt-4 border-t border-blue-900/30">
+                <label class="block text-xs font-bold text-yellow-400 uppercase mb-2">Bônus Exclusivos do
+                  Ingresso</label>
+                <div class="flex gap-2 mb-2">
+                  <input type="text" id="ticketBonusInput" class="event-input"
+                    placeholder="Ex: Encontros aumentados com Shiny">
+                  <button onclick="addTicketBonus()"
+                    class="bg-yellow-600 hover:bg-yellow-500 text-white px-4 rounded-lg font-bold"><i
+                      class="fa-solid fa-plus"></i></button>
+                </div>
+                <ul id="ticketBonusList" class="space-y-2"></ul>
+              </div>
+            </div>
+
+            <!-- Basic Info Inputs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="col-span-2 md:col-span-1"><label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1">Nome do Evento</label><input type="text"
+                  id="eventName" class="event-input" placeholder="Ex: Dia Comunitário: Pikachu"></div>
+              <div class="col-span-2 md:col-span-1">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Tipo</label>
+                <select id="eventType" class="event-input cursor-pointer">
+                  <option>Dia da Comunidade</option>
+                  <option>Hora em Destaque</option>
+                  <option>Dia de Reides</option>
+                  <option>Evento Sazonal</option>
+                  <option>Evento Global</option>
+                  <option>Evento Local/Ticket</option>
+                  <option>Batalhas Max - Gigamax</option>
+                  <option>Batalhas Max - Dinamax</option>
+                </select>
+              </div>
+              <div class="col-span-2"><label class="block text-xs font-bold text-slate-400 uppercase mb-1">URL da Capa
+                  (Imagem)</label><input type="text" id="eventCoverInput" class="event-input"
+                  placeholder="http://... (Banner largo recomendado)"></div>
+              <div><label class="block text-xs font-bold text-slate-400 uppercase mb-1">Início</label><input
+                  type="datetime-local" id="eventStart" class="event-input"></div>
+              <div><label class="block text-xs font-bold text-slate-400 uppercase mb-1">Fim</label><input
+                  type="datetime-local" id="eventEnd" class="event-input"></div>
+              <div class="col-span-2"><label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1">Local</label><input type="text"
+                  id="eventLocation" class="event-input" placeholder="Global" value="Global"></div>
+            </div>
+
+            <!-- Seções de Texto Personalizadas -->
+            <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-3"><i
+                  class="fa-solid fa-paragraph mr-2"></i>Seções Personalizadas</label>
+              <div class="flex flex-col gap-3 mb-4">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <select id="customTextType" class="event-input" onchange="toggleCustomInputs()">
+                      <option value="text">Apenas Texto</option>
+                      <option value="image">Apenas Imagem</option>
+                      <option value="mixed">Imagem + Texto</option>
+                    </select>
+                  </div>
+                  <div>
+                    <input type="text" id="customTextTitleInput" class="event-input" placeholder="Título (Obrigatório)">
+                  </div>
+                </div>
+
+                <div id="customTextImgContainer" class="hidden">
+                  <input type="text" id="customTextImgInput" class="event-input"
+                    placeholder="URL da Imagem (Obrigatório para Imagens)">
+                </div>
+
+                <div id="customTextDescContainer">
+                  <textarea id="customTextDescInput" class="event-input h-20 resize-none text-sm"
+                    placeholder="Conteúdo da seção..."></textarea>
+                </div>
+
+                <button onclick="addCustomText()"
+                  class="bg-slate-700 hover:bg-slate-600 border border-slate-600 text-white py-2 rounded-lg font-bold text-sm transition"><i
+                    class="fa-solid fa-plus mr-2"></i>Adicionar Seção</button>
+              </div>
+              <div id="customTextList" class="space-y-3"></div>
+            </div>
+          </section>
+
+          <!-- NEW EGG SECTION (UPDATED) -->
+          <section>
+            <h3 class="text-lg font-bold text-emerald-400 mb-4 border-b border-slate-700 pb-2">Ovos e Eclosões</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div class="col-span-2 md:col-span-1">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Título da Secção</label>
+                <input type="text" id="eggSectionTitle" class="event-input" placeholder="Ex: Ovos de Evento">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Descrição</label>
+                <textarea id="eggSectionDesc" class="event-input h-16 resize-none text-sm"
+                  placeholder="Ex: Pokémons que eclodirão de ovos de 2km e 7km durante o evento..."></textarea>
+              </div>
+            </div>
+
+            <div class="bg-emerald-900/10 border border-emerald-900/50 p-4 rounded-xl mb-4">
+              <div class="flex flex-col md:flex-row gap-3 items-end mb-4">
+                <div class="w-full md:w-[15%]">
+                  <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Distância</label>
+                  <select id="eggDistance" class="event-input text-sm p-2">
+                    <option value="2 km">2 km</option>
+                    <option value="5 km">5 km</option>
+                    <option value="7 km">7 km</option>
+                    <option value="10 km">10 km</option>
+                    <option value="12 km">12 km</option>
+                  </select>
+                </div>
+                <div class="w-full md:w-[30%]">
+                  <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Pokémon</label>
+                  <input type="text" id="eggPokemonInput" class="event-input text-sm" placeholder="Nome">
+                </div>
+                <div class="w-full md:w-[30%]">
+                  <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Forma/Traje</label>
+                  <input type="text" id="eggPokemonFormInput" class="event-input text-sm" placeholder="Ex: c/ chapéu">
+                </div>
+                <div class="w-full md:w-[10%] flex justify-center pb-2">
+                  <label class="flex items-center cursor-pointer gap-2 select-none group" title="Pode ser Shiny?">
+                    <div class="relative">
+                      <input type="checkbox" id="eggShinyInput" class="peer sr-only" checked>
+                      <div
+                        class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-yellow-500">
+                      </div>
+                    </div>
+                    <span
+                      class="text-[10px] font-bold text-slate-400 group-hover:text-yellow-400 transition uppercase sr-only">Shiny</span>
+                  </label>
+                </div>
+                <div class="w-full md:w-[15%]">
+                  <button onclick="addEggPokemon()"
+                    class="w-full h-10 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold flex items-center justify-center"><i
+                      class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+            </div>
+            <div id="eggGroupsContainer" class="space-y-4">
+              <!-- Egg Groups will render here -->
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-lg font-bold text-yellow-400 mb-4 border-b border-slate-700 pb-2">Bônus Gerais</h3>
+            <div class="flex gap-2 mb-4"><input type="text" id="bonusInput" class="event-input"
+                placeholder="Ex: 2x XP de Captura"><button onclick="addBonus()"
+                class="bg-blue-600 hover:bg-blue-500 text-white px-4 rounded-lg"><i
+                  class="fa-solid fa-plus"></i></button></div>
+            <ul id="bonusList" class="space-y-2"></ul>
+          </section>
+
+          <section>
+            <h3 class="text-lg font-bold text-purple-400 mb-4 border-b border-slate-700 pb-2">Ataques em Destaque
+              (Legacy)</h3>
+            <div class="bg-purple-900/10 border border-purple-900/50 p-4 rounded-xl mb-4">
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
+                <div class="md:col-span-3"><label
+                    class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Pokémon</label><input type="text"
+                    id="attackPokemon" class="event-input text-sm" placeholder="Ex: Eevee"></div>
+                <div class="md:col-span-3"><label
+                    class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Ataque (Inglês)</label><input
+                    type="text" id="attackMove" class="event-input text-sm" placeholder="Ex: Hydro Cannon"></div>
+                <div class="md:col-span-2"><label
+                    class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Tipo</label><select
+                    id="attackType" class="event-input text-sm p-2">
+                    <option value="Normal">Normal</option>
+                    <option value="Fire">Fogo</option>
+                    <option value="Water">Água</option>
+                    <option value="Grass">Grama</option>
+                    <option value="Electric">Elétrico</option>
+                    <option value="Ice">Gelo</option>
+                    <option value="Fighting">Lutador</option>
+                    <option value="Poison">Venenoso</option>
+                    <option value="Ground">Terrestre</option>
+                    <option value="Flying">Voador</option>
+                    <option value="Psychic">Psíquico</option>
+                    <option value="Bug">Inseto</option>
+                    <option value="Rock">Pedra</option>
+                    <option value="Ghost">Fantasma</option>
+                    <option value="Dragon">Dragão</option>
+                    <option value="Steel">Aço</option>
+                    <option value="Dark">Sombrio</option>
+                    <option value="Fairy">Fada</option>
+                  </select></div>
+                <div class="md:col-span-2"><label
+                    class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Energia</label><select
+                    id="attackEnergy" class="event-input text-sm p-2">
+                    <option value="fast">Ataque Ágil</option>
+                    <option value="1">1 Barra</option>
+                    <option value="2">2 Barras</option>
+                    <option value="3">3 Barras</option>
+                  </select></div>
+                <div class="md:col-span-2 flex items-end"><button onclick="addAttack()"
+                    class="w-full h-10 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-bold"><i
+                      class="fa-solid fa-plus mr-1"></i> Add</button></div>
+              </div>
+              <div><label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Método de
+                  Obtenção</label><input type="text" id="attackMethod" class="event-input text-sm"
+                  placeholder="Ex: Evolua Eevee durante o evento"></div>
+            </div>
+            <div id="attackList" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
+          </section>
+
+          <section>
+            <h3 class="text-lg font-bold text-orange-400 mb-4 border-b border-slate-700 pb-2">Pesquisa Temporária Paga
+            </h3>
+            <div class="bg-orange-900/10 border border-orange-900/50 p-4 rounded-xl">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="col-span-2 md:col-span-1"><label
+                    class="block text-xs font-bold text-orange-300 uppercase mb-1">Nome da Pesquisa</label><input
+                    type="text" id="paidResearchName" class="event-input" placeholder="Ex: Desafio Dourado"></div>
+                <div class="col-span-2 md:col-span-1"><label
+                    class="block text-xs font-bold text-orange-300 uppercase mb-1">Custo</label><input type="text"
+                    id="paidResearchCost" class="event-input" placeholder="Ex: R$ 1,90"></div>
+                <div class="col-span-2"><label
+                    class="block text-xs font-bold text-orange-300 uppercase mb-1">Recompensas
+                    & Detalhes</label><textarea id="paidResearchDetails" class="event-input h-20 resize-none text-sm"
+                    placeholder="Liste as recompensas..."></textarea></div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-lg font-bold text-cyan-400 mb-4 border-b border-slate-700 pb-2">Galeria de Imagens</h3>
+            <div class="flex gap-2 mb-4"><input type="text" id="imageInput" class="event-input"
+                placeholder="Cole a URL da imagem..."><button onclick="addImage()"
+                class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 rounded-lg"><i
+                  class="fa-solid fa-image"></i></button></div>
+            <div id="imageList" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+          </section>
+
+          <section>
+            <h3 class="text-lg font-bold text-pink-400 mb-4 border-b border-slate-700 pb-2">Destaque Principal</h3>
+            <div class="flex gap-4 items-start">
+              <div class="flex-1">
+                <div class="flex gap-2 mb-2"><input type="text" id="featuredPokeInput" class="event-input"
+                    placeholder="Pokémon Destaque (Inglês)"><button onclick="searchFeaturedPokemon()"
+                    class="bg-slate-700 hover:bg-slate-600 text-white px-4 rounded-lg"><i
+                      class="fa-solid fa-search"></i></button></div>
+                <select id="featuredShinyBoost" class="event-input">
+                  <option>Shiny: Padrão</option>
+                  <option selected>Shiny: Dia Comunitário (1/25)</option>
+                </select>
+              </div>
+              <div id="featuredPreview"
+                class="w-24 h-24 bg-slate-900 border-2 border-dashed border-slate-700 rounded-xl flex items-center justify-center relative overflow-hidden">
+                <span class="text-xs text-slate-600">Img</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-lg font-bold text-green-400 mb-4 border-b border-slate-700 pb-2">Spawns & Categorias</h3>
+            <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 mb-6"><label
+                class="block text-xs font-bold text-slate-400 uppercase mb-2">Nova Categoria de Spawn</label>
+              <div class="flex gap-2"><input type="text" id="newCategoryInput" class="event-input"
+                  placeholder="Ex: Dia 1 - Habitat Floresta, Incursões..."><button onclick="addSpawnCategory()"
+                  class="bg-green-600 hover:bg-green-500 text-white px-6 rounded-lg font-bold transition"><i
+                    class="fa-solid fa-folder-plus mr-2"></i>Criar</button></div>
+            </div>
+            <div id="spawnCategoriesContainer" class="space-y-6"></div>
+          </section>
+
+          <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h3 class="text-sm font-bold text-indigo-400 mb-2 uppercase border-b border-slate-700 pb-1">Pesquisas
+                Gratuitas</h3><textarea id="eventResearch" class="event-input h-32 resize-none text-sm"
+                placeholder="Descreva as tarefas de campo..."></textarea>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-red-400 mb-2 uppercase border-b border-slate-700 pb-1">Raids & Batalhas
+              </h3>
+              <div class="bg-red-900/10 border border-red-900/30 p-2 rounded mb-2">
+                <div class="flex gap-2 mb-2">
+                  <select id="raidTier" class="event-input text-xs w-1/3">
+                    <option value="1">Nível 1</option>
+                    <option value="3">Nível 3</option>
+                    <option value="5">Nível 5</option>
+                    <option value="Mega">Mega</option>
+                    <option value="Shadow">Sombroso</option>
+                    <option value="Max">Max Battle</option>
+                  </select>
+                  <input id="raidPokemon" class="event-input text-xs" placeholder="Chefe de Raid"><button
+                    onclick="addRaid()" class="bg-red-600 text-white px-3 rounded"><i
+                      class="fa-solid fa-plus"></i></button>
+                </div>
+                <div id="raidList" class="space-y-1 max-h-24 overflow-y-auto pr-1"></div>
+              </div>
+            </div>
+          </section>
+
+          <div class="pt-6 border-t border-slate-700 flex justify-end gap-4">
+            <button onclick="resetForm()"
+              class="px-6 py-2 rounded-lg border border-slate-600 text-slate-400 hover:bg-slate-700 transition">Limpar</button>
+            <button onclick="saveEvent()" id="saveEventBtn"
+              class="px-8 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-lg transition">Salvar
+              Evento</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === VIEW: MY EVENTS (List) === -->
+    <div id="myEventsView" class="hidden">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-calendar-check mr-3 text-blue-500"></i>Meus
+          Eventos</h2>
+        <div class="flex gap-2">
+          <button onclick="openDataModal()"
+            class="bg-slate-700 hover:bg-slate-600 text-slate-300 border border-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+            <i class="fa-solid fa-database"></i> Dados
+          </button>
+          <button onclick="switchView('events')"
+            class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition">
+            <i class="fa-solid fa-plus mr-2"></i>Novo
+          </button>
+        </div>
+      </div>
+      <div id="eventsListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- === VIEW: CALENDAR === -->
+    <div id="calendarView" class="hidden">
+      <div class="flex flex-col gap-6">
+        <div class="flex justify-between items-center bg-slate-800 p-4 rounded-xl shadow-lg border border-slate-700">
+          <button onclick="changeMonth(-1)"
+            class="bg-slate-700 hover:bg-slate-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i
+              class="fa-solid fa-chevron-left"></i></button>
+          <h2 class="text-2xl font-bold text-white capitalize" id="calendarMonthYear">Dezembro 2025</h2>
+          <button onclick="changeMonth(1)"
+            class="bg-slate-700 hover:bg-slate-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition"><i
+              class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 overflow-hidden">
+          <div class="grid grid-cols-7 bg-slate-900 border-b border-slate-700">
+            <div class="p-2 text-center text-xs font-bold text-slate-500 uppercase">Dom</div>
+            <div class="p-2 text-center text-xs font-bold text-slate-500 uppercase">Seg</div>
+            <div class="p-2 text-center text-xs font-bold text-slate-500 uppercase">Ter</div>
+            <div class="p-2 text-center text-xs font-bold text-slate-500 uppercase">Qua</div>
+            <div class="p-2 text-center text-xs font-bold text-slate-500 uppercase">Qui</div>
+            <div class="p-2 text-center text-xs font-bold text-slate-500 uppercase">Sex</div>
+            <div class="p-2 text-center text-xs font-bold text-slate-500 uppercase">Sáb</div>
+          </div>
+          <div id="calendarGrid" class="calendar-grid bg-slate-700 gap-px"></div>
+        </div>
+        <div class="flex flex-wrap gap-4 justify-center text-xs text-slate-400">
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Comunitário</div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-500"></span> H. Destaque
+          </div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-500"></span> Reides</div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-purple-500"></span> Sazonal</div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-500"></span> Outros</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === VIEW: EVENT DETAILS (Page) === -->
+    <div id="eventDetailsView" class="hidden">
+      <div class="mb-6"><button onclick="switchView('myEvents')"
+          class="text-slate-400 hover:text-white transition flex items-center gap-2 text-sm font-bold"><i
+            class="fa-solid fa-arrow-left"></i> Voltar para Lista</button></div>
+      <div id="eventDetailsContent" class="bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700">
+      </div>
+    </div>
+
+    <!-- === VIEW: CATALOG (Checklist) === -->
+    <div id="catalogView" class="hidden">
+      <div class="flex flex-col h-full">
+        <div class="mb-4 sticky top-0 bg-slate-900/95 backdrop-blur z-30 py-4 border-b border-slate-800 shadow-sm">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <button onclick="switchView('myEvents')"
+                class="w-8 h-8 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-full flex items-center justify-center transition border border-slate-700"><i
+                  class="fa-solid fa-arrow-left"></i></button>
+              <div>
+                <h2 class="text-lg font-bold text-white leading-tight tracking-tight" id="catalogTitle">Catálogo</h2>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <div class="h-1.5 w-24 bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-green-500 rounded-full transition-all duration-500" style="width: 0%"
+                      id="progressBar"></div>
+                  </div>
+                  <span class="text-[10px] font-mono text-slate-400" id="catalogProgressText">0%</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Progresso</div>
+          </div>
+        </div>
+        <div id="catalogContainer" class="pb-20 space-y-10"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODALS -->
+  <div id="spawnDetailModal"
+    class="fixed inset-0 z-[70] hidden bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div
+      class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-6 w-full max-w-sm relative transform scale-95 transition-transform duration-300"
+      id="spawnModalContent">
+      <button onclick="closeSpawnModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white transition"><i
+          class="fa-solid fa-xmark text-xl"></i></button>
+      <div class="flex flex-col items-center">
+        <h3 id="spawnModalName" class="text-2xl font-bold text-white capitalize mb-1">Pokemon</h3>
+        <span id="spawnModalShinyStatus"
+          class="text-xs font-bold px-2 py-0.5 rounded bg-slate-700 text-yellow-400 border border-yellow-600/30 mb-4 hidden"><i
+            class="fa-solid fa-star mr-1"></i>Shiny Possível</span>
+        <div class="relative w-48 h-48 mb-4">
+          <div class="absolute inset-0 bg-gradient-to-b from-blue-500/20 to-transparent rounded-full filter blur-xl">
+          </div>
+          <img id="spawnModalImg" src=""
+            class="w-full h-full object-contain relative z-10 transition-all duration-300 drop-shadow-xl">
+        </div>
+        <button id="spawnModalShinyToggle"
+          class="hidden mb-6 px-5 py-2 rounded-full bg-slate-700 hover:bg-slate-600 border border-slate-600 hover:border-yellow-500/50 text-slate-300 hover:text-yellow-400 transition flex items-center gap-2 text-sm font-bold shadow-lg"><i
+            class="fa-regular fa-star"></i> Ver Forma Shiny</button>
+        <div class="w-full bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
+          <h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3 text-center">CP Máximo (100%
+            IV)</h4>
+          <div class="flex justify-between items-center mb-2 border-b border-slate-700/50 pb-2"><span
+              class="text-sm text-slate-400 font-bold">Nível 40</span><span id="spawnModalCp40"
+              class="text-lg font-bold text-white">0 CP</span></div>
+          <div class="flex justify-between items-center"><span class="text-sm text-slate-400 font-bold">Nível 50
+              (XL)</span><span id="spawnModalCp50" class="text-xl font-bold text-blue-400">0 CP</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="variationModal"
+    class="fixed inset-0 z-[80] hidden bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div
+      class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-6 w-full max-w-2xl relative transform scale-95 transition-transform duration-300">
+      <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-shapes"></i> Selecione
+        a Variação</h3>
+      <div id="variationGrid"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-[60vh] overflow-y-auto p-2"></div>
+      <button onclick="closeVariationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i
+          class="fa-solid fa-xmark text-xl"></i></button>
+    </div>
+  </div>
+
+  <div id="lightboxModal"
+    class="fixed inset-0 z-[60] hidden bg-black/95 flex items-center justify-center p-4 opacity-0 pointer-events-none cursor-zoom-out"
+    onclick="closeLightbox()">
+    <img id="lightboxImage" src=""
+      class="max-w-full max-h-full object-contain shadow-2xl rounded-lg transform scale-95">
+    <button class="absolute top-6 right-6 text-white/50 hover:text-white text-4xl transition"><i
+        class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Global Popover Element -->
+  <div id="globalPopover">
+    <div class="popover-header"><i id="popIcon" class="fa-solid fa-info-circle"></i><span id="popTitle">Title</span>
+    </div>
+    <div class="popover-body" id="popBody">Content description goes here.</div>
+  </div>
+
+  <div id="dataModal"
+    class="fixed inset-0 z-[90] hidden bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div
+      class="bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-6 w-full max-w-md relative transform scale-95 transition-transform duration-300">
+      <button onclick="closeDataModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition"><i
+          class="fa-solid fa-xmark text-xl"></i></button>
+
+      <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i
+          class="fa-solid fa-database text-blue-500"></i> Gerenciar Dados</h3>
+
+      <div class="space-y-6">
+        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+          <h4 class="text-sm font-bold text-slate-300 uppercase mb-3 border-b border-slate-700 pb-2">Eventos
+            (Configurações)</h4>
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="exportEventsData()"
+              class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 hover:text-blue-300 border border-blue-600/50 py-2 rounded-lg text-xs font-bold transition flex flex-col items-center gap-1">
+              <i class="fa-solid fa-download text-lg"></i> Baixar JSON
+            </button>
+            <label
+              class="bg-slate-700 hover:bg-slate-600 text-slate-300 cursor-pointer py-2 rounded-lg text-xs font-bold transition flex flex-col items-center gap-1 border border-slate-600">
+              <i class="fa-solid fa-upload text-lg"></i> Importar JSON
+              <input type="file" id="importEventsInput" accept=".json" class="hidden" onchange="importEventsData(this)">
+            </label>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-2 italic">Contém apenas a estrutura dos eventos criados.</p>
+        </div>
+
+        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+          <h4 class="text-sm font-bold text-slate-300 uppercase mb-3 border-b border-slate-700 pb-2">Progresso
+            (Checklist)</h4>
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="exportProgressData()"
+              class="bg-green-600/20 hover:bg-green-600/40 text-green-400 hover:text-green-300 border border-green-600/50 py-2 rounded-lg text-xs font-bold transition flex flex-col items-center gap-1">
+              <i class="fa-solid fa-download text-lg"></i> Baixar JSON
+            </button>
+            <label
+              class="bg-slate-700 hover:bg-slate-600 text-slate-300 cursor-pointer py-2 rounded-lg text-xs font-bold transition flex flex-col items-center gap-1 border border-slate-600">
+              <i class="fa-solid fa-upload text-lg"></i> Importar JSON
+              <input type="file" id="importProgressInput" accept=".json" class="hidden"
+                onchange="importProgressData(this)">
+            </label>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-2 italic">Contém apenas o que você marcou no catálogo.</p>
+        </div>
+
+        <div class="pt-2 border-t border-slate-700 text-center">
+          <button onclick="clearAllData()"
+            class="text-xs text-red-500 hover:text-red-400 underline decoration-red-500/50">Apagar tudo e
+            resetar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((registration) => {
+            console.log('Service Worker registrado com sucesso:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('Falha ao registrar o Service Worker:', error);
+          });
+      });
+    }
+    // --- CONSTANTES E ESTADO ---
+    const API_URL = 'https://pokeapi.co/api/v2';
+    let eventsCollection = JSON.parse(localStorage.getItem('pogo_events')) || [];
+    let collection = JSON.parse(localStorage.getItem('pogo_collection')) || {};
+    let currentCalendarDate = new Date();
+
+    // Estado Criador de Eventos
+    let editingEventId = null;
+    let eventBonuses = []; let ticketBonuses = []; let eventImages = []; let featuredPokemon = null; let eventSpawnCategories = []; let eventAttacks = []; let eventRaidsList = [];
+    let eventCustomTexts = [];
+    let eventEggs = []; // NOVO STATE PARA OVOS
+    const CPM = { 40: 0.79030001, 50: 0.84283864 };
+    let pogoMoves = { fast: [], charged: [] };
+
+    // EGG SVG GENERATOR
+    const getEggSvg = (color) => `
+        <svg viewBox="0 0 100 120" class="w-full h-full drop-shadow-xl filter">
+            <defs>
+                <radialGradient id="eggGrad-${color}" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" style="stop-color:white;stop-opacity:0.3" />
+                    <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
+                </radialGradient>
+            </defs>
+            <!-- White Base -->
+            <path d="M50 5 C 20 5, 5 45, 5 75 C 5 105, 25 115, 50 115 C 75 115, 95 105, 95 75 C 95 45, 80 5, 50 5" fill="#f8fafc" stroke="#1e293b" stroke-width="3"/>
+            
+            <!-- Colored Spots (Procedural style) -->
+            <circle cx="35" cy="40" r="8" fill="${color}"/>
+            <circle cx="65" cy="60" r="12" fill="${color}"/>
+            <circle cx="30" cy="85" r="10" fill="${color}"/>
+            <circle cx="75" cy="90" r="6" fill="${color}"/>
+            <circle cx="50" cy="25" r="5" fill="${color}"/>
+            
+            <!-- Shine -->
+            <path d="M50 5 C 20 5, 5 45, 5 75 C 5 105, 25 115, 50 115 C 75 115, 95 105, 95 75 C 95 45, 80 5, 50 5" fill="url(#eggGrad-${color})"/>
+        </svg>
+    `;
+
+    // Mappings & Icons
+    const typeColors = { 'Normal': 'bg-gray-400', 'Fire': 'bg-red-500', 'Water': 'bg-blue-500', 'Grass': 'bg-green-500', 'Electric': 'bg-yellow-400', 'Ice': 'bg-cyan-300', 'Fighting': 'bg-orange-700', 'Poison': 'bg-purple-500', 'Ground': 'bg-yellow-700', 'Flying': 'bg-indigo-300', 'Psychic': 'bg-pink-500', 'Bug': 'bg-lime-500', 'Rock': 'bg-yellow-800', 'Ghost': 'bg-indigo-800', 'Dragon': 'bg-indigo-600', 'Steel': 'bg-slate-400', 'Dark': 'bg-slate-800', 'Fairy': 'bg-pink-300' };
+    const moveTranslations = { "Last Resort": "Último Recurso", "Hydro Cannon": "Hidrocanhão", "Frenzy Plant": "Planta Mortal", "Blast Burn": "Queimadura Explosiva", "Draco Meteor": "Meteoro do Dragão", "Outrage": "Ultraje", "Surf": "Surfar", "Counter": "Revide", "Aura Sphere": "Esfera de Aura", "Volt Switch": "Troca Volt", "Rock Wrecker": "Demolidor de Rochas", "Brutal Swing": "Balanço Violento", "Obstruct": "Obstruir", "High Horsepower": "Potência Equina", "Poltergeist": "Poltergeist", "Meteor Beam": "Raio de Meteoro", "Shadow Force": "Força das Sombras", "Boomburst": "Estrondo", "Double Iron Bash": "Ferros Duplos", "Water Shuriken": "Shuriken d'Água", "Spirit Shackle": "Flecha de Espírito", "Splash": "Splash", "Scald": "Escaldada", "Zap Cannon": "Canhão Zap", "Superpower": "Superpoder", "Shadow Ball": "Bola Sombria", "Psychic": "Psíquico", "Bullet Seed": "Projétil de Semente", "Water Pulse": "Pulso d'Água", "Psyshock": "Choque Psíquico", "Synchronoise": "Barulho Sincronizado", "Charm": "Encantar", "Avalanche": "Avalanche", "Razor Shell": "Concha Navalha", "Energy Ball": "Bola de Energia", "Chilling Water": "Água Gelada", "Beak Blast": "Bico Explosivo", "Scale Shot": "Batida de Escamas", "Air Cutter": "Cortador de Ar", "Brick Break": "Quebra-telha" };
+
+    // SVGs
+    const shinyIconFilled = `<svg viewBox="0 0 100 100" class="w-6 h-6 drop-shadow-md transition hover:scale-110" style="filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.5));"><path d="M38 22L45.5 45.5H70L50 59.5L57.5 83L38 68.5L18.5 83L26 59.5L6 45.5H30.5L38 22Z" fill="#D4AF37" stroke="#D4AF37" stroke-width="4" stroke-linejoin="round"/><path d="M65 15C66.5 22 72 23.5 72 23.5C72 23.5 66.5 25 65 32C63.5 25 58 23.5 58 23.5C58 23.5 63.5 22 65 15Z" fill="#D4AF37" stroke="#D4AF37" stroke-width="3" stroke-linejoin="round"/><path d="M82 35C83 40 87 41 87 41C87 41 83 42 82 47C81 42 77 41 77 41C77 41 81 40 82 35Z" fill="#D4AF37" stroke="#D4AF37" stroke-width="3" stroke-linejoin="round"/></svg>`;
+    const shinyIconOutline = `<svg viewBox="0 0 100 100" class="w-6 h-6 opacity-50 hover:opacity-100 transition hover:scale-110"><path d="M38 22L45.5 45.5H70L50 59.5L57.5 83L38 68.5L18.5 83L26 59.5L6 45.5H30.5L38 22Z" fill="none" stroke="#D4AF37" stroke-width="4" stroke-linejoin="round"/><path d="M65 15C66.5 22 72 23.5 72 23.5C72 23.5 66.5 25 65 32C63.5 25 58 23.5 58 23.5C58 23.5 63.5 22 65 15Z" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linejoin="round"/><path d="M82 35C83 40 87 41 87 41C87 41 83 42 82 47C81 42 77 41 77 41C77 41 81 40 82 35Z" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linejoin="round"/></svg>`;
+    const shundoIcon = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z" class="text-yellow-300"/><text x="12" y="16" font-size="8" text-anchor="middle" fill="white" font-weight="bold">100</text></svg>`;
+    const shadowIcon = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2c-5 0-9 4-9 9 0 6 9 13 9 13s9-7 9-13c0-5-4-9-9-9zm0 15c-2.5 0-4.5-2-4.5-4.5S9.5 8 12 8s4.5 2 4.5 4.5S14.5 17 12 17z" class="text-purple-600"/><circle cx="15" cy="9" r="1" class="text-red-500" /></svg>`;
+    const purifiedIcon = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><circle cx="12" cy="12" r="9" class="text-white opacity-50"/><path d="M12 2l2.5 5.5L20 9l-4 4.5 1 6-5-3-5 3 1-6-4-4.5 5.5-1.5z" class="text-white drop-shadow-[0_0_2px_rgba(255,255,255,1)]"/></svg>`;
+
+    // Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      const attackMoveInput = document.getElementById('attackMove');
+      if (attackMoveInput) {
+        attackMoveInput.addEventListener('blur', autoFillAttackDetails);
+        attackMoveInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            autoFillAttackDetails();
+          }
+        });
+      }
+      // Listener for Egg input
+      const eggInput = document.getElementById('eggPokemonInput');
+      if (eggInput) {
+        eggInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addEggPokemon();
+          }
+        });
+      }
+
+      fetchPogoMoves();
+      switchView('myEvents');
+    });
+
+    // --- POPOVER SYSTEM ---
+    let popoverTimer;
+
+    function displayTooltip(element, title, content, theme = 'normal') {
+      clearTimeout(popoverTimer);
+      const popover = document.getElementById('globalPopover');
+      const popTitle = document.getElementById('popTitle');
+      const popBody = document.getElementById('popBody');
+      const popIcon = document.getElementById('popIcon');
+
+      popTitle.innerText = title;
+      popBody.innerText = content;
+      popover.className = '';
+
+      let iconClass = 'fa-info-circle';
+      if (theme.includes('shiny')) {
+        popover.classList.add('pop-theme-shiny');
+        iconClass = 'fa-star';
+      } else if (theme.includes('hundo')) {
+        popover.classList.add('pop-theme-hundo');
+        iconClass = 'fa-certificate';
+      } else if (theme.includes('shundo')) {
+        popover.classList.add('pop-theme-shundo');
+        iconClass = 'fa-crown';
+      } else if (theme.includes('shadow')) {
+        popover.classList.add('pop-theme-shadow');
+        iconClass = 'fa-ghost';
+      } else if (theme.includes('xxl') || theme.includes('xxs')) {
+        popover.classList.add('pop-theme-xxl');
+        iconClass = 'fa-ruler';
+      } else {
+        popover.classList.add('pop-theme-normal');
+      }
+
+      popIcon.className = `fa-solid ${iconClass}`;
+
+      const rect = element.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+      let top = rect.top + scrollTop - popover.offsetHeight - 10;
+      let left = rect.left + scrollLeft + (rect.width / 2) - (popover.offsetWidth / 2);
+
+      if (top < scrollTop) top = rect.bottom + scrollTop + 10;
+      if (left < 10) left = 10;
+      if (left + popover.offsetWidth > window.innerWidth - 10) left = window.innerWidth - popover.offsetWidth - 10;
+
+      popover.style.top = `${top}px`;
+      popover.style.left = `${left}px`;
+      popover.classList.add('visible');
+    }
+
+    function removeTooltip() {
+      document.getElementById('globalPopover').classList.remove('visible');
+    }
+
+    // --- NAVIGATION ---
+    const views = ['events', 'myEvents', 'eventDetails', 'catalog', 'calendar'];
+    const navBtns = {
+      events: document.getElementById('navEvents'),
+      myEvents: document.getElementById('navMyEvents'),
+      calendar: document.getElementById('navCalendar')
+    };
+
+    function switchView(viewName) {
+      views.forEach(v => {
+        const el = document.getElementById(v + 'View');
+        if (el) el.classList.add('hidden');
+      });
+      const targetView = document.getElementById(viewName + 'View');
+      if (targetView) targetView.classList.remove('hidden');
+
+      Object.keys(navBtns).forEach(key => {
+        if (navBtns[key]) {
+          if (key === viewName) navBtns[key].classList.add('active', 'text-blue-400', 'border-blue-400');
+          else navBtns[key].classList.remove('active', 'text-blue-400', 'border-blue-400');
+        }
+      });
+
+      if (viewName === 'events' && !editingEventId) resetForm();
+      if (viewName === 'calendar') renderCalendar();
+      if (viewName === 'myEvents') renderMyEventsList();
+      window.scrollTo(0, 0);
+    }
+
+    // --- CALENDAR LOGIC ---
+    function renderCalendar() {
+      const grid = document.getElementById('calendarGrid');
+      const monthYear = document.getElementById('calendarMonthYear');
+      grid.innerHTML = '';
+      const year = currentCalendarDate.getFullYear();
+      const month = currentCalendarDate.getMonth();
+      const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro",
+        "Outubro", "Novembro", "Dezembro"
+      ];
+      monthYear.innerText = `${monthNames[month]} ${year}`;
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      const startDayOfWeek = firstDay.getDay();
+
+      for (let i = startDayOfWeek - 1; i >= 0; i--) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-day other-month';
+        cell.innerHTML = `<span class="text-xs font-bold text-slate-600 mb-1">${new Date(year, month, 0).getDate() - i}</span>`;
+        grid.appendChild(cell);
+      }
+
+      const today = new Date();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement('div');
+        const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        cell.className = `calendar-day ${isToday ? 'today' : ''}`;
+        cell.innerHTML = `<span class="text-xs font-bold ${isToday ? 'text-blue-400' : 'text-slate-400'} mb-1">${day}</span>`;
+
+        const daysEvents = eventsCollection.filter(evt => {
+          if (!evt.start) return false;
+          const start = new Date(evt.start);
+          const end = evt.end ? new Date(evt.end) : start;
+          const s = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0);
+          const e = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59);
+          const c = new Date(year, month, day, 12, 0, 0);
+          return c >= s && c <= e;
+        });
+
+        daysEvents.forEach(evt => {
+          const bar = document.createElement('div');
+          let colorClass = "bg-green-600";
+          const t = (evt.type || '').toLowerCase();
+          if (t.includes('comunidade')) colorClass = "bg-blue-600";
+          else if (t.includes('destaque')) colorClass = "bg-orange-600";
+          else if (t.includes('reide') || t.includes('raid')) colorClass = "bg-red-600";
+          else if (t.includes('sazonal')) colorClass = "bg-purple-600";
+          else if (t.includes('gigamax') || t.includes('dinamax')) colorClass = "bg-pink-600";
+
+          bar.className = `event-bar ${colorClass}`;
+          bar.innerText = evt.name;
+          bar.onclick = (e) => {
+            e.stopPropagation();
+            viewEvent(evt.id);
+          };
+          bar.onmouseenter = function () {
+            displayTooltip(this, evt.name, `${evt.type}\n${evt.location}`, 'normal')
+          };
+          bar.onmouseleave = removeTooltip;
+          cell.appendChild(bar);
+        });
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeMonth(offset) {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + offset);
+      renderCalendar();
+    }
+
+    // --- FETCHES & UTILS ---
+    async function fetchPogoMoves() {
+      try {
+        const [fastRes, chargedRes] = await Promise.all([
+          fetch('https://pogoapi.net/api/v1/fast_moves.json'),
+          fetch('https://pogoapi.net/api/v1/charged_moves.json')
+        ]);
+        if (fastRes.ok) pogoMoves.fast = await fastRes.json();
+        if (chargedRes.ok) pogoMoves.charged = await chargedRes.json();
+      } catch (e) {
+        console.error('Failed to load PoGo API moves', e);
+      }
+    }
+
+    async function autoFillAttackDetails() {
+      const input = document.getElementById('attackMove');
+      const typeSelect = document.getElementById('attackType');
+      const energySelect = document.getElementById('attackEnergy');
+      if (!input.value.trim()) return;
+      input.classList.add('input-loading');
+      input.disabled = true;
+      const queryName = input.value.trim().toLowerCase();
+      let found = false;
+      const foundFast = pogoMoves.fast.find(m => m.name.toLowerCase() === queryName);
+      if (foundFast) {
+        updateSelect(typeSelect, foundFast.type);
+        updateSelect(energySelect, 'fast');
+        found = true;
+      }
+      if (!found) {
+        const foundCharged = pogoMoves.charged.find(m => m.name.toLowerCase() === queryName);
+        if (foundCharged) {
+          updateSelect(typeSelect, foundCharged.type);
+          const cost = Math.abs(foundCharged.energy_delta || 0);
+          let bars = cost >= 100 ? '1' : (cost >= 50 ? '2' : '3');
+          updateSelect(energySelect, bars);
+          found = true;
+        }
+      }
+      if (!found) {
+        const apiQuery = queryName.replace(/\s+/g, '-');
+        try {
+          const res = await fetch(`https://pokeapi.co/api/v2/move/${apiQuery}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.type && data.type.name) {
+              const apiType = data.type.name.charAt(0).toUpperCase() + data.type.name.slice(1);
+              updateSelect(typeSelect, apiType);
+              found = true;
+            }
+          }
+        } catch (e) { }
+      }
+      const originalName = input.value.trim();
+      const key = Object.keys(moveTranslations).find(k => k.toLowerCase() === originalName.toLowerCase());
+      if (key) {
+        input.value = moveTranslations[key];
+        showToast(`Traduzido: ${originalName} -> ${moveTranslations[key]}`, 'success');
+      } else if (found) showToast('Dados encontrados', 'success');
+      input.classList.remove('input-loading');
+      input.disabled = false;
+    }
+
+    function updateSelect(select, value) {
+      for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].value.toLowerCase() === value.toLowerCase()) {
+          select.selectedIndex = i;
+          break;
+        }
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `${type === 'success' ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>'} <span>${message}</span>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.add('show');
+      });
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 3000);
+    }
+
+    // --- EVENT CREATOR FUNCTIONS ---
+    function togglePaymentFields() {
+      const type = document.getElementById('paymentType').value;
+      const costContainer = document.getElementById('eventCostContainer');
+      const ticketCostContainer = document.getElementById('ticketCostContainer');
+      const ticketBonusesContainer = document.getElementById('ticketBonusesContainer');
+      costContainer.classList.add('hidden');
+      ticketCostContainer.classList.add('hidden');
+      ticketBonusesContainer.classList.add('hidden');
+      if (type === 'paid_event') costContainer.classList.remove('hidden');
+      else if (type === 'free_ticket') {
+        ticketCostContainer.classList.remove('hidden');
+        ticketBonusesContainer.classList.remove('hidden');
+      }
+    }
+
+    function addBonus() {
+      const input = document.getElementById('bonusInput');
+      if (!input.value.trim()) return;
+      eventBonuses.push(input.value.trim());
+      renderBonuses();
+      input.value = '';
+      input.focus();
+    }
+
+    function renderBonuses() {
+      const list = document.getElementById('bonusList');
+      list.innerHTML = '';
+      if (eventBonuses.length === 0) {
+        list.innerHTML = '<li class="text-center text-slate-600 text-sm py-2">Nenhum bônus.</li>';
+        return;
+      }
+      eventBonuses.forEach((b, i) => {
+        list.innerHTML += `<li class="flex justify-between items-center bg-slate-700/30 px-3 py-2 rounded border border-slate-600/50 text-sm text-slate-300"><span><i class="fa-solid fa-check text-green-500 mr-2"></i>${b}</span><button onclick="removeBonus(${i})" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-times"></i></button></li>`;
+      });
+    }
+
+    function removeBonus(index) {
+      eventBonuses.splice(index, 1);
+      renderBonuses();
+    }
+
+    function addTicketBonus() {
+      const input = document.getElementById('ticketBonusInput');
+      if (!input.value.trim()) return;
+      ticketBonuses.push(input.value.trim());
+      renderTicketBonuses();
+      input.value = '';
+      input.focus();
+    }
+
+    function renderTicketBonuses() {
+      const list = document.getElementById('ticketBonusList');
+      list.innerHTML = '';
+      if (ticketBonuses.length === 0) {
+        list.innerHTML = '<li class="text-center text-slate-600 text-sm py-2">Nenhum bônus de ticket.</li>';
+        return;
+      }
+      ticketBonuses.forEach((b, i) => {
+        list.innerHTML += `<li class="flex justify-between items-center bg-yellow-900/20 px-3 py-2 rounded border border-yellow-700/30 text-sm text-yellow-100"><span><i class="fa-solid fa-ticket text-yellow-500 mr-2"></i>${b}</span><button onclick="removeTicketBonus(${i})" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-times"></i></button></li>`;
+      });
+    }
+
+    function removeTicketBonus(index) {
+      ticketBonuses.splice(index, 1);
+      renderTicketBonuses();
+    }
+
+    // --- CUSTOM TEXT FUNCTIONS ---
+    function toggleCustomInputs() {
+      const type = document.getElementById('customTextType').value;
+      const imgContainer = document.getElementById('customTextImgContainer');
+      const descContainer = document.getElementById('customTextDescContainer');
+
+      if (type === 'text') {
+        imgContainer.classList.add('hidden');
+        descContainer.classList.remove('hidden');
+      } else if (type === 'image') {
+        imgContainer.classList.remove('hidden');
+        descContainer.classList.add('hidden');
+      } else if (type === 'mixed') {
+        imgContainer.classList.remove('hidden');
+        descContainer.classList.remove('hidden');
+      }
+    }
+
+    function addCustomText() {
+      const type = document.getElementById('customTextType').value;
+      const title = document.getElementById('customTextTitleInput').value.trim();
+      const desc = document.getElementById('customTextDescInput').value.trim();
+      const img = document.getElementById('customTextImgInput').value.trim();
+
+      if (!title) {
+        showToast('O título é obrigatório', 'error');
+        return;
+      }
+
+      if ((type === 'image' || type === 'mixed') && !img) {
+        showToast('A URL da imagem é obrigatória', 'error');
+        return;
+      }
+
+      if (type === 'text' && !desc) {
+        showToast('A descrição é obrigatória', 'error');
+        return;
+      }
+
+      eventCustomTexts.push({
+        type,
+        title,
+        desc: type === 'image' ? '' : desc,
+        img: type === 'text' ? '' : img
+      });
+
+      document.getElementById('customTextTitleInput').value = '';
+      document.getElementById('customTextDescInput').value = '';
+      document.getElementById('customTextImgInput').value = '';
+      document.getElementById('customTextType').value = 'text';
+      toggleCustomInputs();
+
+      renderCustomTexts();
+    }
+
+    function removeCustomText(index) {
+      eventCustomTexts.splice(index, 1);
+      renderCustomTexts();
+    }
+
+    function renderCustomTexts() {
+      const container = document.getElementById('customTextList');
+      container.innerHTML = '';
+      if (eventCustomTexts.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 text-xs italic text-center">Nenhuma seção extra adicionada.</p>';
+        return;
+      }
+      eventCustomTexts.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = "bg-slate-800 p-3 rounded-lg border border-slate-700 flex flex-col gap-1 relative group";
+
+        let contentPreview = '';
+        if (item.type === 'text') contentPreview = `<p class="text-xs text-slate-400 whitespace-pre-line line-clamp-2">${item.desc}</p>`;
+        else if (item.type === 'image') contentPreview = `<div class="flex items-center gap-2 mt-1"><img src="${item.img}" class="h-8 w-8 object-cover rounded border border-slate-600"><span class="text-xs text-slate-500 italic">Apenas Imagem</span></div>`;
+        else if (item.type === 'mixed') contentPreview = `<div class="flex gap-2 mt-1"><img src="${item.img}" class="h-10 w-10 object-cover rounded border border-slate-600 flex-shrink-0"><p class="text-xs text-slate-400 whitespace-pre-line line-clamp-2">${item.desc}</p></div>`;
+
+        div.innerHTML = `
+            <button onclick="removeCustomText(${index})" class="absolute top-2 right-2 text-slate-500 hover:text-red-400 transition opacity-0 group-hover:opacity-100"><i class="fa-solid fa-times"></i></button>
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase font-bold bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded">${item.type === 'mixed' ? 'Misto' : (item.type === 'image' ? 'Img' : 'Txt')}</span>
+                <h4 class="font-bold text-slate-300 text-sm">${item.title}</h4>
+            </div>
+            ${contentPreview}
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // --- CATEGORY MANIPULATION ---
+    function addSpawnCategory(presetName = '') { const input = document.getElementById('newCategoryInput'); const name = presetName || input.value.trim(); if (!name) return; const newCategory = { id: Date.now() + Math.floor(Math.random() * 1000), name: name, spawns: [] }; eventSpawnCategories.push(newCategory); renderSpawnCategories(); input.value = ''; }
+    function deleteSpawnCategory(id) { if (!confirm('Excluir esta categoria?')) return; eventSpawnCategories = eventSpawnCategories.filter(c => c.id !== id); renderSpawnCategories(); }
+    function renderSpawnCategories() {
+      const container = document.getElementById('spawnCategoriesContainer'); container.innerHTML = '';
+      eventSpawnCategories.forEach(cat => {
+        const catDiv = document.createElement('div'); catDiv.className = "bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-sm";
+        catDiv.innerHTML = `<div class="bg-slate-900/50 px-4 py-3 flex justify-between items-center border-b border-slate-700"><h4 class="font-bold text-blue-300 text-sm uppercase tracking-wide">${cat.name}</h4><button onclick="deleteSpawnCategory(${cat.id})" class="text-slate-500 hover:text-red-400 transition text-xs"><i class="fa-solid fa-trash mr-1"></i> Remover</button></div><div class="p-4"><div class="flex gap-2 mb-4"><input type="text" id="input-cat-${cat.id}" class="event-input text-sm py-1.5" placeholder="Pokémon para '${cat.name}'..."><button onclick="addPokemonToCategory(${cat.id})" class="bg-blue-600 hover:bg-blue-500 text-white px-4 rounded-lg font-bold transition text-sm"><i class="fa-solid fa-plus"></i></button></div><div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-3" id="grid-cat-${cat.id}"></div></div>`;
+        const grid = catDiv.querySelector(`#grid-cat-${cat.id}`);
+        if (cat.spawns.length === 0) grid.innerHTML = '<span class="col-span-full text-center text-slate-600 text-xs italic py-2">Vazio</span>';
+        else {
+          cat.spawns.forEach((poke, pIndex) => {
+            grid.innerHTML += `<div class="bg-slate-900 border border-slate-700 rounded-xl aspect-square flex flex-col items-center justify-center p-2 relative group hover:border-blue-500 transition"><div class="flex-1 flex items-center justify-center w-full"><img src="${poke.image}" class="w-16 h-16 object-contain drop-shadow-lg"></div><span class="text-xs md:text-sm text-slate-300 capitalize truncate w-full text-center font-bold mt-1 tracking-tight">${poke.name}</span><button onclick="removePokemonFromCategory(${cat.id}, ${pIndex})" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10"><i class="fa-solid fa-times"></i></button><button onclick="toggleShinyInCategory(${cat.id}, ${pIndex})" class="absolute top-1 left-1 z-10" title="Alternar Shiny">${poke.shiny ? shinyIconFilled : shinyIconOutline}</button></div>`;
+          });
+        }
+        const input = catDiv.querySelector('input'); input.addEventListener('keypress', (e) => { if (e.key === 'Enter') addPokemonToCategory(cat.id); });
+        container.appendChild(catDiv);
+      });
+    }
+    async function addPokemonToCategory(catId, presetPokemon = null) {
+      let query; const input = document.getElementById(`input-cat-${catId}`);
+      if (presetPokemon) query = presetPokemon; else { if (!input) return; query = input.value.trim().toLowerCase(); }
+      if (!query) return; const category = eventSpawnCategories.find(c => c.id === catId); if (!category) return;
+      if (input) { input.disabled = true; var originalPlace = input.placeholder; input.placeholder = "Verificando..."; }
+      try {
+        const speciesRes = await fetch(`${API_URL}/pokemon-species/${query}`);
+        if (speciesRes.ok) {
+          const speciesData = await speciesRes.json();
+          if (speciesData.varieties && speciesData.varieties.length > 1) { showVariationModal(speciesData.varieties, catId, input, originalPlace); return; }
+        }
+        const res = await fetch(`${API_URL}/pokemon/${query}`);
+        if (res.ok) {
+          const data = await res.json();
+          const imgUrl = data.sprites.other['home'].front_default || data.sprites.front_default;
+          category.spawns.push({ name: data.name, image: imgUrl, shiny: true }); renderSpawnCategories(); if (input) setTimeout(() => input.focus(), 50);
+        } else showToast(`Pokémon não encontrado: ${query}`, 'error');
+      } catch (e) { }
+      if (input) { input.disabled = false; input.value = ''; input.placeholder = originalPlace; }
+    }
+
+    function removePokemonFromCategory(catId, pokeIndex) { const category = eventSpawnCategories.find(c => c.id === catId); if (category) { category.spawns.splice(pokeIndex, 1); renderSpawnCategories(); } }
+    function toggleShinyInCategory(catId, pokeIndex) { const category = eventSpawnCategories.find(c => c.id === catId); if (category && category.spawns[pokeIndex]) { category.spawns[pokeIndex].shiny = !category.spawns[pokeIndex].shiny; renderSpawnCategories(); } }
+
+    function showVariationModal(varieties, catId, inputEl, originalPlaceholder) {
+      const modal = document.getElementById('variationModal'); const grid = document.getElementById('variationGrid');
+      modal.classList.remove('hidden'); requestAnimationFrame(() => { modal.classList.remove('opacity-0', 'pointer-events-none'); modal.children[0].classList.remove('scale-95'); modal.children[0].classList.add('scale-100'); });
+      grid.innerHTML = '<div class="col-span-full flex justify-center py-10"><div class="loader"></div></div>';
+      Promise.all(varieties.map(v => fetch(v.pokemon.url).then(r => r.json()))).then(results => {
+        grid.innerHTML = ''; results.forEach(p => {
+          const img = p.sprites.other['home'].front_default || p.sprites.front_default; if (!img) return;
+          const btn = document.createElement('div'); btn.className = "bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-xl p-3 flex flex-col items-center cursor-pointer transition group";
+          btn.onclick = () => { const cat = eventSpawnCategories.find(c => c.id === catId); if (cat) { cat.spawns.push({ name: p.name, image: img, shiny: true }); renderSpawnCategories(); } closeVariationModal(inputEl, originalPlaceholder); };
+          btn.innerHTML = `<img src="${img}" class="w-20 h-20 object-contain group-hover:scale-110 transition"><span class="text-xs text-center font-bold text-slate-300 mt-2 capitalize">${p.name}</span>`;
+          grid.appendChild(btn);
+        });
+      });
+    }
+    function closeVariationModal(inputEl, originalPlaceholder) {
+      const modal = document.getElementById('variationModal'); modal.classList.add('opacity-0', 'pointer-events-none'); modal.children[0].classList.remove('scale-100'); modal.children[0].classList.add('scale-95');
+      setTimeout(() => { modal.classList.add('hidden'); }, 300); if (inputEl) { inputEl.disabled = false; inputEl.value = ''; inputEl.placeholder = originalPlaceholder; inputEl.focus(); }
+    }
+
+    // --- ATTACKS & RAIDS ---
+    async function addAttack() {
+      const pokeInput = document.getElementById('attackPokemon'); const moveInput = document.getElementById('attackMove');
+      if (!pokeInput.value.trim() || !moveInput.value.trim()) return;
+      let imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';
+      try { const res = await fetch(`${API_URL}/pokemon/${pokeInput.value.trim().toLowerCase()}`); if (res.ok) { const data = await res.json(); imageUrl = data.sprites.front_default; } } catch (e) { }
+      eventAttacks.push({ pokemon: pokeInput.value.trim(), move: moveInput.value.trim(), image: imageUrl, type: document.getElementById('attackType').value, energy: document.getElementById('attackEnergy').value, method: document.getElementById('attackMethod').value.trim() });
+      pokeInput.value = ''; moveInput.value = ''; document.getElementById('attackMethod').value = ''; pokeInput.focus(); renderAttacks();
+    }
+    function removeAttack(index) { eventAttacks.splice(index, 1); renderAttacks(); }
+    function renderAttacks() {
+      const list = document.getElementById('attackList'); list.innerHTML = '';
+      eventAttacks.forEach((atk, i) => {
+        let energyHtml = atk.energy === 'fast' ? '<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Ataque Ágil</span>' : `<div class="flex gap-1 w-24 mt-1">${Array(parseInt(atk.energy) || 1).fill(`<div class="h-2 flex-1 bg-indigo-500 rounded-sm"></div>`).join('')}</div>`;
+        list.innerHTML += `<div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600 flex flex-col gap-2 relative group hover:bg-slate-700 transition"><button onclick="removeAttack(${i})" class="absolute top-2 right-2 text-slate-500 hover:text-red-400 transition"><i class="fa-solid fa-times"></i></button><div class="flex items-center gap-3"><img src="${atk.image}" class="w-12 h-12 bg-slate-800 rounded-full p-1 border border-slate-600 object-contain"><div><div class="font-bold text-white capitalize text-sm leading-tight">${atk.pokemon}</div><div class="flex items-center gap-2 mt-1"><span class="${typeColors[atk.type] || 'bg-gray-500'} text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">${atk.type}</span><span class="text-slate-300 text-xs font-medium">${atk.move}</span></div></div></div><div class="flex justify-between items-center border-t border-slate-600/50 pt-2 mt-1">${energyHtml}</div>${atk.method ? `<div class="text-[10px] text-slate-400 italic"><i class="fa-solid fa-circle-info mr-1"></i>${atk.method}</div>` : ''}</div>`;
+      });
+    }
+
+    function addRaid() { const boss = document.getElementById('raidPokemon').value.trim(); if (!boss) return; eventRaidsList.push({ tier: document.getElementById('raidTier').value, boss: boss }); document.getElementById('raidPokemon').value = ''; renderRaidsForm(); }
+    function removeRaid(index) { eventRaidsList.splice(index, 1); renderRaidsForm(); }
+    function renderRaidsForm() {
+      const list = document.getElementById('raidList'); list.innerHTML = '';
+      eventRaidsList.forEach((r, i) => {
+        let badgeColor = 'bg-slate-600'; if (r.tier === '5') badgeColor = 'bg-slate-800 border border-slate-500'; if (r.tier === 'Mega') badgeColor = 'bg-gradient-to-r from-pink-600 to-purple-600';
+        list.innerHTML += `<div class="flex justify-between items-center text-xs bg-slate-800 p-1.5 rounded border border-slate-700"><div class="flex items-center gap-2"><span class="${badgeColor} text-white px-1.5 py-0.5 rounded text-[10px] font-bold w-12 text-center truncate">${r.tier}</span> <span class="capitalize text-slate-300">${r.boss}</span></div><button onclick="removeRaid(${i})" class="text-red-500 hover:text-red-400"><i class="fa-solid fa-times"></i></button></div>`;
+      });
+    }
+
+    // --- EGG FUNCTIONS (NEW) ---
+    async function addEggPokemon() {
+      const distance = document.getElementById('eggDistance').value;
+      const input = document.getElementById('eggPokemonInput');
+      const formInput = document.getElementById('eggPokemonFormInput'); // NOVO
+      const shinyCheck = document.getElementById('eggShinyInput');
+      const query = input.value.trim().toLowerCase();
+
+      if (!query) return;
+
+      let group = eventEggs.find(g => g.distance === distance);
+      if (!group) {
+        group = { distance: distance, spawns: [] };
+        eventEggs.push(group);
+      }
+
+      input.classList.add('input-loading'); input.disabled = true;
+
+      try {
+        const res = await fetch(`${API_URL}/pokemon/${query}`);
+        if (res.ok) {
+          const data = await res.json();
+          const img = data.sprites.other['home'].front_default || data.sprites.front_default;
+          const shinyImg = data.sprites.other['home'].front_shiny || data.sprites.front_shiny;
+
+          group.spawns.push({
+            name: data.name,
+            image: img,
+            shinyImage: shinyImg, // Store shiny URL
+            shiny: shinyCheck.checked,
+            form: formInput.value.trim()
+          });
+
+          renderEggGroups();
+          input.value = '';
+          formInput.value = '';
+          showToast(`${data.name} adicionado aos Ovos de ${distance}!`);
+        } else {
+          showToast(`Pokémon não encontrado: ${query}`, 'error');
+        }
+      } catch (e) {
+        console.error(e);
+        showToast('Erro ao buscar Pokémon', 'error');
+      }
+
+      input.classList.remove('input-loading'); input.disabled = false;
+      input.focus();
+    }
+
+    function removeEggPokemon(distance, pokeIndex) {
+      const groupIndex = eventEggs.findIndex(g => g.distance === distance);
+      if (groupIndex > -1) {
+        eventEggs[groupIndex].spawns.splice(pokeIndex, 1);
+        if (eventEggs[groupIndex].spawns.length === 0) {
+          eventEggs.splice(groupIndex, 1);
+        }
+        renderEggGroups();
+      }
+    }
+
+    function renderEggGroups() {
+      const container = document.getElementById('eggGroupsContainer');
+      container.innerHTML = '';
+
+      if (eventEggs.length === 0) {
+        container.innerHTML = '<div class="text-center text-slate-500 text-xs italic p-4">Nenhum ovo configurado.</div>';
+        return;
+      }
+
+      const sortOrder = { "2 km": 1, "5 km": 2, "7 km": 3, "10 km": 4, "12 km": 5 };
+      eventEggs.sort((a, b) => (sortOrder[a.distance] || 99) - (sortOrder[b.distance] || 99));
+
+      eventEggs.forEach(group => {
+        let eggColor = '#3b82f6';
+        if (group.distance.includes('2')) eggColor = '#22c55e';
+        if (group.distance.includes('5')) eggColor = '#f97316';
+        if (group.distance.includes('7')) eggColor = '#eab308';
+        if (group.distance.includes('10')) eggColor = '#a855f7';
+        if (group.distance.includes('12')) eggColor = '#ef4444';
+
+        const div = document.createElement('div');
+        div.className = 'bg-slate-800 border border-slate-700 rounded-xl overflow-hidden';
+
+        // ATUALIZADO: Layout maior e texto mais legível na lista de edição
+        let spawnsHtml = group.spawns.map((p, idx) => `
+                <div class="relative group bg-slate-900 rounded-xl p-3 flex flex-col items-center justify-center border border-slate-700/50 shadow-sm hover:bg-slate-800 transition">
+                    <button onclick="removeEggPokemon('${group.distance}', ${idx})" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition z-20 shadow-md"><i class="fa-solid fa-times"></i></button>
+                    ${p.shiny ? '<div class="absolute top-1 right-1 text-xs text-yellow-400 z-10 drop-shadow-md"><i class="fa-solid fa-star"></i></div>' : ''}
+                    <img src="${p.image}" class="w-16 h-16 object-contain mb-2 drop-shadow-lg">
+                    <span class="text-sm font-bold text-slate-200 capitalize truncate w-full text-center leading-tight">${p.name}</span>
+                    ${p.form ? `<span class="text-xs text-blue-400 italic w-full text-center leading-tight mt-1 px-1 break-words">${p.form}</span>` : ''}
+                </div>
+            `).join('');
+
+        div.innerHTML = `
+                <div class="bg-slate-900/50 px-4 py-3 border-b border-slate-700 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-7 drop-shadow-md">${getEggSvg(eggColor)}</div>
+                        <span class="font-bold text-slate-200 text-sm">Ovos de ${group.distance}</span>
+                    </div>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300 font-bold">${group.spawns.length} Pokémon</span>
+                </div>
+                <div class="p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    ${spawnsHtml}
+                </div>
+            `;
+        container.appendChild(div);
+      });
+    }
+
+    function addImage() {
+      const input = document.getElementById('imageInput');
+      const url = input.value.trim();
+      if (!url) return;
+      eventImages.push(url);
+      renderEventImages();
+      input.value = '';
+    }
+
+    function renderEventImages() {
+      const container = document.getElementById('imageList');
+      container.innerHTML = '';
+      eventImages.forEach((url, i) => {
+        container.innerHTML += `<div class="relative group h-24 bg-slate-900 rounded-lg overflow-hidden border border-slate-700"><img src="${url}" class="w-full h-full object-cover"><button onclick="removeImage(${i})" class="absolute top-1 right-1 bg-red-500/80 hover:bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-times"></i></button></div>`;
+      });
+    }
+
+    function removeImage(index) {
+      eventImages.splice(index, 1);
+      renderEventImages();
+    }
+
+    async function searchFeaturedPokemon() {
+      const query = document.getElementById('featuredPokeInput').value.trim().toLowerCase();
+      const preview = document.getElementById('featuredPreview');
+      if (!query) return;
+      preview.innerHTML = '<div class="loader w-6 h-6 border-2"></div>';
+      try {
+        const res = await fetch(`${API_URL}/pokemon/${query}`);
+        if (res.ok) {
+          const data = await res.json();
+          const img = data.sprites.other['home'].front_default || data.sprites.front_default;
+          featuredPokemon = {
+            name: data.name,
+            image: img
+          };
+          preview.innerHTML = `<img src="${img}" class="w-full h-full object-contain p-1"><div class="absolute bottom-0 w-full bg-black/60 text-[10px] text-center text-white py-0.5 capitalize">${data.name}</div>`;
+        } else {
+          preview.innerHTML = '<span class="text-red-400 text-xs">404</span>';
+        }
+      } catch (e) {
+        preview.innerHTML = '<span class="text-red-400 text-xs">Erro</span>';
+      }
+    }
+
+    function saveEvent() {
+      const name = document.getElementById('eventName').value;
+      if (!name) {
+        showToast('Nome do evento é obrigatório', 'error');
+        return;
+      }
+      const paymentType = document.getElementById('paymentType').value;
+      let cost = 'Gratuito';
+      if (paymentType === 'paid_event') cost = document.getElementById('eventCost').value || 'Pago';
+      if (paymentType === 'free_ticket') cost = 'Gratuito';
+      const ticketData = {
+        hasTicket: paymentType === 'free_ticket',
+        cost: document.getElementById('ticketCost').value,
+        bonuses: ticketBonuses
+      };
+      const paidResearch = {
+        name: document.getElementById('paidResearchName').value,
+        cost: document.getElementById('paidResearchCost').value,
+        details: document.getElementById('paidResearchDetails').value
+      };
+
+      // Get Egg Title/Desc
+      const eggTitle = document.getElementById('eggSectionTitle').value;
+      const eggDesc = document.getElementById('eggSectionDesc').value;
+
+      const eventData = {
+        name: name,
+        type: document.getElementById('eventType').value,
+        start: document.getElementById('eventStart').value,
+        end: document.getElementById('eventEnd').value,
+        location: document.getElementById('eventLocation').value,
+        payment: {
+          type: paymentType,
+          cost: cost,
+          ticket: ticketData
+        },
+        paidResearch: paidResearch,
+        cover: document.getElementById('eventCoverInput').value,
+        bonuses: eventBonuses,
+        images: eventImages,
+        featured: featuredPokemon,
+        spawnCategories: eventSpawnCategories,
+        attacks: eventAttacks,
+        raidsList: eventRaidsList,
+        research: document.getElementById('eventResearch').value,
+        customTexts: eventCustomTexts,
+        eggs: eventEggs,
+        eggTitle: eggTitle, // Salvar
+        eggDesc: eggDesc    // Salvar
+      };
+
+      if (editingEventId) {
+        const index = eventsCollection.findIndex(e => e.id === editingEventId);
+        if (index !== -1) {
+          eventData.id = editingEventId;
+          eventsCollection[index] = eventData;
+          showToast('Evento Atualizado!');
+        }
+      } else {
+        eventData.id = Date.now();
+        eventsCollection.push(eventData);
+        showToast('Evento Salvo!');
+      }
+      localStorage.setItem('pogo_events', JSON.stringify(eventsCollection));
+      resetForm();
+      switchView('myEvents');
+    }
+
+    function editEvent(id) {
+      const evt = eventsCollection.find(e => e.id === id);
+      if (!evt) return;
+      editingEventId = id;
+      document.getElementById('eventName').value = evt.name;
+      document.getElementById('eventType').value = evt.type;
+      document.getElementById('eventStart').value = evt.start;
+      document.getElementById('eventEnd').value = evt.end;
+      document.getElementById('eventLocation').value = evt.location;
+      document.getElementById('eventCoverInput').value = evt.cover || '';
+      document.getElementById('eventResearch').value = evt.research || '';
+
+      if (evt.payment) {
+        document.getElementById('paymentType').value = evt.payment.type || 'free';
+        togglePaymentFields();
+        if (evt.payment.type === 'paid_event') document.getElementById('eventCost').value = evt.payment.cost;
+        if (evt.payment.ticket) {
+          document.getElementById('ticketCost').value = evt.payment.ticket.cost || '';
+          ticketBonuses = [...(evt.payment.ticket.bonuses || [])];
+        }
+      }
+
+      if (evt.paidResearch) {
+        document.getElementById('paidResearchName').value = evt.paidResearch.name || '';
+        document.getElementById('paidResearchCost').value = evt.paidResearch.cost || '';
+        document.getElementById('paidResearchDetails').value = evt.paidResearch.details || '';
+      }
+
+      eventBonuses = [...(evt.bonuses || [])];
+      eventImages = [...(evt.images || [])];
+      eventAttacks = [...(evt.attacks || [])];
+      eventRaidsList = [...(evt.raidsList || [])];
+      eventSpawnCategories = JSON.parse(JSON.stringify(evt.spawnCategories || []));
+      eventCustomTexts = evt.customTexts ? JSON.parse(JSON.stringify(evt.customTexts)) : [];
+      eventEggs = evt.eggs ? JSON.parse(JSON.stringify(evt.eggs)) : [];
+
+      // Load Egg Title/Desc
+      document.getElementById('eggSectionTitle').value = evt.eggTitle || '';
+      document.getElementById('eggSectionDesc').value = evt.eggDesc || '';
+
+      featuredPokemon = evt.featured ? {
+        ...evt.featured
+      } : null;
+
+      if (featuredPokemon) {
+        document.getElementById('featuredPreview').innerHTML = `<img src="${featuredPokemon.image}" class="w-full h-full object-contain p-1"><div class="absolute bottom-0 w-full bg-black/60 text-[10px] text-center text-white py-0.5 capitalize">${featuredPokemon.name}</div>`;
+        document.getElementById('featuredPokeInput').value = featuredPokemon.name;
+      } else {
+        document.getElementById('featuredPreview').innerHTML = '<span class="text-xs text-slate-600">Img</span>';
+        document.getElementById('featuredPokeInput').value = '';
+      }
+
+      renderBonuses();
+      renderTicketBonuses();
+      renderEventImages();
+      renderAttacks();
+      renderRaidsForm();
+      renderSpawnCategories();
+      renderCustomTexts();
+      renderEggGroups();
+
+      document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square mr-3"></i>Editar Evento';
+      const btn = document.getElementById('saveEventBtn');
+      btn.innerText = 'Atualizar Evento';
+      btn.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+      btn.classList.add('bg-green-600', 'hover:bg-green-500');
+      switchView('events');
+    }
+
+    function resetForm() {
+      editingEventId = null;
+      document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-calendar-plus mr-3"></i>Criar Evento';
+      const btn = document.getElementById('saveEventBtn');
+      btn.innerText = 'Salvar Evento';
+      btn.classList.remove('bg-green-600', 'hover:bg-green-500');
+      btn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+      document.querySelectorAll('input, textarea, select').forEach(el => {
+        if (el.id !== 'eventType' && el.id !== 'paymentType' && el.id !== 'eventLocation') el.value = '';
+      });
+      document.getElementById('eventLocation').value = 'Global';
+      document.getElementById('paymentType').value = 'free';
+      togglePaymentFields();
+      eventBonuses = [];
+      ticketBonuses = [];
+      eventImages = [];
+      featuredPokemon = null;
+      eventSpawnCategories = [];
+      eventAttacks = [];
+      eventRaidsList = [];
+      eventCustomTexts = [];
+      eventEggs = [];
+
+      renderBonuses();
+      renderTicketBonuses();
+      renderSpawnCategories();
+      renderEventImages();
+      renderAttacks();
+      renderRaidsForm();
+      renderCustomTexts();
+      renderEggGroups();
+
+      document.getElementById('customTextType').value = 'text';
+      toggleCustomInputs();
+      document.getElementById('featuredPreview').innerHTML = '<span class="text-xs text-slate-600">Img</span>';
+    }
+
+    function renderMyEventsList() {
+      const container = document.getElementById('eventsListContainer');
+      const events = JSON.parse(localStorage.getItem('pogo_events')) || [];
+      if (events.length === 0) {
+        container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-500"><i class="fa-regular fa-calendar-xmark text-4xl mb-4 opacity-50"></i><p>Nenhum evento criado ainda.</p></div>';
+        return;
+      }
+      container.innerHTML = events.map(evt => {
+        const start = evt.start ? new Date(evt.start).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: 'short'
+        }) : '???';
+        const end = evt.end ? new Date(evt.end).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: 'short'
+        }) : '???';
+        let coverImg = evt.cover || (evt.images && evt.images[0]) || (evt.featured ? evt.featured.image : 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg');
+        const coverClass = (evt.cover || (evt.images && evt.images.length)) ? 'object-cover' : (evt.featured ? 'object-contain p-4' : 'object-cover opacity-20 scale-150');
+        let priceBadge = '<span class="bg-green-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">Gratuito</span>';
+        if (evt.payment?.type === 'paid_event') priceBadge = `<span class="bg-red-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">${evt.payment.cost}</span>`;
+        else if (evt.payment?.type === 'free_ticket') priceBadge = `<span class="bg-blue-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">Gratuito + Ticket</span>`;
+
+        return `<div class="event-card bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-md flex flex-col h-full"><div class="h-40 bg-slate-900 relative flex items-center justify-center overflow-hidden group cursor-pointer" onclick="viewEvent(${evt.id})"><div class="absolute inset-0 opacity-30 bg-gradient-to-br from-blue-900 to-purple-900"></div><img src="${coverImg}" class="h-full w-full ${coverClass} relative z-10 transition group-hover:scale-105 duration-500" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';this.style.opacity='0.2'"><div class="absolute top-2 right-2 z-20 flex flex-col gap-1 items-end"><span class="bg-black/60 backdrop-blur text-xs px-2 py-1 rounded text-white font-bold">${evt.type}</span>${priceBadge}</div></div><div class="p-5 flex-1 flex flex-col"><h3 class="text-xl font-bold text-white mb-1 leading-tight hover:text-blue-400 cursor-pointer transition" onclick="viewEvent(${evt.id})">${evt.name}</h3><div class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2"><i class="fa-regular fa-clock"></i> ${start} - ${end}</div><div class="mt-auto flex flex-col gap-2 border-t border-slate-700/50 pt-4"><div class="flex gap-2"><button onclick="openCatalog(${evt.id})" class="flex-1 bg-green-600 hover:bg-green-500 text-white text-sm px-3 py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-2" onmouseenter="displayTooltip(this, 'Catálogo', 'Gerencie sua coleção.', 'shiny')" onmouseleave="removeTooltip()"><i class="fa-solid fa-list-check"></i> Catálogo</button></div><div class="flex justify-between items-center mt-2"><button onclick="deleteEvent(${evt.id})" class="text-red-400 hover:text-red-300 text-sm transition px-2 py-1 rounded hover:bg-red-900/20 flex items-center gap-1"><i class="fa-solid fa-trash"></i> Excluir</button><div class="flex gap-2"><button onclick="editEvent(${evt.id})" class="text-slate-400 hover:text-white text-sm px-2 py-1 transition"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="viewEvent(${evt.id})" class="bg-slate-700 hover:bg-blue-600 text-white text-sm px-4 py-1.5 rounded-lg transition font-bold">Detalhes</button></div></div></div></div></div>`;
+      }).join('');
+    }
+
+    function deleteEvent(id) {
+      if (!confirm('Excluir evento?')) return;
+      eventsCollection = eventsCollection.filter(e => e.id !== id);
+      localStorage.setItem('pogo_events', JSON.stringify(eventsCollection));
+      renderMyEventsList();
+    }
+
+    function toggleEggShiny(id, normalImg, shinyImg) {
+      const img = document.getElementById(id);
+      const currentSrc = img.src;
+      // Simple swap
+      img.src = (currentSrc === normalImg) ? shinyImg : normalImg;
+    }
+
+    function viewEvent(id) {
+      const evt = eventsCollection.find(e => e.id === id);
+      if (!evt) return;
+      const container = document.getElementById('eventDetailsContent');
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+      const startStr = evt.start ? new Date(evt.start).toLocaleDateString('pt-BR', options) : 'Data indefinida';
+      const endStr = evt.end ? new Date(evt.end).toLocaleDateString('pt-BR', options) : 'Data indefinida';
+      let heroContent = evt.cover ? `<img src="${evt.cover}" class="absolute inset-0 w-full h-full object-cover opacity-60">` : (evt.featured ? `<img src="${evt.featured.image}" class="absolute -bottom-10 right-0 md:right-20 h-64 md:h-80 object-contain drop-shadow-2xl opacity-90 md:opacity-100 pointer-events-none">` : '');
+      let bonusesHtml = (evt.bonuses && evt.bonuses.length) ? `<section><h3 class="event-section-title text-yellow-400"><i class="fa-solid fa-gift"></i> Bônus</h3><ul class="grid grid-cols-1 md:grid-cols-2 gap-3">${evt.bonuses.map(b => `<li class="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 flex items-center text-yellow-100"><i class="fa-solid fa-star text-yellow-400 mr-3"></i>${b}</li>`).join('')}</ul></section>` : '';
+      let spawnsHtml = (evt.spawnCategories && evt.spawnCategories.some(c => c.spawns.length > 0)) ? `<section><h3 class="event-section-title text-green-400"><i class="fa-solid fa-leaf"></i> Na Natureza</h3><div class="space-y-6">${evt.spawnCategories.map(cat => cat.spawns.length ? `<div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50"><h4 class="text-blue-400 font-bold text-sm uppercase tracking-wide mb-3 border-b border-slate-700 pb-2">${cat.name}</h4><div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-3">${cat.spawns.map(s => `<div class="bg-slate-800/50 border border-slate-700/50 rounded-xl aspect-square flex flex-col items-center justify-center p-2 group relative cursor-pointer transition transform hover:scale-105 hover:bg-slate-800 hover:border-blue-500/50" onclick="openSpawnModal('${s.name}', ${s.shiny})" onmouseenter="displayTooltip(this, '${s.name}', '${s.shiny ? 'Pode ser Shiny!' : 'Forma padrão'}', '${s.shiny ? 'shiny' : 'normal'}')" onmouseleave="removeTooltip()"><div class="flex-1 w-full flex items-center justify-center"><img src="${s.image}" class="w-16 h-16 object-contain drop-shadow-lg"></div>${s.shiny ? '<div class="absolute top-1 right-1">' + shinyIconFilled + '</div>' : ''}<span class="text-xs md:text-sm text-slate-300 capitalize text-center leading-tight font-bold group-hover:text-white mt-1 tracking-tight">${s.name}</span></div>`).join('')}</div></div>` : '').join('')}</div></section>` : '';
+      let attacksHtml = (evt.attacks && evt.attacks.length) ? `<section><h3 class="event-section-title text-purple-400"><i class="fa-solid fa-bolt"></i> Ataques em Destaque</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${evt.attacks.map(a => { let energyHtml = a.energy === 'fast' ? '<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Ataque Ágil</span>' : `<div class="flex gap-1 w-24 mt-1">${Array(parseInt(a.energy) || 1).fill(`<div class="h-2 flex-1 bg-indigo-500 rounded-sm shadow-sm"></div>`).join('')}</div>`; const typeColor = typeColors[a.type] || 'bg-gray-500'; return `<div class="bg-slate-700/30 p-3 rounded-lg border border-slate-600/50 flex flex-col gap-2"><div class="flex items-center gap-3"><div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center border border-slate-600 shrink-0"><img src="${a.image || 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg'}" class="w-10 h-10 object-contain"></div><div><div class="font-bold text-purple-300 capitalize text-lg leading-tight">${a.pokemon}</div><div class="flex items-center gap-2 mt-1"><span class="${typeColor} text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">${a.type}</span><span class="text-white text-sm font-medium">${a.move}</span></div></div></div><div class="flex justify-between items-center border-t border-slate-600/30 pt-2 mt-1">${energyHtml}</div>${a.method ? `<div class="text-xs text-slate-400 italic bg-slate-800/50 px-2 py-1 rounded border border-slate-700/50 flex items-start gap-1"><i class="fa-solid fa-circle-info mt-0.5 text-[10px]"></i> ${a.method}</div>` : ''}</div>`; }).join('')}</div></section>` : '';
+
+      // Render Custom Texts
+      let customTextsHtml = '';
+      if (evt.customTexts && evt.customTexts.length > 0) {
+        customTextsHtml = evt.customTexts.map(t => {
+          let content = '';
+          if (t.type === 'text') {
+            content = `<div class="text-slate-300 text-sm leading-relaxed whitespace-pre-line pl-4 border-l-2 border-slate-700">${t.desc}</div>`;
+          } else if (t.type === 'image') {
+            content = `<div class="mt-2 rounded-lg overflow-hidden border border-slate-700"><img src="${t.img}" class="w-full h-auto object-contain max-h-96 bg-slate-900" onclick="openLightbox('${t.img}')"></div>`;
+          } else if (t.type === 'mixed') {
+            content = `
+                    <div class="flex flex-col md:flex-row gap-4 mt-2">
+                        <div class="md:w-1/3 flex-shrink-0">
+                            <div class="rounded-lg overflow-hidden border border-slate-700"><img src="${t.img}" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox('${t.img}')"></div>
+                        </div>
+                        <div class="md:w-2/3 text-slate-300 text-sm leading-relaxed whitespace-pre-line pl-4 border-l-2 border-slate-700">${t.desc}</div>
+                    </div>
+                `;
+          }
+
+          return `<div class="bg-slate-900/30 border border-slate-700/50 p-5 rounded-xl mb-4">
+              <h3 class="text-blue-300 font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-caret-right text-sm"></i>${t.title}</h3>
+              ${content}
+           </div>`;
+        }).join('');
+      }
+
+      // EGG RENDER LOGIC
+      let eggsHtmlV1 = '';
+      let eggsHtmlV2 = '';
+
+      if (evt.eggs && evt.eggs.length > 0) {
+        const sortOrder = { "2 km": 1, "5 km": 2, "7 km": 3, "10 km": 4, "12 km": 5 };
+        const sortedEggs = [...evt.eggs].sort((a, b) => (sortOrder[a.distance] || 99) - (sortOrder[b.distance] || 99));
+
+        let eggSectionTitle = evt.eggTitle ? `<h3 class="event-section-title text-emerald-400"><i class="fa-solid fa-egg"></i> ${evt.eggTitle}</h3>` : `<h3 class="event-section-title text-emerald-400"><i class="fa-solid fa-egg"></i> Ovos e Eclosões</h3>`;
+        let eggSectionDesc = evt.eggDesc ? `<p class="text-slate-300 text-sm mb-6 bg-slate-900/30 p-4 rounded-xl border border-emerald-900/30">${evt.eggDesc}</p>` : '';
+
+        // *** OPTION 1: CLASSIC STYLE (User Request) ***
+        const eggGridV1 = sortedEggs.map(group => {
+          let eggColor = '#3b82f6';
+          if (group.distance.includes('2')) eggColor = '#22c55e';
+          if (group.distance.includes('5')) eggColor = '#f97316';
+          if (group.distance.includes('7')) eggColor = '#eab308';
+          if (group.distance.includes('10')) eggColor = '#a855f7';
+          if (group.distance.includes('12')) eggColor = '#ef4444';
+
+          return `
+                <div class="flex flex-col items-center w-full">
+                    <div class="w-16 h-16 mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">${getEggSvg(eggColor)}</div>
+                    <div class="text-white font-bold text-lg mb-4 bg-slate-800 px-3 py-1 rounded-full border border-slate-600">Ovos de ${group.distance}</div>
+                    
+                    <div class="flex flex-wrap justify-center gap-4">
+                        ${group.spawns.map(p => {
+            const uniqueId = `egg-v1-${group.distance.replace(' ', '')}-${p.name.replace(' ', '')}`;
+            return `
+                            <div class="relative overflow-hidden bg-slate-800 border border-slate-600 rounded-xl p-4 w-40 flex flex-col items-center shadow-lg group hover:border-emerald-500 transition-colors">
+                                <!-- Background Egg Watermark -->
+                                <div class="absolute inset-0 flex justify-center items-center opacity-10 pointer-events-none transform scale-150">
+                                    ${getEggSvg(eggColor)}
+                                </div>
+                                
+                                <span class="relative z-10 text-sm font-bold text-white capitalize text-center leading-tight mb-2 h-10 flex items-center justify-center">${p.name}</span>
+                                
+                                <div class="relative w-24 h-24 flex items-center justify-center mb-2 z-10">
+                                    <img id="${uniqueId}" src="${p.image}" class="w-20 h-20 object-contain drop-shadow-xl transition-all duration-300">
+                                </div>
+
+                                ${p.form ? `<span class="relative z-10 text-[10px] text-emerald-300 italic text-center leading-tight mb-2 h-6 flex items-center justify-center bg-black/20 rounded px-2 w-full">${p.form}</span>` : ''}
+
+                                ${p.shiny ? `
+                                    <button onclick="toggleEggShiny('${uniqueId}', '${p.image}', '${p.shinyImage || p.image}')" class="relative z-10 mt-1 flex items-center gap-1 bg-slate-700 hover:bg-slate-600 border border-slate-500 rounded-full px-2 py-1 text-[10px] text-yellow-400 font-bold transition">
+                                        <i class="fa-solid fa-star"></i> Ver Shiny
+                                    </button>
+                                ` : '<div class="h-6"></div>'}
+                            </div>
+                        `}).join('')}
+                    </div>
+                </div>
+              `;
+        }).join('');
+
+        eggsHtmlV1 = `<section class="mb-12 border-b border-slate-700 pb-8">
+            <h4 class="text-sm font-bold text-slate-500 uppercase mb-4">Opção 1: Estilo Clássico (Pedido)</h4>
+            ${eggSectionTitle}
+            ${eggSectionDesc}
+            <div class="flex flex-col gap-12">${eggGridV1}</div>
+          </section>`;
+
+
+        // *** OPTION 2: INCUBATOR STYLE (Suggestion) ***
+        const eggGridV2 = sortedEggs.map(group => {
+          let eggColor = '#3b82f6';
+          let borderColor = 'border-blue-500';
+          let glowColor = 'shadow-blue-500/20';
+
+          if (group.distance.includes('2')) { eggColor = '#22c55e'; borderColor = 'border-green-500'; glowColor = 'shadow-green-500/20'; }
+          if (group.distance.includes('5')) { eggColor = '#f97316'; borderColor = 'border-orange-500'; glowColor = 'shadow-orange-500/20'; }
+          if (group.distance.includes('7')) { eggColor = '#eab308'; borderColor = 'border-yellow-500'; glowColor = 'shadow-yellow-500/20'; }
+          if (group.distance.includes('10')) { eggColor = '#a855f7'; borderColor = 'border-purple-500'; glowColor = 'shadow-purple-500/20'; }
+          if (group.distance.includes('12')) { eggColor = '#ef4444'; borderColor = 'border-red-500'; glowColor = 'shadow-red-500/20'; }
+
+          return `
+                <div class="w-full">
+                    <div class="flex items-center gap-3 mb-4 bg-slate-800/50 p-3 rounded-xl border border-slate-700 w-fit mx-auto">
+                        <div class="w-8 h-10">${getEggSvg(eggColor)}</div>
+                        <span class="font-black text-xl text-white">Ovos de ${group.distance}</span>
+                    </div>
+                    
+                    <div class="flex flex-wrap justify-center gap-6">
+                        ${group.spawns.map(p => `
+                            <div class="egg-card-v2 group relative w-36 h-48 bg-slate-800 rounded-[2rem] border-2 ${borderColor} shadow-lg ${glowColor} flex flex-col items-center justify-between p-4 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
+                                <!-- Glass Reflection -->
+                                <div class="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
+                                
+                                <!-- Name Tag -->
+                                <div class="bg-slate-900/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 border border-slate-700 w-full text-center truncate">
+                                    ${p.name}
+                                </div>
+
+                                <!-- Pokemon Images (Normal & Shiny) -->
+                                <div class="relative flex-1 w-full flex items-center justify-center z-10">
+                                    <img src="${p.image}" class="egg-card-v2-normal w-24 h-24 object-contain drop-shadow-2xl transition-opacity duration-300 absolute">
+                                    ${p.shiny ?
+              `<img src="${p.shinyImage || p.image}" class="egg-card-v2-shiny w-24 h-24 object-contain drop-shadow-[0_0_15px_rgba(253,224,71,0.6)] opacity-0 transition-opacity duration-300 absolute">`
+              : ''}
+                                </div>
+
+                                <!-- Bottom Info -->
+                                <div class="z-10 flex flex-col items-center w-full">
+                                    ${p.shiny ? '<i class="fa-solid fa-star text-[10px] text-yellow-500 mb-1 animate-pulse"></i>' : '<div class="h-3"></div>'}
+                                    ${p.form ? `<div class="text-[9px] text-slate-300 bg-slate-700/50 px-2 py-0.5 rounded text-center leading-tight w-full truncate">${p.form}</div>` : ''}
+                                </div>
+                                
+                                <!-- Background Gradient -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+              `;
+        }).join('');
+
+        eggsHtmlV2 = `<section class="mb-10">
+            <h4 class="text-sm font-bold text-slate-500 uppercase mb-4">Opção 2: Estilo Incubadora (Sugestão - Passe o mouse/clique para ver Shiny)</h4>
+            ${eggSectionTitle}
+            ${eggSectionDesc}
+            <div class="flex flex-col gap-12">${eggGridV2}</div>
+          </section>`;
+      }
+
+      const progressKey = `pogo_catalog_progress_${evt.id}`;
+      const savedProgress = JSON.parse(localStorage.getItem(progressKey)) || {};
+      let totalCatalog = 0,
+        completedCatalog = 0;
+      if (evt.spawnCategories) evt.spawnCategories.forEach(cat => cat.spawns.forEach(s => {
+        totalCatalog++;
+        if (isItemCompleted(s.name.toLowerCase().replace(/\s+/g, '-'), savedProgress, 'standard')) completedCatalog++;
+      }));
+      if (evt.attacks) evt.attacks.forEach(a => {
+        totalCatalog++;
+        if (isItemCompleted(a.pokemon.toLowerCase().replace(/\s+/g, '-') + '-atk', savedProgress, 'attack')) completedCatalog++;
+      });
+      if (evt.raidsList) evt.raidsList.forEach(r => {
+        totalCatalog++;
+        if (isItemCompleted(r.boss.toLowerCase().replace(/\s+/g, '-') + '-raid', savedProgress, 'raid')) completedCatalog++;
+      });
+      const percent = totalCatalog > 0 ? Math.round((completedCatalog / totalCatalog) * 100) : 0;
+
+      container.innerHTML = `
+    <div class="relative bg-slate-900 h-64 md:h-80 flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://assets.pokemon.com/static2/_ui/img/global/bg_texture.png')] opacity-10"></div>
+        ${heroContent}
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+        <div class="z-10 text-center px-4 mt-8 relative w-full max-w-4xl mx-auto">
+            <div class="flex flex-col items-center">
+                <div class="flex gap-2 justify-center mb-3"><span class="inline-block bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">${evt.type}</span></div>
+                <h1 class="text-4xl md:text-6xl font-black text-white drop-shadow-2xl mb-2">${evt.name}</h1>
+                <div class="bg-slate-800/80 backdrop-blur-md border border-slate-600 rounded-full px-4 py-2 flex items-center gap-3 shadow-lg cursor-pointer hover:bg-slate-700 transition" onclick="openCatalog(${evt.id})">
+                    <div class="text-xs font-bold text-slate-300 uppercase tracking-wider mr-1">Progresso</div>
+                    <div class="w-32 h-2 bg-slate-700 rounded-full overflow-hidden border border-slate-600/50"><div class="h-full bg-green-500 rounded-full" style="width: ${percent}%"></div></div>
+                    <span class="text-xs font-mono font-bold text-green-400">${completedCatalog}/${totalCatalog} (${percent}%)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-8 md:p-12 space-y-12 bg-slate-800">
+        <div class="flex flex-col md:flex-row gap-6 bg-slate-700/30 p-6 rounded-2xl border border-slate-700">
+            <div class="flex-1"><h4 class="text-slate-400 text-xs font-bold uppercase mb-1">Início</h4><p class="text-white font-medium text-lg"><i class="fa-regular fa-calendar mr-2 text-green-400"></i> ${startStr}</p></div>
+            <div class="hidden md:block w-px bg-slate-600"></div>
+            <div class="flex-1"><h4 class="text-slate-400 text-xs font-bold uppercase mb-1">Fim</h4><p class="text-white font-medium text-lg"><i class="fa-regular fa-calendar-xmark mr-2 text-red-400"></i> ${endStr}</p></div>
+        </div>
+        ${customTextsHtml}
+        
+        <!-- RENDER BOTH OPTIONS FOR COMPARISON -->
+        ${eggsHtmlV1}
+        ${eggsHtmlV2}
+
+        ${bonusesHtml} ${attacksHtml} ${spawnsHtml}
+    </div>`;
+      switchView('eventDetails');
+    }
+
+    function isItemCompleted(itemId, progressData, type) {
+      const state = progressData[itemId] || {};
+      if (type === 'attack') return !!state['move_obtained'];
+      if (type === 'raid') return ['normal', 'shiny', 'hundo', 'shundo', 'shadow', 'purified'].every(k => state[k]);
+      return ['normal', 'shiny', 'hundo', 'shundo', 'xxl', 'xxs'].every(k => state[k]);
+    }
+
+    // --- CATALOG FUNCTIONS ---
+    function openCatalog(eventId) {
+      const evt = eventsCollection.find(e => e.id === eventId);
+      if (!evt) return;
+      const sections = [];
+      const addItemToSection = (sectionTitle, item, type = 'standard') => {
+        let section = sections.find(s => s.title === sectionTitle);
+        if (!section) {
+          section = {
+            title: sectionTitle,
+            items: [],
+            type: type
+          };
+          sections.push(section);
+        }
+        if (!section.items.find(i => i.name === item.name)) {
+          let id = '???';
+          const match = item.image.match(/\/(\d+)\.png$/);
+          if (match) id = '#' + match[1].padStart(3, '0');
+          let extra = type === 'attack' ? {
+            move: item.move,
+            moveType: item.type,
+            energy: item.energy
+          } : {};
+          section.items.push({
+            id: item.name.toLowerCase().replace(/\s+/g, '-') + (type === 'attack' ? '-atk' : ''),
+            name: item.name,
+            image: item.image,
+            pokedex: id,
+            ...extra
+          });
+        }
+      };
+      if (evt.spawnCategories) evt.spawnCategories.forEach(cat => cat.spawns.forEach(s => addItemToSection(cat.name, s)));
+      if (evt.attacks) evt.attacks.forEach(a => addItemToSection("Ataques em Destaque", {
+        name: a.pokemon,
+        image: a.image,
+        move: a.move,
+        type: a.type,
+        energy: a.energy
+      }, 'attack'));
+      if (evt.raidsList) evt.raidsList.forEach(async r => {
+        let imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';
+        try {
+          const res = await fetch(`${API_URL}/pokemon/${r.boss.toLowerCase()}`);
+          if (res.ok) {
+            const d = await res.json();
+            imageUrl = d.sprites.other['home'].front_default || d.sprites.front_default;
+            let section = sections.find(s => s.title === "Raids");
+            if (!section) {
+              section = {
+                title: "Raids",
+                items: [],
+                type: 'raid'
+              };
+              sections.push(section);
+            }
+            if (!section.items.find(i => i.name === r.boss)) {
+              section.items.push({
+                id: r.boss.toLowerCase().replace(/\s+/g, '-') + '-raid',
+                name: r.boss,
+                image: imageUrl,
+                pokedex: '#' + d.id.toString().padStart(3, '0')
+              });
+              renderCatalogContainer(eventId, sections);
+            }
+          }
+        } catch (e) { }
+      });
+      document.getElementById('catalogTitle').innerText = evt.name;
+      renderCatalogContainer(eventId, sections);
+      switchView('catalog');
+    }
+
+    function renderCatalogContainer(eventId, sections) {
+      const container = document.getElementById('catalogContainer');
+      container.innerHTML = '';
+      const savedProgress = JSON.parse(localStorage.getItem(`pogo_catalog_progress_${eventId}`)) || {};
+      let totalItems = 0;
+      let completedItems = 0;
+      sections.forEach(section => {
+        const header = document.createElement('h3');
+        header.className = "text-lg font-bold text-blue-400 border-b border-slate-700 pb-2 mb-4 uppercase tracking-wide flex items-center gap-2";
+        header.innerHTML = `${section.type === 'attack' ? '<i class="fa-solid fa-bolt text-yellow-400"></i>' : (section.type === 'raid' ? '<i class="fa-solid fa-dragon text-red-400"></i>' : '<i class="fa-solid fa-leaf"></i>')} ${section.title}`;
+        container.appendChild(header);
+        const grid = document.createElement('div');
+        grid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8";
+        section.items.forEach(item => {
+          totalItems++;
+          const card = createCatalogCard(eventId, item, section.type, savedProgress);
+          if (card.dataset.completed === 'true') completedItems++;
+          grid.appendChild(card);
+          fetchAndDisplayTypes(card.id, item.name);
+        });
+        container.appendChild(grid);
+      });
+      const percentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+      document.getElementById('catalogProgressText').innerText = `${percentage}%`;
+      document.getElementById('progressBar').style.width = `${percentage}%`;
+    }
+
+    function createCatalogCard(eventId, item, type, progressData) {
+      let variants = type === 'raid' ?
+        [{
+          key: 'normal',
+          icon: '<i class="fa-solid fa-circle"></i>',
+          title: 'Normal'
+        }, {
+          key: 'shiny',
+          icon: '<i class="fa-solid fa-star"></i>',
+          title: 'Shiny'
+        }, {
+          key: 'hundo',
+          icon: '100',
+          title: '100%'
+        }, {
+          key: 'shadow',
+          icon: shadowIcon,
+          title: 'Shadow'
+        }, {
+          key: 'purified',
+          icon: purifiedIcon,
+          title: 'Purified'
+        }] :
+        [{
+          key: 'normal',
+          icon: '<i class="fa-solid fa-circle"></i>',
+          title: 'Normal'
+        }, {
+          key: 'shiny',
+          icon: '<i class="fa-solid fa-star"></i>',
+          title: 'Shiny'
+        }, {
+          key: 'hundo',
+          icon: '100',
+          title: '100%'
+        }, {
+          key: 'xxl',
+          icon: 'XXL',
+          title: 'XXL'
+        }, {
+          key: 'xxs',
+          icon: 'xxs',
+          title: 'XXS'
+        }];
+
+      const state = progressData[item.id] || {};
+      let isCompleted = false;
+      if (type === 'attack') isCompleted = !!state['move_obtained'];
+      else {
+        const mainComplete = variants.every(v => state[v.key]);
+        const shundoComplete = !!state['shundo'];
+        isCompleted = mainComplete && shundoComplete;
+      }
+
+      const div = document.createElement('div');
+      div.className = `catalog-item bg-slate-800 rounded-xl p-4 flex flex-col items-center relative ${isCompleted ? 'completed' : ''}`;
+      div.id = `cat-item-${item.id}`;
+      div.dataset.completed = isCompleted;
+
+      const topCheckHtml = type === 'attack' ? `<button onclick="toggleVariant(this, '${eventId}', '${item.id}', 'move_obtained', '${type}')" class="absolute top-2 right-2 w-8 h-8 rounded-lg flex items-center justify-center move-check ${state['move_obtained'] ? 'active' : ''}"><i class="fa-solid fa-bolt"></i></button>` : '';
+      const buttonsHtml = variants.map(btn => `<button onclick="toggleVariant(this, '${eventId}', '${item.id}', '${btn.key}', '${type}')" class="variant-btn w-8 h-8 rounded-full text-[10px] font-bold flex items-center justify-center ${state[btn.key] ? `active-${btn.key}` : ''}">${btn.icon}</button>`).join('');
+      const shundoHtml = type !== 'attack' ? `<button onclick="toggleVariant(this, '${eventId}', '${item.id}', 'shundo', '${type}')" class="shundo-btn ${state['shundo'] ? 'active-shundo' : ''}"><i class="fa-solid fa-star text-[10px]"></i> SHUNDO</button>` : '';
+      const attackInfoHtml = (type === 'attack' && item.move) ? `<div class="flex items-center gap-2 mt-1 bg-slate-900/50 px-2 py-1 rounded border border-slate-700/50"><span class="${typeColors[item.moveType] || 'bg-gray-500'} text-white text-[9px] px-1.5 py-0.5 rounded uppercase font-bold shadow-sm">${item.moveType || '?'}</span><span class="text-xs text-white font-medium leading-none">${item.move}</span></div>` : '';
+
+      div.innerHTML = `<div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 transition-opacity duration-500 ${isCompleted ? 'opacity-20' : 'opacity-0'} completion-check-container"><i class="fa-solid fa-check text-8xl text-green-500 drop-shadow-lg"></i></div><div class="absolute top-2 left-2 z-0 text-5xl font-black text-white/5 select-none pointer-events-none tracking-tighter">${item.pokedex || '???'}</div>${topCheckHtml}<div class="flex-1 w-full flex flex-col items-center justify-center mb-3 relative z-10 mt-4"><img src="${item.image}" class="poke-img w-24 h-24 object-contain transition-all duration-500 drop-shadow-xl"><div class="text-center mt-2 w-full"><span class="text-sm font-bold text-white capitalize block leading-tight">${item.name}</span><div id="types-${item.id}" class="flex justify-center gap-1 mt-1 h-4"></div>${attackInfoHtml}</div></div><div class="flex gap-1.5 justify-center w-full relative z-10 flex-wrap">${buttonsHtml}</div>${shundoHtml}`;
+      return div;
+    }
+
+    async function fetchAndDisplayTypes(cardId, pokemonName) {
+      const container = document.querySelector(`#${cardId} div[id^="types-"]`);
+      if (!container) return;
+      try {
+        const res = await fetch(`${API_URL}/pokemon/${pokemonName.toLowerCase()}`);
+        if (res.ok) {
+          const data = await res.json();
+          container.innerHTML = data.types.map(t => {
+            const capType = t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1);
+            return `<span class="${typeColors[capType] || 'bg-gray-500'} w-3 h-3 rounded-full shadow-sm cursor-help" title="${capType}"></span>`;
+          }).join('');
+          const dexEl = document.querySelector(`#${cardId} .text-white\\/5`);
+          if (dexEl && dexEl.innerText === '???') dexEl.innerText = '#' + data.id.toString().padStart(3, '0');
+        }
+      } catch (e) { }
+    }
+
+    function toggleVariant(btn, eventId, pokemonId, variantKey, type) {
+      const savedProgress = JSON.parse(localStorage.getItem(`pogo_catalog_progress_${eventId}`)) || {};
+      if (!savedProgress[pokemonId]) savedProgress[pokemonId] = {};
+      const newState = !savedProgress[pokemonId][variantKey];
+      savedProgress[pokemonId][variantKey] = newState;
+      localStorage.setItem(`pogo_catalog_progress_${eventId}`, JSON.stringify(savedProgress));
+
+      if (variantKey === 'move_obtained') {
+        btn.classList.toggle('active', newState);
+      } else if (variantKey === 'shundo') {
+        btn.classList.toggle('active-shundo', newState);
+      } else {
+        btn.classList.toggle(`active-${variantKey}`, newState);
+      }
+
+      const state = savedProgress[pokemonId];
+      let isCompleted = false;
+      if (type === 'attack') isCompleted = !!state['move_obtained'];
+      else if (type === 'raid') isCompleted = ['normal', 'shiny', 'hundo', 'shundo', 'shadow', 'purified'].every(k => state[k]);
+      else isCompleted = ['normal', 'shiny', 'hundo', 'shundo', 'xxl', 'xxs'].every(k => state[k]);
+
+      const card = btn.closest('.catalog-item');
+      card.classList.toggle('completed', isCompleted);
+      card.dataset.completed = isCompleted;
+      const checkContainer = card.querySelector('.completion-check-container');
+      if (checkContainer) {
+        checkContainer.classList.toggle('opacity-0', !isCompleted);
+        checkContainer.classList.toggle('opacity-20', isCompleted);
+      }
+
+      const total = document.querySelectorAll('.catalog-item').length;
+      const current = document.querySelectorAll('.catalog-item[data-completed="true"]').length;
+      const percentage = total > 0 ? Math.round((current / total) * 100) : 0;
+      document.getElementById('catalogProgressText').innerText = `${percentage}%`;
+      document.getElementById('progressBar').style.width = `${percentage}%`;
+    }
+
+    // --- CATEGORY MANIPULATION ---
+    function addSpawnCategory(presetName = '') {
+      const input = document.getElementById('newCategoryInput');
+      const name = presetName || input.value.trim();
+      if (!name) return;
+      const newCategory = {
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        name: name,
+        spawns: []
+      };
+      eventSpawnCategories.push(newCategory);
+      renderSpawnCategories();
+      input.value = '';
+    }
+
+    function deleteSpawnCategory(id) {
+      if (!confirm('Excluir esta categoria?')) return;
+      eventSpawnCategories = eventSpawnCategories.filter(c => c.id !== id);
+      renderSpawnCategories();
+    }
+
+    function renderSpawnCategories() {
+      const container = document.getElementById('spawnCategoriesContainer');
+      container.innerHTML = '';
+      eventSpawnCategories.forEach(cat => {
+        const catDiv = document.createElement('div');
+        catDiv.className = "bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-sm";
+        catDiv.innerHTML = `<div class="bg-slate-900/50 px-4 py-3 flex justify-between items-center border-b border-slate-700"><h4 class="font-bold text-blue-300 text-sm uppercase tracking-wide">${cat.name}</h4><button onclick="deleteSpawnCategory(${cat.id})" class="text-slate-500 hover:text-red-400 transition text-xs"><i class="fa-solid fa-trash mr-1"></i> Remover</button></div><div class="p-4"><div class="flex gap-2 mb-4"><input type="text" id="input-cat-${cat.id}" class="event-input text-sm py-1.5" placeholder="Pokémon para '${cat.name}'..."><button onclick="addPokemonToCategory(${cat.id})" class="bg-blue-600 hover:bg-blue-500 text-white px-4 rounded-lg font-bold transition text-sm"><i class="fa-solid fa-plus"></i></button></div><div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-3" id="grid-cat-${cat.id}"></div></div>`;
+        const grid = catDiv.querySelector(`#grid-cat-${cat.id}`);
+        if (cat.spawns.length === 0) grid.innerHTML = '<span class="col-span-full text-center text-slate-600 text-xs italic py-2">Vazio</span>';
+        else {
+          cat.spawns.forEach((poke, pIndex) => {
+            grid.innerHTML += `<div class="bg-slate-900 border border-slate-700 rounded-xl aspect-square flex flex-col items-center justify-center p-2 relative group hover:border-blue-500 transition"><div class="flex-1 flex items-center justify-center w-full"><img src="${poke.image}" class="w-16 h-16 object-contain drop-shadow-lg"></div><span class="text-xs md:text-sm text-slate-300 capitalize truncate w-full text-center font-bold mt-1 tracking-tight">${poke.name}</span><button onclick="removePokemonFromCategory(${cat.id}, ${pIndex})" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10"><i class="fa-solid fa-times"></i></button><button onclick="toggleShinyInCategory(${cat.id}, ${pIndex})" class="absolute top-1 left-1 z-10" title="Alternar Shiny">${poke.shiny ? shinyIconFilled : shinyIconOutline}</button></div>`;
+          });
+        }
+        const input = catDiv.querySelector('input');
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') addPokemonToCategory(cat.id);
+        });
+        container.appendChild(catDiv);
+      });
+    }
+    async function addPokemonToCategory(catId, presetPokemon = null) {
+      let query;
+      const input = document.getElementById(`input-cat-${catId}`);
+      if (presetPokemon) query = presetPokemon;
+      else {
+        if (!input) return;
+        query = input.value.trim().toLowerCase();
+      }
+      if (!query) return;
+      const category = eventSpawnCategories.find(c => c.id === catId);
+      if (!category) return;
+      if (input) {
+        input.disabled = true;
+        var originalPlace = input.placeholder;
+        input.placeholder = "Verificando...";
+      }
+      try {
+        const speciesRes = await fetch(`${API_URL}/pokemon-species/${query}`);
+        if (speciesRes.ok) {
+          const speciesData = await speciesRes.json();
+          if (speciesData.varieties && speciesData.varieties.length > 1) {
+            showVariationModal(speciesData.varieties, catId, input, originalPlace);
+            return;
+          }
+        }
+        const res = await fetch(`${API_URL}/pokemon/${query}`);
+        if (res.ok) {
+          const data = await res.json();
+          const imgUrl = data.sprites.other['home'].front_default || data.sprites.front_default;
+          category.spawns.push({
+            name: data.name,
+            image: imgUrl,
+            shiny: true
+          });
+          renderSpawnCategories();
+          if (input) setTimeout(() => input.focus(), 50);
+        } else showToast(`Pokémon não encontrado: ${query}`, 'error');
+      } catch (e) { }
+      if (input) {
+        input.disabled = false;
+        input.value = '';
+        input.placeholder = originalPlace;
+      }
+    }
+
+    function removePokemonFromCategory(catId, pokeIndex) {
+      const category = eventSpawnCategories.find(c => c.id === catId);
+      if (category) {
+        category.spawns.splice(pokeIndex, 1);
+        renderSpawnCategories();
+      }
+    }
+
+    function toggleShinyInCategory(catId, pokeIndex) {
+      const category = eventSpawnCategories.find(c => c.id === catId);
+      if (category && category.spawns[pokeIndex]) {
+        category.spawns[pokeIndex].shiny = !category.spawns[pokeIndex].shiny;
+        renderSpawnCategories();
+      }
+    }
+
+    function showVariationModal(varieties, catId, inputEl, originalPlaceholder) {
+      const modal = document.getElementById('variationModal');
+      const grid = document.getElementById('variationGrid');
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.children[0].classList.remove('scale-95');
+        modal.children[0].classList.add('scale-100');
+      });
+      grid.innerHTML = '<div class="col-span-full flex justify-center py-10"><div class="loader"></div></div>';
+      Promise.all(varieties.map(v => fetch(v.pokemon.url).then(r => r.json()))).then(results => {
+        grid.innerHTML = '';
+        results.forEach(p => {
+          const img = p.sprites.other['home'].front_default || p.sprites.front_default;
+          if (!img) return;
+          const btn = document.createElement('div');
+          btn.className = "bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-xl p-3 flex flex-col items-center cursor-pointer transition group";
+          btn.onclick = () => {
+            const cat = eventSpawnCategories.find(c => c.id === catId);
+            if (cat) {
+              cat.spawns.push({
+                name: p.name,
+                image: img,
+                shiny: true
+              });
+              renderSpawnCategories();
+            }
+            closeVariationModal(inputEl, originalPlaceholder);
+          };
+          btn.innerHTML = `<img src="${img}" class="w-20 h-20 object-contain group-hover:scale-110 transition"><span class="text-xs text-center font-bold text-slate-300 mt-2 capitalize">${p.name}</span>`;
+          grid.appendChild(btn);
+        });
+      });
+    }
+
+    function closeVariationModal(inputEl, originalPlaceholder) {
+      const modal = document.getElementById('variationModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.children[0].classList.remove('scale-100');
+      modal.children[0].classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+      if (inputEl) {
+        inputEl.disabled = false;
+        inputEl.value = '';
+        inputEl.placeholder = originalPlaceholder;
+        inputEl.focus();
+      }
+    }
+
+    async function addAttack() {
+      const pokeInput = document.getElementById('attackPokemon');
+      const moveInput = document.getElementById('attackMove');
+      if (!pokeInput.value.trim() || !moveInput.value.trim()) return;
+      let imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';
+      try {
+        const res = await fetch(`${API_URL}/pokemon/${pokeInput.value.trim().toLowerCase()}`);
+        if (res.ok) {
+          const data = await res.json();
+          imageUrl = data.sprites.front_default;
+        }
+      } catch (e) { }
+      eventAttacks.push({
+        pokemon: pokeInput.value.trim(),
+        move: moveInput.value.trim(),
+        image: imageUrl,
+        type: document.getElementById('attackType').value,
+        energy: document.getElementById('attackEnergy').value,
+        method: document.getElementById('attackMethod').value.trim()
+      });
+      pokeInput.value = '';
+      moveInput.value = '';
+      document.getElementById('attackMethod').value = '';
+      pokeInput.focus();
+      renderAttacks();
+    }
+
+    function removeAttack(index) {
+      eventAttacks.splice(index, 1);
+      renderAttacks();
+    }
+
+    function renderAttacks() {
+      const list = document.getElementById('attackList');
+      list.innerHTML = '';
+      eventAttacks.forEach((atk, i) => {
+        let energyHtml = atk.energy === 'fast' ? '<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Ataque Ágil</span>' : `<div class="flex gap-1 w-24 mt-1">${Array(parseInt(atk.energy) || 1).fill(`<div class="h-2 flex-1 bg-indigo-500 rounded-sm"></div>`).join('')}</div>`;
+        list.innerHTML += `<div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600 flex flex-col gap-2 relative group hover:bg-slate-700 transition"><button onclick="removeAttack(${i})" class="absolute top-2 right-2 text-slate-500 hover:text-red-400 transition"><i class="fa-solid fa-times"></i></button><div class="flex items-center gap-3"><img src="${atk.image}" class="w-12 h-12 bg-slate-800 rounded-full p-1 border border-slate-600 object-contain"><div><div class="font-bold text-white capitalize text-sm leading-tight">${atk.pokemon}</div><div class="flex items-center gap-2 mt-1"><span class="${typeColors[atk.type] || 'bg-gray-500'} text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">${atk.type}</span><span class="text-slate-300 text-xs font-medium">${atk.move}</span></div></div></div><div class="flex justify-between items-center border-t border-slate-600/50 pt-2 mt-1">${energyHtml}</div>${atk.method ? `<div class="text-[10px] text-slate-400 italic"><i class="fa-solid fa-circle-info mr-1"></i>${atk.method}</div>` : ''}</div>`;
+      });
+    }
+
+    function addRaid() {
+      const boss = document.getElementById('raidPokemon').value.trim();
+      if (!boss) return;
+      eventRaidsList.push({
+        tier: document.getElementById('raidTier').value,
+        boss: boss
+      });
+      document.getElementById('raidPokemon').value = '';
+      renderRaidsForm();
+    }
+
+    function removeRaid(index) {
+      eventRaidsList.splice(index, 1);
+      renderRaidsForm();
+    }
+
+    function renderRaidsForm() {
+      const list = document.getElementById('raidList');
+      list.innerHTML = '';
+      eventRaidsList.forEach((r, i) => {
+        let badgeColor = 'bg-slate-600';
+        if (r.tier === '5') badgeColor = 'bg-slate-800 border border-slate-500';
+        if (r.tier === 'Mega') badgeColor = 'bg-gradient-to-r from-pink-600 to-purple-600';
+        list.innerHTML += `<div class="flex justify-between items-center text-xs bg-slate-800 p-1.5 rounded border border-slate-700"><div class="flex items-center gap-2"><span class="${badgeColor} text-white px-1.5 py-0.5 rounded text-[10px] font-bold w-12 text-center truncate">${r.tier}</span> <span class="capitalize text-slate-300">${r.boss}</span></div><button onclick="removeRaid(${i})" class="text-red-500 hover:text-red-400"><i class="fa-solid fa-times"></i></button></div>`;
+      });
+    }
+
+    // --- MODAL & LIGHTBOX UI ---
+    async function openSpawnModal(name, isShiny) {
+      const modal = document.getElementById('spawnDetailModal');
+      const content = document.getElementById('spawnModalContent');
+      const imgEl = document.getElementById('spawnModalImg');
+      const shinyToggle = document.getElementById('spawnModalShinyToggle');
+      document.getElementById('spawnModalName').innerText = name;
+      document.getElementById('spawnModalShinyStatus').classList.toggle('hidden', !isShiny);
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+      });
+      try {
+        const res = await fetch(`${API_URL}/pokemon/${name.toLowerCase()}`);
+        if (res.ok) {
+          const data = await res.json();
+          const defaultImg = data.sprites.other['home'].front_default || data.sprites.front_default;
+          const shinyImg = data.sprites.other['home'].front_shiny || data.sprites.front_shiny;
+          imgEl.src = defaultImg;
+          if (isShiny) {
+            shinyToggle.classList.remove('hidden');
+            shinyToggle.onclick = () => {
+              const isCurrShiny = imgEl.src === shinyImg;
+              imgEl.src = isCurrShiny ? defaultImg : shinyImg;
+              shinyToggle.innerHTML = isCurrShiny ? '<i class="fa-regular fa-star"></i> Ver Forma Shiny' : '<i class="fa-solid fa-star"></i> Ver Normal';
+              shinyToggle.classList.toggle('text-yellow-400', !isCurrShiny);
+            };
+          } else shinyToggle.classList.add('hidden');
+          const atk = data.stats.find(s => s.stat.name === 'attack').base_stat + 15;
+          const def = data.stats.find(s => s.stat.name === 'defense').base_stat + 15;
+          const sta = data.stats.find(s => s.stat.name === 'hp').base_stat + 15;
+          const calcCP = (cpm) => Math.floor((atk * Math.sqrt(def) * Math.sqrt(sta) * Math.pow(cpm, 2)) / 10);
+          document.getElementById('spawnModalCp40').innerText = calcCP(CPM[40]) + ' CP';
+          document.getElementById('spawnModalCp50').innerText = calcCP(CPM[50]) + ' CP';
+        }
+      } catch (e) {
+        imgEl.src = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';
+      }
+    }
+
+    function closeSpawnModal() {
+      const modal = document.getElementById('spawnDetailModal');
+      const content = document.getElementById('spawnModalContent');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    function openLightbox(imgUrl) {
+      const modal = document.getElementById('lightboxModal');
+      document.getElementById('lightboxImage').src = imgUrl;
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        document.getElementById('lightboxImage').classList.remove('scale-95');
+        document.getElementById('lightboxImage').classList.add('scale-100');
+      });
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('lightboxImage').classList.remove('scale-100');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    function loadDecemberDemo() {
+      document.getElementById('eventName').value = "Dia Comunitário: Tudo em Um";
+      document.getElementById('eventType').value = "Dia da Comunidade";
+      const nextYear = new Date().getFullYear() + (new Date().getMonth() > 11 ? 1 : 0);
+      document.getElementById('eventStart').value = `${nextYear}-12-16T14:00`;
+      document.getElementById('eventEnd').value = `${nextYear}-12-17T17:00`;
+      document.getElementById('paymentType').value = "free_ticket";
+      togglePaymentFields();
+      document.getElementById('ticketCost').value = "R$ 1,90";
+      eventBonuses = ["2x XP de Captura", "1/2 Distância para Chocar Ovos", "Incenso dura 3 horas"];
+      renderBonuses();
+      showToast("Dados de demonstração carregados!");
+    }
+
+    // --- DATA MANAGEMENT FUNCTIONS ---
+
+    function openDataModal() {
+      const modal = document.getElementById('dataModal');
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.children[0].classList.remove('scale-95');
+        modal.children[0].classList.add('scale-100');
+      });
+    }
+
+    function closeDataModal() {
+      const modal = document.getElementById('dataModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.children[0].classList.remove('scale-100');
+      modal.children[0].classList.add('scale-95');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    // Função utilitária para download
+    function downloadJSON(content, fileName) {
+      const blob = new Blob([content], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // 1. Exportar EVENTOS (Apenas a estrutura)
+    function exportEventsData() {
+      const events = localStorage.getItem('pogo_events');
+      if (!events || events === '[]') {
+        showToast('Nenhum evento para exportar.', 'error');
+        return;
+      }
+      const date = new Date().toISOString().split('T')[0];
+      downloadJSON(events, `pogo_eventos_${date}.json`);
+      showToast('Arquivo de Eventos baixado!');
+    }
+
+    // 2. Exportar PROGRESSO (Varre o localStorage e pega todos os progressos)
+    function exportProgressData() {
+      const progressData = {};
+      let hasData = false;
+
+      // Itera sobre tudo no localStorage para achar chaves de progresso
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('pogo_catalog_progress_')) {
+          progressData[key] = JSON.parse(localStorage.getItem(key));
+          hasData = true;
+        }
+      }
+
+      if (!hasData) {
+        showToast('Nenhum progresso registrado.', 'error');
+        return;
+      }
+
+      const date = new Date().toISOString().split('T')[0];
+      downloadJSON(JSON.stringify(progressData, null, 2), `pogo_progresso_${date}.json`);
+      showToast('Arquivo de Progresso baixado!');
+    }
+
+    // 3. Importar EVENTOS
+    function importEventsData(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const importedEvents = JSON.parse(e.target.result);
+          if (!Array.isArray(importedEvents)) throw new Error('Formato inválido');
+
+          // Salva e recarrega
+          localStorage.setItem('pogo_events', JSON.stringify(importedEvents));
+          eventsCollection = importedEvents;
+
+          showToast('Eventos importados com sucesso!');
+          renderMyEventsList();
+          closeDataModal();
+        } catch (err) {
+          showToast('Erro: Arquivo JSON inválido.', 'error');
+          console.error(err);
+        }
+      };
+      reader.readAsText(file);
+      input.value = ''; // Reset input
+    }
+
+    // 4. Importar PROGRESSO
+    function importProgressData(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const importedProgress = JSON.parse(e.target.result);
+
+          // Verifica se parece um objeto de progresso
+          let count = 0;
+          Object.keys(importedProgress).forEach(key => {
+            if (key.startsWith('pogo_catalog_progress_')) {
+              localStorage.setItem(key, JSON.stringify(importedProgress[key]));
+              count++;
+            }
+          });
+
+          if (count === 0) throw new Error('Nenhum dado de progresso válido encontrado.');
+
+          showToast(`${count} registros de progresso importados!`);
+          closeDataModal();
+          // Se estiver na tela de catálogo, recarrega
+          const activeView = document.querySelector('.nav-link.active'); // Verificação simples
+          if (!document.getElementById('catalogView').classList.contains('hidden')) {
+            // O ideal aqui seria pegar o ID do evento atual, mas um refresh simples resolve
+            // Para manter SPA, forçamos recarregar a view se necessário, mas o usuário verá na próxima abertura
+          }
+        } catch (err) {
+          showToast('Erro: JSON de progresso inválido.', 'error');
+          console.error(err);
+        }
+      };
+      reader.readAsText(file);
+      input.value = ''; // Reset input
+    }
+
+    function clearAllData() {
+      if (confirm('ATENÇÃO: Isso apagará TODOS os eventos e TODO o progresso.\n\nTem certeza absoluta?')) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+  </script>
+</body>
+
+</html>
