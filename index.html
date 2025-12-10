@@ -1081,6 +1081,67 @@
     </div>
   </div>
 
+  <script type="module">
+    import { Amplify } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/+esm';
+    import { generateClient } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/data/+esm';
+
+    // 1. Carrega as configurações geradas pelo Amplify
+    try {
+      const response = await fetch('./amplify_outputs.json');
+      const config = await response.json();
+      Amplify.configure(config);
+
+      // 2. Cria o cliente de dados e disponibiliza globalmente
+      window.amplifyClient = generateClient();
+      console.log("✅ Conectado à Nuvem AWS com sucesso!");
+
+      // Teste rápido: Listar eventos (deve vir vazio por enquanto)
+      const { data: events } = await window.amplifyClient.models.PogoEvent.list();
+      console.log("Eventos na nuvem:", events);
+
+    } catch (error) {
+      console.error("❌ Erro ao conectar na AWS:", error);
+    }
+
+    // --- FUNÇÕES DE SINCRONIZAÇÃO ---
+
+    // Função Global para salvar na Nuvem (Pode chamar no console para testar)
+    window.salvarEventoNaNuvem = async (eventoLocal) => {
+      try {
+        const { id, ...dadosLimpos } = eventoLocal; // Remove ID local para o banco gerar o dele
+
+        // Ajuste de segurança: Garantir que arrays vazios não sejam undefined
+        const payload = {
+          name: dadosLimpos.name,
+          type: dadosLimpos.type,
+          start: dadosLimpos.start || null,
+          end: dadosLimpos.end || null,
+          location: dadosLimpos.location,
+          // Campos JSON complexos (sua estrutura local -> banco)
+          spawnCategories: dadosLimpos.spawnCategories || [],
+          attacks: dadosLimpos.attacks || [],
+          raidsList: dadosLimpos.raidsList || [],
+          customTexts: dadosLimpos.customTexts || [],
+          eggs: dadosLimpos.eggs || [],
+          bonuses: dadosLimpos.bonuses || [],
+          images: dadosLimpos.images || [],
+          // Campos simples
+          eggTitle: dadosLimpos.eggTitle,
+          eggDesc: dadosLimpos.eggDesc,
+          research: dadosLimpos.research
+        };
+
+        const { data, errors } = await window.amplifyClient.models.PogoEvent.create(payload);
+
+        if (errors) throw errors;
+        console.log("🚀 Evento salvo na nuvem:", data);
+        alert("Evento salvo na nuvem AWS!");
+      } catch (e) {
+        console.error("Erro ao salvar:", e);
+        alert("Erro ao salvar na nuvem (veja console).");
+      }
+    }
+  </script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
