@@ -1082,63 +1082,113 @@
   </div>
 
   <script type="module">
+    // 1. Importações (Adicionamos o 'auth' para corrigir o erro e[M])
     import { Amplify } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/+esm';
     import { generateClient } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/data/+esm';
+    import { getCurrentUser } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/auth/+esm';
 
-    // 1. Carrega as configurações geradas pelo Amplify
+    // 2. Carrega as configurações e Inicia
     try {
       const response = await fetch('./amplify_outputs.json');
       const config = await response.json();
+
       Amplify.configure(config);
 
-      // 2. Cria o cliente de dados e disponibiliza globalmente
+      // Cria o cliente de dados
       window.amplifyClient = generateClient();
       console.log("✅ Conectado à Nuvem AWS com sucesso!");
 
-      // Teste rápido: Listar eventos (deve vir vazio por enquanto)
-      const { data: events } = await window.amplifyClient.models.PogoEvent.list();
-      console.log("Eventos na nuvem:", events);
+      // Teste de conexão silencioso
+      window.amplifyClient.models.PogoEvent.list().then(() => {
+        console.log("📡 Conexão com banco de dados estabelecida.");
+      }).catch(e => console.error("Erro de conexão DB:", e));
 
     } catch (error) {
-      console.error("❌ Erro ao conectar na AWS:", error);
+      console.error("❌ Erro fatal na inicialização AWS:", error);
     }
 
-    // --- FUNÇÕES DE SINCRONIZAÇÃO ---
-
-    // Função Global para salvar na Nuvem (Pode chamar no console para testar)
+    // --- FUNÇÃO PARA SALVAR NA NUVEM ---
+    // Essa função agora mapeia corretamente seus dados locais para o formato do Schema
     window.salvarEventoNaNuvem = async (eventoLocal) => {
-      try {
-        const { id, ...dadosLimpos } = eventoLocal; // Remove ID local para o banco gerar o dele
+      if (!window.amplifyClient) {
+        alert("Ainda conectando com a AWS... tente novamente em 5 segundos.");
+        return;
+      }
 
-        // Ajuste de segurança: Garantir que arrays vazios não sejam undefined
+      try {
+        // Prepara o objeto para o formato do banco
+        // Nota: AWSJSON aceita o objeto JS direto, o cliente converte sozinho.
         const payload = {
-          name: dadosLimpos.name,
-          type: dadosLimpos.type,
-          start: dadosLimpos.start || null,
-          end: dadosLimpos.end || null,
-          location: dadosLimpos.location,
-          // Campos JSON complexos (sua estrutura local -> banco)
-          spawnCategories: dadosLimpos.spawnCategories || [],
-          attacks: dadosLimpos.attacks || [],
-          raidsList: dadosLimpos.raidsList || [],
-          customTexts: dadosLimpos.customTexts || [],
-          eggs: dadosLimpos.eggs || [],
-          bonuses: dadosLimpos.bonuses || [],
-          images: dadosLimpos.images || [],
-          // Campos simples
-          eggTitle: dadosLimpos.eggTitle,
-          eggDesc: dadosLimpos.eggDesc,
-          research: dadosLimpos.research
+          name: eventoLocal.name,
+          type: eventoLocal.type,
+          // Datas precisam ser ISO string ou null
+          start: eventoLocal.start ? new Date(eventoLocal.start).toISOString() : null,
+          end: eventoLocal.end ? new Date(eventoLocal.end).toISOString() : null,
+          location: eventoLocal.location || "Global",
+          cover: eventoLocal.cover,
+          research: eventoLocal.research,
+
+          // Textos de Ovos
+          eggTitle: eventoLocal.eggTitle,
+          eggDesc: eventoLocal.eggDesc,
+
+          // Arrays simples (Strings)
+          bonuses: Array.isArray(eventoLocal.bonuses) ? eventoLocal.bonuses : [],
+          images: Array.isArray(eventoLocal.images) ? eventoLocal.images : [],
+
+          // Objetos Complexos (Custom Types)
+          // Precisamos garantir que não venham nulos se o banco espera estrutura
+          payment: eventoLocal.payment ? {
+            type: eventoLocal.payment.type,
+            cost: eventoLocal.payment.cost,
+            ticketCost: eventoLocal.payment.ticket?.cost, // Ajuste fino para a estrutura plana do banco
+            ticketBonuses: eventoLocal.payment.ticket?.bonuses || []
+          } : null,
+
+          featured: eventoLocal.featured ? {
+            name: eventoLocal.featured.name,
+            image: eventoLocal.featured.image
+          } : null,
+
+          paidResearch: eventoLocal.paidResearch ? {
+            name: eventoLocal.paidResearch.name,
+            cost: eventoLocal.paidResearch.cost,
+            details: eventoLocal.paidResearch.details
+          } : null,
+
+          // CAMPOS JSON (Onde a mágica acontece)
+          // Mandamos o array/objeto direto, o tipo a.json() cuida do resto
+          spawnCategories: JSON.stringify(eventoLocal.spawnCategories || []),
+          attacks: JSON.stringify(eventoLocal.attacks || []),
+          raidsList: JSON.stringify(eventoLocal.raidsList || []),
+          customTexts: JSON.stringify(eventoLocal.customTexts || []),
+          eggs: JSON.stringify(eventoLocal.eggs || [])
         };
+
+        console.log("Enviando para nuvem:", payload);
 
         const { data, errors } = await window.amplifyClient.models.PogoEvent.create(payload);
 
-        if (errors) throw errors;
-        console.log("🚀 Evento salvo na nuvem:", data);
-        alert("Evento salvo na nuvem AWS!");
+        if (errors) {
+          console.error("Erros de validação:", errors);
+          throw new Error("O banco recusou os dados. Veja o console.");
+        }
+
+        console.log("🚀 SUCESSO! Evento salvo:", data);
+
+        // Feedback visual (Simples)
+        const btn = document.getElementById('saveCloudBtn'); // Vamos criar esse botão já já
+        if (btn) {
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Salvo!';
+          setTimeout(() => btn.innerHTML = originalText, 3000);
+        } else {
+          alert(`Evento "${data.name}" salvo na nuvem com sucesso!`);
+        }
+
       } catch (e) {
         console.error("Erro ao salvar:", e);
-        alert("Erro ao salvar na nuvem (veja console).");
+        alert("Erro ao salvar na nuvem: " + e.message);
       }
     }
   </script>
