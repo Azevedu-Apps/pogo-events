@@ -1153,18 +1153,36 @@
   </div>
 
   <script type="module">
-    import { Amplify } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/+esm';
-    import { generateClient } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/data/+esm';
-    import { signIn, signUp, confirmSignUp, signOut, getCurrentUser } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/auth/+esm';
+    // Usar uma versão específica (@6.0.15) ajuda a evitar conflitos de cache no CDN
+    import { Amplify } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6.0.15/+esm';
+    import { generateClient } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6.0.15/data/+esm';
+    import { signIn, signUp, confirmSignUp, signOut, getCurrentUser } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6.0.15/auth/+esm';
 
-    // --- 1. CONFIGURAÇÃO MANUAL MINIMALISTA ---
-    // Removemos 'loginWith' para impedir que o Amplify tente iniciar OAuth
+    // --- 1. CONFIGURAÇÃO CORRIGIDA ---
     const configManual = {
       Auth: {
         Cognito: {
           userPoolId: "sa-east-1_jS0w3mICn",
           userPoolClientId: "7gm7t9h7t6sj5hhpb9ml1go1ji",
-          identityPoolId: "sa-east-1:b16c0d7c-6f25-4e1c-adcc-45c2170a7273"
+          identityPoolId: "sa-east-1:b16c0d7c-6f25-4e1c-adcc-45c2170a7273",
+          // OBRIGATÓRIO: O 'loginWith' define o método de login, mesmo sem OAuth
+          loginWith: {
+            email: true
+          },
+          signUpVerificationMethod: "code",
+          userAttributes: {
+            email: {
+              required: true
+            }
+          },
+          allowGuestAccess: true,
+          passwordFormat: {
+            minLength: 8,
+            requireLowercase: false,
+            requireUppercase: false,
+            requireNumbers: false,
+            requireSpecialCharacters: false
+          }
         }
       },
       API: {
@@ -1180,9 +1198,9 @@
     try {
       Amplify.configure(configManual);
       window.amplifyClient = generateClient();
-      console.log("✅ AWS Iniciada (Configuração Mínima)");
+      console.log("✅ AWS Iniciada com Sucesso");
     } catch (e) {
-      console.error("❌ Erro Config:", e);
+      console.error("❌ Erro na Configuração AWS:", e);
     }
 
     // --- 2. UI & CONTROLE DE SESSÃO ---
@@ -1196,17 +1214,21 @@
       }
     }
 
-    // Verifica Login
-    getCurrentUser()
-      .then(user => {
-        console.log("👤 Sessão Ativa:", user.username);
+    // Verifica Login ao carregar
+    async function checkAuth() {
+      try {
+        const user = await getCurrentUser();
+        console.log("👤 Sessão Ativa:", user.userId);
         authModal.classList.add('hidden');
         setupLogoutBtn();
-      })
-      .catch(() => {
-        console.log("ℹ️ Login necessário.");
+      } catch (err) {
+        console.log("ℹ️ Usuário não logado:", err);
         authModal.classList.remove('hidden');
-      });
+      }
+    }
+
+    // Executa a verificação
+    checkAuth();
 
     function setupLogoutBtn() {
       const nav = document.querySelector('nav');
@@ -1216,8 +1238,12 @@
         btn.className = "text-red-400 hover:text-white text-xs font-bold uppercase ml-4 border border-red-900/50 px-2 py-1 rounded bg-red-900/10 transition hover:bg-red-900/30";
         btn.innerHTML = '<i class="fa-solid fa-right-from-bracket mr-1"></i> Sair';
         btn.onclick = async () => {
-          await signOut();
-          window.location.reload();
+          try {
+            await signOut();
+            window.location.reload();
+          } catch (error) {
+            console.error('Erro ao sair:', error);
+          }
         };
         nav.appendChild(btn);
       }
@@ -1236,17 +1262,25 @@
 
         try {
           const { isSignedIn, nextStep } = await signIn({ username: email, password });
+
           if (isSignedIn) {
             authModal.classList.add('hidden');
             setupLogoutBtn();
+            alert("Bem-vindo de volta!");
           } else {
+            console.log("Próximo passo:", nextStep);
             if (nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
               window.tempEmail = email;
               window.toggleAuthMode('confirm');
+              alert("Sua conta ainda não foi confirmada. Verifique seu email.");
             }
           }
         } catch (error) {
-          alert("Erro no login: " + error.message);
+          console.error(error);
+          let msg = "Erro no login.";
+          if (error.name === 'NotAuthorizedException') msg = "Email ou senha incorretos.";
+          if (error.name === 'UserNotFoundException') msg = "Usuário não encontrado.";
+          alert(msg + "\nDetalhe: " + error.message);
         } finally {
           setAuthLoading(false);
         }
@@ -1263,26 +1297,35 @@
         const password = document.getElementById('signupPassword').value;
 
         try {
+          // No Amplify Gen2/v6 o userAttributes é a chave correta
           const { nextStep } = await signUp({
             username: email,
             password,
-            options: { userAttributes: { email } }
+            options: {
+              userAttributes: {
+                email: email
+              },
+              autoSignIn: true // Tenta logar automaticamente após confirmar
+            }
           });
 
           if (nextStep?.signUpStep === 'CONFIRM_SIGN_UP') {
             window.tempEmail = email;
             window.toggleAuthMode('confirm');
-            alert("Código enviado! Verifique seu email.");
+            alert("Conta criada! Verifique o código no seu email.");
           }
         } catch (error) {
-          alert("Erro ao criar conta: " + error.message);
+          console.error(error);
+          let msg = "Erro ao criar conta.";
+          if (error.name === 'UsernameExistsException') msg = "Este email já está cadastrado.";
+          alert(msg + "\nDetalhe: " + error.message);
         } finally {
           setAuthLoading(false);
         }
       });
     }
 
-    // Confirmar
+    // Confirmar Código
     const confirmForm = document.getElementById('confirmForm');
     if (confirmForm) {
       confirmForm.addEventListener('submit', async (e) => {
@@ -1292,13 +1335,20 @@
         const email = window.tempEmail || document.getElementById('loginEmail').value;
 
         try {
-          const { isSignUpComplete } = await confirmSignUp({ username: email, confirmationCode: code });
+          const { isSignUpComplete, nextStep } = await confirmSignUp({
+            username: email,
+            confirmationCode: code
+          });
+
           if (isSignUpComplete) {
-            alert("Sucesso! Faça login.");
+            alert("Email verificado com sucesso! Faça login.");
             window.toggleAuthMode('login');
+            // Preenche o email para facilitar
+            document.getElementById('loginEmail').value = email;
           }
         } catch (error) {
-          alert("Código inválido: " + error.message);
+          console.error(error);
+          alert("Código inválido ou expirado: " + error.message);
         } finally {
           setAuthLoading(false);
         }
@@ -1307,7 +1357,14 @@
 
     // --- 4. UPLOAD PARA NUVEM ---
     window.salvarEventoNaNuvem = async (idEventoLocal) => {
-      if (!window.amplifyClient) return alert("Erro: AWS não conectada.");
+      if (!window.amplifyClient) return alert("Erro: AWS não conectada ou erro na configuração.");
+
+      // Verificar se o usuário está logado antes de tentar salvar
+      try {
+        await getCurrentUser();
+      } catch (e) {
+        return alert("Você precisa estar logado para salvar na nuvem.");
+      }
 
       const btn = document.getElementById(`btn-upload-${idEventoLocal}`);
       if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
@@ -1315,7 +1372,10 @@
       const eventos = JSON.parse(localStorage.getItem('pogo_events')) || [];
       const evt = eventos.find(e => e.id === idEventoLocal);
 
-      if (!evt) return alert("Evento não encontrado.");
+      if (!evt) {
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload';
+        return alert("Evento não encontrado.");
+      }
 
       try {
         const payload = {
@@ -1341,22 +1401,30 @@
             ticketCost: evt.payment.ticket?.cost,
             ticketBonuses: evt.payment.ticket?.bonuses || []
           } : null,
-          featured: evt.featured,
-          paidResearch: evt.paidResearch
+          featured: evt.featured ? {
+            name: evt.featured.name,
+            image: evt.featured.image
+          } : null,
+          paidResearch: evt.paidResearch ? {
+            name: evt.paidResearch.name,
+            cost: evt.paidResearch.cost,
+            details: evt.paidResearch.details
+          } : null
         };
 
+        // O 'PogoEvent' deve corresponder exatamente ao nome do modelo no seu Schema Amplify Gen 2
         await window.amplifyClient.models.PogoEvent.create(payload);
 
         if (btn) {
           btn.innerHTML = '<i class="fa-solid fa-check"></i>';
           setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload', 2000);
         }
-        alert("Evento salvo na nuvem!");
+        alert("Evento salvo na nuvem com sucesso!");
 
       } catch (e) {
-        console.error(e);
+        console.error("Erro ao salvar:", e);
         if (btn) btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-        alert("Erro: " + e.message);
+        alert("Erro ao salvar: " + (e.errors ? e.errors[0].message : e.message));
       }
     };
   </script>
