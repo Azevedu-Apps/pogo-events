@@ -1155,188 +1155,160 @@
   <script type="module">
     import { Amplify } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/+esm';
     import { generateClient } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/data/+esm';
-    // Agora importamos tudo o que precisamos para login
     import { signIn, signUp, confirmSignUp, signOut, getCurrentUser } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/auth/+esm';
 
-    // --- CONFIGURAÇÃO INICIAL ---
     const authModal = document.getElementById('authModal');
     const authLoading = document.getElementById('authLoading');
 
-    // Função auxiliar para mostrar/esconder loading
     const setAuthLoading = (isLoading) => {
-      if (isLoading) authLoading.classList.remove('hidden');
-      else authLoading.classList.add('hidden');
+      if (authLoading) {
+        if (isLoading) authLoading.classList.remove('hidden');
+        else authLoading.classList.add('hidden');
+      }
     }
 
-    // Controle de Telas (Login vs Cadastro vs Confirmar)
-    window.toggleAuthMode = (mode) => {
+    // Inicialização
+    try {
+      const response = await fetch('./amplify_outputs.json');
+      const config = await response.json();
+
+      // --- CORREÇÃO DO ERRO e[M] ---
+      // O erro acontece porque a lib tenta ler config de login social (oauth) que não existe.
+      // Vamos garantir que oauth seja undefined se não estivermos usando.
+      if (config.auth) {
+        config.auth.oauth = undefined;
+      }
+
+      Amplify.configure(config);
+      window.amplifyClient = generateClient();
+      console.log("✅ AWS Iniciada com sucesso.");
+
+      // Verifica sessão
+      try {
+        const user = await getCurrentUser();
+        console.log("👤 Logado como:", user.signInDetails?.loginId || user.username);
+        if (authModal) authModal.classList.add('hidden');
+
+        // Botão Sair
+        const nav = document.querySelector('nav');
+        if (nav && !document.getElementById('logoutBtn')) {
+          const logoutBtn = document.createElement('button');
+          logoutBtn.id = 'logoutBtn';
+          logoutBtn.className = "text-red-400 hover:text-white text-xs font-bold uppercase ml-4 border border-red-900/50 px-2 py-1 rounded bg-red-900/10";
+          logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Sair';
+          logoutBtn.onclick = async () => {
+            await signOut();
+            window.location.reload();
+          };
+          nav.appendChild(logoutBtn);
+        }
+
+      } catch (err) {
+        console.log("ℹ️ Usuário não logado (Sessão anônima ou expirada).");
+        if (authModal) authModal.classList.remove('hidden');
+      }
+
+    } catch (error) {
+      console.error("❌ Erro Amplify:", error);
+    }
+
+    // --- EVENTOS DE FORMULÁRIO ---
+
+    // Login
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setAuthLoading(true);
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+          const { isSignedIn, nextStep } = await signIn({ username: email, password });
+          if (isSignedIn) {
+            authModal.classList.add('hidden');
+            window.location.reload(); // Recarrega para garantir
+          } else {
+            if (nextStep.signInStep === 'CONFIRM_SIGN_UP') {
+              window.tempEmail = email;
+              window.toggleAuthMode('confirm');
+            }
+          }
+        } catch (error) {
+          alert("Erro no login: " + error.message);
+        } finally {
+          setAuthLoading(false);
+        }
+      });
+    }
+
+    // Cadastro
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+      signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setAuthLoading(true);
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+
+        try {
+          const { nextStep } = await signUp({
+            username: email,
+            password,
+            options: { userAttributes: { email } }
+          });
+
+          if (nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
+            window.tempEmail = email;
+            window.toggleAuthMode('confirm');
+            alert("Código enviado para o email!");
+          }
+        } catch (error) {
+          alert("Erro ao criar conta: " + error.message);
+        } finally {
+          setAuthLoading(false);
+        }
+      });
+    }
+
+    // Confirmar Código
+    const confirmForm = document.getElementById('confirmForm');
+    if (confirmForm) {
+      confirmForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setAuthLoading(true);
+        const code = document.getElementById('confirmCode').value;
+        const email = window.tempEmail || document.getElementById('loginEmail').value;
+
+        try {
+          const { isSignUpComplete } = await confirmSignUp({ username: email, confirmationCode: code });
+          if (isSignUpComplete) {
+            alert("Conta verificada! Faça login.");
+            window.toggleAuthMode('login');
+          }
+        } catch (error) {
+          alert("Código inválido: " + error.message);
+        } finally {
+          setAuthLoading(false);
+        }
+      });
+    }
+  </script>
+  <script>
+    window.toggleAuthMode = function (mode) {
+      // Esconde todos
       document.getElementById('loginForm').classList.add('hidden');
       document.getElementById('signupForm').classList.add('hidden');
       document.getElementById('confirmForm').classList.add('hidden');
 
+      // Mostra o escolhido
       if (mode === 'login') document.getElementById('loginForm').classList.remove('hidden');
       if (mode === 'signup') document.getElementById('signupForm').classList.remove('hidden');
       if (mode === 'confirm') document.getElementById('confirmForm').classList.remove('hidden');
     };
 
-    try {
-      const response = await fetch('./amplify_outputs.json');
-      const config = await response.json();
-
-      // Configura o Amplify COMPLETO (com Auth e Data)
-      Amplify.configure(config);
-      window.amplifyClient = generateClient();
-
-      // --- VERIFICAÇÃO DE SESSÃO ---
-      try {
-        const user = await getCurrentUser();
-        console.log("👤 Usuário logado:", user.signInDetails?.loginId);
-        authModal.classList.add('hidden'); // Esconde login se já estiver logado
-
-        // Adiciona botão de Logout no Header (Opcional, mas útil)
-        const nav = document.querySelector('nav');
-        const logoutBtn = document.createElement('button');
-        logoutBtn.className = "text-red-400 hover:text-white text-xs font-bold uppercase";
-        logoutBtn.innerText = "Sair";
-        logoutBtn.onclick = async () => {
-          await signOut();
-          window.location.reload();
-        };
-        nav.appendChild(logoutBtn);
-
-      } catch (err) {
-        console.log("Ninguém logado. Mostrando tela de login.");
-        authModal.classList.remove('hidden');
-      }
-
-    } catch (error) {
-      console.error("Erro fatal Amplify:", error);
-      alert("Erro ao iniciar o sistema. Verifique sua conexão.");
-    }
-
-    // --- LÓGICA DOS FORMULÁRIOS ---
-
-    // 1. LOGIN
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      setAuthLoading(true);
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-
-      try {
-        const { isSignedIn, nextStep } = await signIn({ username: email, password });
-        if (isSignedIn) {
-          authModal.classList.add('hidden');
-          console.log("Login realizado!");
-        } else {
-          // Se precisar confirmar email
-          if (nextStep.signInStep === 'CONFIRM_SIGN_UP') {
-            window.tempEmail = email; // Guarda email temporariamente
-            toggleAuthMode('confirm');
-          }
-        }
-      } catch (error) {
-        alert("Erro no login: " + error.message);
-      } finally {
-        setAuthLoading(false);
-      }
-    });
-
-    // 2. CADASTRO
-    document.getElementById('signupForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      setAuthLoading(true);
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-
-      try {
-        const { isSignUpComplete, nextStep } = await signUp({
-          username: email,
-          password,
-          options: { userAttributes: { email } }
-        });
-
-        if (nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
-          window.tempEmail = email;
-          toggleAuthMode('confirm');
-          alert("Conta criada! Verifique seu código no email.");
-        }
-      } catch (error) {
-        alert("Erro ao criar conta: " + error.message);
-      } finally {
-        setAuthLoading(false);
-      }
-    });
-
-    // 3. CONFIRMAR CÓDIGO
-    document.getElementById('confirmForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      setAuthLoading(true);
-      const code = document.getElementById('confirmCode').value;
-      const email = window.tempEmail || document.getElementById('loginEmail').value;
-
-      try {
-        const { isSignUpComplete } = await confirmSignUp({ username: email, confirmationCode: code });
-        if (isSignUpComplete) {
-          alert("Email verificado! Faça login agora.");
-          toggleAuthMode('login');
-          document.getElementById('loginEmail').value = email;
-        }
-      } catch (error) {
-        alert("Código inválido: " + error.message);
-      } finally {
-        setAuthLoading(false);
-      }
-    });
-
-    // --- MANTER A FUNÇÃO DE UPLOAD (DO PASSO ANTERIOR) ---
-    window.salvarEventoNaNuvem = async (idEventoLocal) => {
-      // ... (Cole aqui o mesmo código da função window.salvarEventoNaNuvem que já estava funcionando e ajustamos na resposta anterior)
-      // Se não tiver o código fácil, me avise que eu mando o bloco completo de novo.
-      // O importante é que a lógica de "Amplify.configure" agora inclui o Auth.
-
-      // Vou colocar uma versão resumida aqui para garantir que funcione, 
-      // mas o ideal é usar a versão completa que fizemos antes.
-
-      if (!window.amplifyClient) return alert("Erro de conexão.");
-
-      const eventos = JSON.parse(localStorage.getItem('pogo_events')) || [];
-      const eventoLocal = eventos.find(e => e.id === idEventoLocal);
-
-      if (!eventoLocal) return;
-
-      try {
-        const payload = {
-          name: eventoLocal.name,
-          type: eventoLocal.type,
-          start: eventoLocal.start ? new Date(eventoLocal.start).toISOString() : null,
-          end: eventoLocal.end ? new Date(eventoLocal.end).toISOString() : null,
-          location: eventoLocal.location || "Global",
-          cover: eventoLocal.cover,
-          research: eventoLocal.research,
-          eggTitle: eventoLocal.eggTitle,
-          eggDesc: eventoLocal.eggDesc,
-          bonuses: eventoLocal.bonuses || [],
-          images: eventoLocal.images || [],
-          payment: eventoLocal.payment ? { ...eventoLocal.payment, ticketBonuses: eventoLocal.payment.ticket?.bonuses || [] } : null,
-          featured: eventoLocal.featured,
-          paidResearch: eventoLocal.paidResearch,
-          spawnCategories: JSON.stringify(eventoLocal.spawnCategories || []),
-          attacks: JSON.stringify(eventoLocal.attacks || []),
-          raidsList: JSON.stringify(eventoLocal.raidsList || []),
-          customTexts: JSON.stringify(eventoLocal.customTexts || []),
-          eggs: JSON.stringify(eventoLocal.eggs || [])
-        };
-
-        await window.amplifyClient.models.PogoEvent.create(payload);
-        alert("Evento salvo na nuvem com sucesso!");
-      } catch (e) {
-        console.error(e);
-        alert("Erro: " + e.message);
-      }
-    };
-  </script>
-  <script>
+    // Variável para guardar o email temporariamente entre telas
+    window.tempEmail = "";
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
