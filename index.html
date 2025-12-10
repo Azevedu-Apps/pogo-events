@@ -1082,82 +1082,84 @@
   </div>
 
   <script type="module">
-    // 1. Importações (Adicionamos o 'auth' para corrigir o erro e[M])
     import { Amplify } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/+esm';
     import { generateClient } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/data/+esm';
-    import { getCurrentUser } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/auth/+esm';
 
-    // 2. Carrega as configurações e Inicia
     try {
       const response = await fetch('./amplify_outputs.json');
       const config = await response.json();
 
+      // --- A CORREÇÃO MÁGICA ---
+      // Removemos a configuração de Auth para impedir que a biblioteca tente
+      // iniciar o sistema de login (que estava causando o erro e[M]).
+      // Como seu banco usa API Key, isso é seguro.
+      delete config.auth;
+
       Amplify.configure(config);
 
-      // Cria o cliente de dados
       window.amplifyClient = generateClient();
       console.log("✅ Conectado à Nuvem AWS com sucesso!");
 
-      // Teste de conexão silencioso
-      window.amplifyClient.models.PogoEvent.list().then(() => {
-        console.log("📡 Conexão com banco de dados estabelecida.");
-      }).catch(e => console.error("Erro de conexão DB:", e));
+      // Teste simples para confirmar
+      window.amplifyClient.models.PogoEvent.list().then(res => {
+        console.log("📡 Banco de dados respondeu. Eventos encontrados:", res.data.length);
+      });
 
     } catch (error) {
-      console.error("❌ Erro fatal na inicialização AWS:", error);
+      console.error("❌ Erro na conexão AWS:", error);
     }
 
     // --- FUNÇÃO PARA SALVAR NA NUVEM ---
-    // Essa função agora mapeia corretamente seus dados locais para o formato do Schema
-    window.salvarEventoNaNuvem = async (eventoLocal) => {
-      if (!window.amplifyClient) {
-        alert("Ainda conectando com a AWS... tente novamente em 5 segundos.");
+    window.salvarEventoNaNuvem = async (idEventoLocal) => {
+      // Busca o evento no localStorage pelo ID
+      const eventos = JSON.parse(localStorage.getItem('pogo_events')) || [];
+      const eventoLocal = eventos.find(e => e.id === idEventoLocal);
+
+      if (!eventoLocal) {
+        alert("Evento não encontrado no celular.");
         return;
       }
 
+      if (!window.amplifyClient) {
+        alert("Aguarde a conexão com a nuvem...");
+        return;
+      }
+
+      const btn = document.getElementById(`btn-upload-${idEventoLocal}`);
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        btn.disabled = true;
+      }
+
       try {
-        // Prepara o objeto para o formato do banco
-        // Nota: AWSJSON aceita o objeto JS direto, o cliente converte sozinho.
+        // Prepara o payload (exatamente como antes)
         const payload = {
           name: eventoLocal.name,
           type: eventoLocal.type,
-          // Datas precisam ser ISO string ou null
           start: eventoLocal.start ? new Date(eventoLocal.start).toISOString() : null,
           end: eventoLocal.end ? new Date(eventoLocal.end).toISOString() : null,
           location: eventoLocal.location || "Global",
           cover: eventoLocal.cover,
           research: eventoLocal.research,
-
-          // Textos de Ovos
           eggTitle: eventoLocal.eggTitle,
           eggDesc: eventoLocal.eggDesc,
-
-          // Arrays simples (Strings)
           bonuses: Array.isArray(eventoLocal.bonuses) ? eventoLocal.bonuses : [],
           images: Array.isArray(eventoLocal.images) ? eventoLocal.images : [],
-
-          // Objetos Complexos (Custom Types)
-          // Precisamos garantir que não venham nulos se o banco espera estrutura
           payment: eventoLocal.payment ? {
             type: eventoLocal.payment.type,
             cost: eventoLocal.payment.cost,
-            ticketCost: eventoLocal.payment.ticket?.cost, // Ajuste fino para a estrutura plana do banco
+            ticketCost: eventoLocal.payment.ticket?.cost,
             ticketBonuses: eventoLocal.payment.ticket?.bonuses || []
           } : null,
-
           featured: eventoLocal.featured ? {
             name: eventoLocal.featured.name,
             image: eventoLocal.featured.image
           } : null,
-
           paidResearch: eventoLocal.paidResearch ? {
             name: eventoLocal.paidResearch.name,
             cost: eventoLocal.paidResearch.cost,
             details: eventoLocal.paidResearch.details
           } : null,
-
-          // CAMPOS JSON (Onde a mágica acontece)
-          // Mandamos o array/objeto direto, o tipo a.json() cuida do resto
           spawnCategories: JSON.stringify(eventoLocal.spawnCategories || []),
           attacks: JSON.stringify(eventoLocal.attacks || []),
           raidsList: JSON.stringify(eventoLocal.raidsList || []),
@@ -1165,30 +1167,29 @@
           eggs: JSON.stringify(eventoLocal.eggs || [])
         };
 
-        console.log("Enviando para nuvem:", payload);
-
         const { data, errors } = await window.amplifyClient.models.PogoEvent.create(payload);
 
-        if (errors) {
-          console.error("Erros de validação:", errors);
-          throw new Error("O banco recusou os dados. Veja o console.");
-        }
+        if (errors) throw new Error(JSON.stringify(errors));
 
-        console.log("🚀 SUCESSO! Evento salvo:", data);
+        console.log("Salvo na nuvem:", data);
 
-        // Feedback visual (Simples)
-        const btn = document.getElementById('saveCloudBtn'); // Vamos criar esse botão já já
         if (btn) {
-          const originalText = btn.innerHTML;
-          btn.innerHTML = '<i class="fa-solid fa-check"></i> Salvo!';
-          setTimeout(() => btn.innerHTML = originalText, 3000);
-        } else {
-          alert(`Evento "${data.name}" salvo na nuvem com sucesso!`);
+          btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-green-400"></i>';
+          btn.title = "Salvo na nuvem!";
+          setTimeout(() => {
+            btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload';
+            btn.disabled = false;
+          }, 3000);
         }
+        alert(`Sucesso! O evento "${data.name}" agora está na nuvem.`);
 
       } catch (e) {
-        console.error("Erro ao salvar:", e);
-        alert("Erro ao salvar na nuvem: " + e.message);
+        console.error(e);
+        alert("Erro ao salvar: " + e.message);
+        if (btn) {
+          btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-red-500"></i>';
+          btn.disabled = false;
+        }
       }
     }
   </script>
@@ -2122,7 +2123,12 @@
         if (evt.payment?.type === 'paid_event') priceBadge = `<span class="bg-red-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">${evt.payment.cost}</span>`;
         else if (evt.payment?.type === 'free_ticket') priceBadge = `<span class="bg-blue-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">Gratuito + Ticket</span>`;
 
-        return `<div class="event-card bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-md flex flex-col h-full"><div class="h-40 bg-slate-900 relative flex items-center justify-center overflow-hidden group cursor-pointer" onclick="viewEvent(${evt.id})"><div class="absolute inset-0 opacity-30 bg-gradient-to-br from-blue-900 to-purple-900"></div><img src="${coverImg}" class="h-full w-full ${coverClass} relative z-10 transition group-hover:scale-105 duration-500" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';this.style.opacity='0.2'"><div class="absolute top-2 right-2 z-20 flex flex-col gap-1 items-end"><span class="bg-black/60 backdrop-blur text-xs px-2 py-1 rounded text-white font-bold">${evt.type}</span>${priceBadge}</div></div><div class="p-5 flex-1 flex flex-col"><h3 class="text-xl font-bold text-white mb-1 leading-tight hover:text-blue-400 cursor-pointer transition" onclick="viewEvent(${evt.id})">${evt.name}</h3><div class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2"><i class="fa-regular fa-clock"></i> ${start} - ${end}</div><div class="mt-auto flex flex-col gap-2 border-t border-slate-700/50 pt-4"><div class="flex gap-2"><button onclick="openCatalog(${evt.id})" class="flex-1 bg-green-600 hover:bg-green-500 text-white text-sm px-3 py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-2" onmouseenter="displayTooltip(this, 'Catálogo', 'Gerencie sua coleção.', 'shiny')" onmouseleave="removeTooltip()"><i class="fa-solid fa-list-check"></i> Catálogo</button></div><div class="flex justify-between items-center mt-2"><button onclick="deleteEvent(${evt.id})" class="text-red-400 hover:text-red-300 text-sm transition px-2 py-1 rounded hover:bg-red-900/20 flex items-center gap-1"><i class="fa-solid fa-trash"></i> Excluir</button><div class="flex gap-2"><button onclick="editEvent(${evt.id})" class="text-slate-400 hover:text-white text-sm px-2 py-1 transition"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="viewEvent(${evt.id})" class="bg-slate-700 hover:bg-blue-600 text-white text-sm px-4 py-1.5 rounded-lg transition font-bold">Detalhes</button></div></div></div></div></div>`;
+        return `<div class="event-card bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-md flex flex-col h-full"><div class="h-40 bg-slate-900 relative flex items-center justify-center overflow-hidden group cursor-pointer" onclick="viewEvent(${evt.id})"><div class="absolute inset-0 opacity-30 bg-gradient-to-br from-blue-900 to-purple-900"></div><img src="${coverImg}" class="h-full w-full ${coverClass} relative z-10 transition group-hover:scale-105 duration-500" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';this.style.opacity='0.2'"><div class="absolute top-2 right-2 z-20 flex flex-col gap-1 items-end"><span class="bg-black/60 backdrop-blur text-xs px-2 py-1 rounded text-white font-bold">${evt.type}</span>${priceBadge}</div></div><div class="p-5 flex-1 flex flex-col"><h3 class="text-xl font-bold text-white mb-1 leading-tight hover:text-blue-400 cursor-pointer transition" onclick="viewEvent(${evt.id})">${evt.name}</h3><div class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2"><i class="fa-regular fa-clock"></i> ${start} - ${end}</div><div class="mt-auto flex flex-col gap-2 border-t border-slate-700/50 pt-4"><div class="flex gap-2"><button onclick="openCatalog(${evt.id})" class="flex-1 bg-green-600 hover:bg-green-500 text-white text-sm px-3 py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-2">
+    <i class="fa-solid fa-list-check"></i> Catálogo
+  </button>
+  <button id="btn-upload-${evt.id}" onclick="window.salvarEventoNaNuvem(${evt.id})" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-3 py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-2" title="Salvar na Nuvem AWS">
+    <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+  </button></div><div class="flex justify-between items-center mt-2"><button onclick="deleteEvent(${evt.id})" class="text-red-400 hover:text-red-300 text-sm transition px-2 py-1 rounded hover:bg-red-900/20 flex items-center gap-1"><i class="fa-solid fa-trash"></i> Excluir</button><div class="flex gap-2"><button onclick="editEvent(${evt.id})" class="text-slate-400 hover:text-white text-sm px-2 py-1 transition"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="viewEvent(${evt.id})" class="bg-slate-700 hover:bg-blue-600 text-white text-sm px-4 py-1.5 rounded-lg transition font-bold">Detalhes</button></div></div></div></div></div>`;
       }).join('');
     }
 
