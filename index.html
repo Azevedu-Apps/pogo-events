@@ -1152,162 +1152,217 @@
     </div>
   </div>
 
-  <script type="module">
-    import { Amplify } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/+esm';
-    import { generateClient } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/data/+esm';
-    import { signIn, signUp, confirmSignUp, signOut, getCurrentUser } from 'https://cdn.jsdelivr.net/npm/aws-amplify@6/auth/+esm';
+  <script src="https://unpkg.com/aws-amplify@5.3.11/dist/aws-amplify.min.js"></script>
 
-    const authModal = document.getElementById('authModal');
-    const authLoading = document.getElementById('authLoading');
+  <script>
+    // Atalhos da V5 (No V6 isso não existia assim)
+    const { Amplify, Auth, API } = window.aws_amplify;
 
-    const setAuthLoading = (isLoading) => {
-      if (authLoading) {
-        if (isLoading) authLoading.classList.remove('hidden');
-        else authLoading.classList.add('hidden');
-      }
-    }
+    // --- 1. CONFIGURAÇÃO (Adapta o JSON novo para o formato antigo) ---
+    async function initAWS() {
+      try {
+        const response = await fetch('./amplify_outputs.json');
+        const outputs = await response.json();
 
-    // Função para atualizar a interface quando o usuário loga
-    const updateUIAsLoggedIn = (username) => {
-      console.log("👤 Sessão ativa:", username);
-      if (authModal) authModal.classList.add('hidden');
-
-      const nav = document.querySelector('nav');
-      // Evita duplicar o botão
-      if (nav && !document.getElementById('logoutBtn')) {
-        const logoutBtn = document.createElement('button');
-        logoutBtn.id = 'logoutBtn';
-        logoutBtn.className = "text-red-400 hover:text-white text-xs font-bold uppercase ml-4 border border-red-900/50 px-2 py-1 rounded bg-red-900/10 transition hover:bg-red-900/30";
-        logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket mr-1"></i> Sair';
-        logoutBtn.onclick = async () => {
-          await signOut();
-          window.location.reload(); // Só recarrega ao SAIR
+        // Mapeamento Manual: JSON Novo (Gen 2) -> Configuração Antiga (V5)
+        const v5Config = {
+          Auth: {
+            region: outputs.auth.aws_region,
+            userPoolId: outputs.auth.user_pool_id,
+            userPoolWebClientId: outputs.auth.user_pool_client_id, // Nome diferente na V5
+            identityPoolId: outputs.auth.identity_pool_id,
+            mandatorySignIn: false
+          },
+          aws_appsync_graphqlEndpoint: outputs.data.url,
+          aws_appsync_region: outputs.data.aws_region,
+          aws_appsync_authenticationType: 'API_KEY', // Seu banco é público para leitura
+          aws_appsync_apiKey: outputs.data.api_key
         };
-        nav.appendChild(logoutBtn);
+
+        Amplify.configure(v5Config);
+        console.log("✅ AWS V5 Iniciada com Sucesso!");
+        checkSession();
+
+      } catch (e) {
+        console.error("Erro fatal config:", e);
+        alert("Erro ao carregar configurações da nuvem.");
       }
-    };
-
-    try {
-      const response = await fetch('./amplify_outputs.json');
-      const output = await response.json();
-
-      // Configuração manual limpa para evitar erros de OAuth
-      Amplify.configure({
-        Auth: {
-          Cognito: {
-            userPoolId: output.auth.user_pool_id,
-            userPoolClientId: output.auth.user_pool_client_id,
-            identityPoolId: output.auth.identity_pool_id
-          }
-        },
-        API: {
-          GraphQL: {
-            endpoint: output.data.url,
-            region: output.data.aws_region,
-            defaultAuthMode: 'apiKey',
-            apiKey: output.data.api_key
-          }
-        }
-      });
-
-      window.amplifyClient = generateClient();
-      console.log("✅ AWS Pronta.");
-
-      // Verifica sessão inicial
-      getCurrentUser()
-        .then(user => updateUIAsLoggedIn(user.signInDetails?.loginId || user.username))
-        .catch(() => {
-          console.log("ℹ️ Login necessário.");
-          if (authModal) authModal.classList.remove('hidden');
-        });
-
-    } catch (error) {
-      console.error("❌ Erro inicialização:", error);
     }
 
-    // --- FORMULÁRIOS ---
+    // --- 2. VERIFICAÇÃO DE SESSÃO ---
+    async function checkSession() {
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        console.log("👤 Logado como:", user.username);
+
+        // Atualiza UI
+        document.getElementById('authModal').classList.add('hidden');
+        addLogoutBtn();
+      } catch (e) {
+        console.log("ℹ️ Visitante não logado.");
+        document.getElementById('authModal').classList.remove('hidden');
+      }
+    }
+
+    function addLogoutBtn() {
+      const nav = document.querySelector('nav');
+      if (nav && !document.getElementById('logoutBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'logoutBtn';
+        btn.className = "text-red-400 hover:text-white text-xs font-bold uppercase ml-4 border border-red-900/50 px-2 py-1 rounded bg-red-900/10";
+        btn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Sair';
+        btn.onclick = async () => {
+          await Auth.signOut();
+          window.location.reload();
+        };
+        nav.appendChild(btn);
+      }
+    }
+
+    // Inicializa
+    initAWS();
+
+    // --- 3. LÓGICA DE LOGIN/CADASTRO (Usando sintaxe V5) ---
 
     // Login
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-      loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        setAuthLoading(true);
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
+    document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
 
-        try {
-          const { isSignedIn, nextStep } = await signIn({ username: email, password });
-          if (isSignedIn) {
-            // SUCESSO: Atualiza a tela sem recarregar!
-            updateUIAsLoggedIn(email);
-          } else {
-            if (nextStep.signInStep === 'CONFIRM_SIGN_UP') {
-              window.tempEmail = email;
-              window.toggleAuthMode('confirm');
-            }
-          }
-        } catch (error) {
-          console.error(error);
-          alert("Erro no login: " + error.message);
-        } finally {
-          setAuthLoading(false);
+      try {
+        // Na V5 é Auth.signIn
+        await Auth.signIn(email, password);
+        document.getElementById('authModal').classList.add('hidden');
+        addLogoutBtn();
+        alert("Bem-vindo de volta!");
+      } catch (err) {
+        if (err.code === 'UserNotConfirmedException') {
+          window.tempEmail = email;
+          window.toggleAuthMode('confirm');
+          alert("Você precisa confirmar seu código.");
+        } else {
+          alert("Erro no login: " + err.message);
         }
-      });
-    }
+      }
+    });
 
     // Cadastro
-    const signupForm = document.getElementById('signupForm');
-    if (signupForm) {
-      signupForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        setAuthLoading(true);
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
+    document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
 
-        try {
-          const { nextStep } = await signUp({
-            username: email,
-            password,
-            options: { userAttributes: { email } }
-          });
-
-          if (nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
-            window.tempEmail = email;
-            window.toggleAuthMode('confirm');
-            alert("Código enviado para o email!");
-          }
-        } catch (error) {
-          alert("Erro ao criar conta: " + error.message);
-        } finally {
-          setAuthLoading(false);
-        }
-      });
-    }
+      try {
+        // Na V5 passamos um objeto params
+        await Auth.signUp({
+          username: email,
+          password: password,
+          attributes: { email: email }
+        });
+        window.tempEmail = email;
+        window.toggleAuthMode('confirm');
+        alert("Código enviado para o email!");
+      } catch (err) {
+        alert("Erro ao criar conta: " + err.message);
+      }
+    });
 
     // Confirmar
-    const confirmForm = document.getElementById('confirmForm');
-    if (confirmForm) {
-      confirmForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        setAuthLoading(true);
-        const code = document.getElementById('confirmCode').value;
-        const email = window.tempEmail || document.getElementById('loginEmail').value;
+    document.getElementById('confirmForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('confirmCode').value;
+      const email = window.tempEmail || document.getElementById('loginEmail').value;
 
-        try {
-          const { isSignUpComplete } = await confirmSignUp({ username: email, confirmationCode: code });
-          if (isSignUpComplete) {
-            alert("Conta verificada! Faça login.");
-            window.toggleAuthMode('login');
-          }
-        } catch (error) {
-          alert("Código inválido: " + error.message);
-        } finally {
-          setAuthLoading(false);
-        }
-      });
+      try {
+        await Auth.confirmSignUp(email, code);
+        alert("Conta verificada! Faça login.");
+        window.toggleAuthMode('login');
+      } catch (err) {
+        alert("Código inválido: " + err.message);
+      }
+    });
+
+
+    // --- 4. SALVAR NA NUVEM (GraphQL Puro) ---
+    // Como não temos o "client.models" da V6, escrevemos a mutation na mão.
+    // É mais feio, mas funciona sempre.
+
+    const CREATE_EVENT_MUTATION = `
+  mutation CreatePogoEvent($input: CreatePogoEventInput!) {
+    createPogoEvent(input: $input) {
+      id
+      name
+      createdAt
     }
+  }
+`;
+
+    window.salvarEventoNaNuvem = async (idEventoLocal) => {
+      const eventos = JSON.parse(localStorage.getItem('pogo_events')) || [];
+      const eventoLocal = eventos.find(e => e.id === idEventoLocal);
+
+      if (!eventoLocal) return alert("Evento não encontrado.");
+
+      const btn = document.getElementById(`btn-upload-${idEventoLocal}`);
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      try {
+        // Prepara dados (mesma lógica de antes)
+        const input = {
+          name: eventoLocal.name,
+          type: eventoLocal.type,
+          start: eventoLocal.start ? new Date(eventoLocal.start).toISOString() : null,
+          end: eventoLocal.end ? new Date(eventoLocal.end).toISOString() : null,
+          location: eventoLocal.location || "Global",
+          cover: eventoLocal.cover,
+          research: eventoLocal.research,
+          eggTitle: eventoLocal.eggTitle,
+          eggDesc: eventoLocal.eggDesc,
+          bonuses: eventoLocal.bonuses || [],
+          images: eventoLocal.images || [],
+          // Campos JSON convertidos para string
+          spawnCategories: JSON.stringify(eventoLocal.spawnCategories || []),
+          attacks: JSON.stringify(eventoLocal.attacks || []),
+          raidsList: JSON.stringify(eventoLocal.raidsList || []),
+          customTexts: JSON.stringify(eventoLocal.customTexts || []),
+          eggs: JSON.stringify(eventoLocal.eggs || []),
+          // Objetos Complexos (se existirem)
+          payment: eventoLocal.payment ? {
+            type: eventoLocal.payment.type,
+            cost: eventoLocal.payment.cost,
+            ticketCost: eventoLocal.payment.ticket?.cost,
+            ticketBonuses: eventoLocal.payment.ticket?.bonuses || []
+          } : null,
+          featured: eventoLocal.featured,
+          paidResearch: eventoLocal.paidResearch
+        };
+
+        // Envia usando a API GraphQL da V5
+        const result = await API.graphql({
+          query: CREATE_EVENT_MUTATION,
+          variables: { input: input },
+          authMode: 'AMAZON_COGNITO_USER_POOLS' // Usa o usuário logado para salvar
+        });
+
+        console.log("Sucesso V5:", result);
+
+        if (btn) {
+          btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+          setTimeout(() => {
+            btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload';
+          }, 3000);
+        }
+        alert("Evento salvo na nuvem com sucesso!");
+
+      } catch (e) {
+        console.error("Erro V5:", e);
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        alert("Erro ao salvar: " + (e.errors ? e.errors[0].message : e.message));
+      }
+    };
   </script>
+
   <script>
     window.toggleAuthMode = function (mode) {
       // Esconde todos
