@@ -1167,52 +1167,65 @@
       }
     }
 
-    // Inicialização
+    // Função para atualizar a interface quando o usuário loga
+    const updateUIAsLoggedIn = (username) => {
+      console.log("👤 Sessão ativa:", username);
+      if (authModal) authModal.classList.add('hidden');
+
+      const nav = document.querySelector('nav');
+      // Evita duplicar o botão
+      if (nav && !document.getElementById('logoutBtn')) {
+        const logoutBtn = document.createElement('button');
+        logoutBtn.id = 'logoutBtn';
+        logoutBtn.className = "text-red-400 hover:text-white text-xs font-bold uppercase ml-4 border border-red-900/50 px-2 py-1 rounded bg-red-900/10 transition hover:bg-red-900/30";
+        logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket mr-1"></i> Sair';
+        logoutBtn.onclick = async () => {
+          await signOut();
+          window.location.reload(); // Só recarrega ao SAIR
+        };
+        nav.appendChild(logoutBtn);
+      }
+    };
+
     try {
       const response = await fetch('./amplify_outputs.json');
-      const config = await response.json();
+      const output = await response.json();
 
-      // --- CORREÇÃO DO ERRO e[M] ---
-      // O erro acontece porque a lib tenta ler config de login social (oauth) que não existe.
-      // Vamos garantir que oauth seja undefined se não estivermos usando.
-      if (config.auth) {
-        config.auth.oauth = undefined;
-      }
-
-      Amplify.configure(config);
-      window.amplifyClient = generateClient();
-      console.log("✅ AWS Iniciada com sucesso.");
-
-      // Verifica sessão
-      try {
-        const user = await getCurrentUser();
-        console.log("👤 Logado como:", user.signInDetails?.loginId || user.username);
-        if (authModal) authModal.classList.add('hidden');
-
-        // Botão Sair
-        const nav = document.querySelector('nav');
-        if (nav && !document.getElementById('logoutBtn')) {
-          const logoutBtn = document.createElement('button');
-          logoutBtn.id = 'logoutBtn';
-          logoutBtn.className = "text-red-400 hover:text-white text-xs font-bold uppercase ml-4 border border-red-900/50 px-2 py-1 rounded bg-red-900/10";
-          logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Sair';
-          logoutBtn.onclick = async () => {
-            await signOut();
-            window.location.reload();
-          };
-          nav.appendChild(logoutBtn);
+      // Configuração manual limpa para evitar erros de OAuth
+      Amplify.configure({
+        Auth: {
+          Cognito: {
+            userPoolId: output.auth.user_pool_id,
+            userPoolClientId: output.auth.user_pool_client_id,
+            identityPoolId: output.auth.identity_pool_id
+          }
+        },
+        API: {
+          GraphQL: {
+            endpoint: output.data.url,
+            region: output.data.aws_region,
+            defaultAuthMode: 'apiKey',
+            apiKey: output.data.api_key
+          }
         }
+      });
 
-      } catch (err) {
-        console.log("ℹ️ Usuário não logado (Sessão anônima ou expirada).");
-        if (authModal) authModal.classList.remove('hidden');
-      }
+      window.amplifyClient = generateClient();
+      console.log("✅ AWS Pronta.");
+
+      // Verifica sessão inicial
+      getCurrentUser()
+        .then(user => updateUIAsLoggedIn(user.signInDetails?.loginId || user.username))
+        .catch(() => {
+          console.log("ℹ️ Login necessário.");
+          if (authModal) authModal.classList.remove('hidden');
+        });
 
     } catch (error) {
-      console.error("❌ Erro Amplify:", error);
+      console.error("❌ Erro inicialização:", error);
     }
 
-    // --- EVENTOS DE FORMULÁRIO ---
+    // --- FORMULÁRIOS ---
 
     // Login
     const loginForm = document.getElementById('loginForm');
@@ -1226,8 +1239,8 @@
         try {
           const { isSignedIn, nextStep } = await signIn({ username: email, password });
           if (isSignedIn) {
-            authModal.classList.add('hidden');
-            window.location.reload(); // Recarrega para garantir
+            // SUCESSO: Atualiza a tela sem recarregar!
+            updateUIAsLoggedIn(email);
           } else {
             if (nextStep.signInStep === 'CONFIRM_SIGN_UP') {
               window.tempEmail = email;
@@ -1235,6 +1248,7 @@
             }
           }
         } catch (error) {
+          console.error(error);
           alert("Erro no login: " + error.message);
         } finally {
           setAuthLoading(false);
@@ -1271,7 +1285,7 @@
       });
     }
 
-    // Confirmar Código
+    // Confirmar
     const confirmForm = document.getElementById('confirmForm');
     if (confirmForm) {
       confirmForm.addEventListener('submit', async (e) => {
