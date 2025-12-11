@@ -1,0 +1,5 @@
+{
+  "name": "PoGo Events",
+  "description": "A Pokémon GO event tracker, planner, and checklist application with cloud synchronization.",
+  "requestFramePermissions": []
+}

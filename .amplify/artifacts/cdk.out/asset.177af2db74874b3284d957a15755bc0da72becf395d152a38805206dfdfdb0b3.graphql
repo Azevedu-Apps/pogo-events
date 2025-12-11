@@ -1,0 +1,360 @@
+type PogoEvent @aws_iam @aws_api_key {
+  name: String!
+  type: String
+  start: AWSDateTime
+  end: AWSDateTime
+  location: String
+  cover: String
+  research: String
+  eggTitle: String
+  eggDesc: String
+  bonuses: [String]
+  images: [String]
+  payment: PogoEventPayment
+  featured: PogoEventFeatured
+  paidResearch: PogoEventPaidResearch
+  spawnCategories: AWSJSON
+  attacks: AWSJSON
+  raidsList: AWSJSON
+  customTexts: AWSJSON
+  eggs: AWSJSON
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type PogoEventPayment @aws_iam @aws_api_key {
+  type: String
+  cost: String
+  ticketCost: String
+  ticketBonuses: [String]
+}
+
+type PogoEventFeatured @aws_iam @aws_api_key {
+  name: String
+  image: String
+}
+
+type PogoEventPaidResearch @aws_iam @aws_api_key {
+  name: String
+  cost: String
+  details: String
+}
+
+input AmplifyAIConversationTurnErrorInput {
+  errorType: String!
+  message: String!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+input PogoEventPaymentInput {
+  type: String
+  cost: String
+  ticketCost: String
+  ticketBonuses: [String]
+}
+
+input PogoEventFeaturedInput {
+  name: String
+  image: String
+}
+
+input PogoEventPaidResearchInput {
+  name: String
+  cost: String
+  details: String
+}
+
+type ModelPogoEventConnection @aws_api_key @aws_iam {
+  items: [PogoEvent]!
+  nextToken: String
+}
+
+input ModelPogoEventFilterInput {
+  name: ModelStringInput
+  type: ModelStringInput
+  start: ModelStringInput
+  end: ModelStringInput
+  location: ModelStringInput
+  cover: ModelStringInput
+  research: ModelStringInput
+  eggTitle: ModelStringInput
+  eggDesc: ModelStringInput
+  bonuses: ModelStringInput
+  images: ModelStringInput
+  spawnCategories: ModelStringInput
+  attacks: ModelStringInput
+  raidsList: ModelStringInput
+  customTexts: ModelStringInput
+  eggs: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelPogoEventFilterInput]
+  or: [ModelPogoEventFilterInput]
+  not: ModelPogoEventFilterInput
+}
+
+type Query {
+  getPogoEvent(id: ID!): PogoEvent @aws_api_key @aws_iam
+  listPogoEvents(filter: ModelPogoEventFilterInput, limit: Int, nextToken: String): ModelPogoEventConnection @aws_api_key @aws_iam
+}
+
+input ModelPogoEventConditionInput {
+  name: ModelStringInput
+  type: ModelStringInput
+  start: ModelStringInput
+  end: ModelStringInput
+  location: ModelStringInput
+  cover: ModelStringInput
+  research: ModelStringInput
+  eggTitle: ModelStringInput
+  eggDesc: ModelStringInput
+  bonuses: ModelStringInput
+  images: ModelStringInput
+  spawnCategories: ModelStringInput
+  attacks: ModelStringInput
+  raidsList: ModelStringInput
+  customTexts: ModelStringInput
+  eggs: ModelStringInput
+  and: [ModelPogoEventConditionInput]
+  or: [ModelPogoEventConditionInput]
+  not: ModelPogoEventConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreatePogoEventInput {
+  name: String!
+  type: String
+  start: AWSDateTime
+  end: AWSDateTime
+  location: String
+  cover: String
+  research: String
+  eggTitle: String
+  eggDesc: String
+  bonuses: [String]
+  images: [String]
+  payment: PogoEventPaymentInput
+  featured: PogoEventFeaturedInput
+  paidResearch: PogoEventPaidResearchInput
+  spawnCategories: AWSJSON
+  attacks: AWSJSON
+  raidsList: AWSJSON
+  customTexts: AWSJSON
+  eggs: AWSJSON
+  id: ID
+}
+
+input UpdatePogoEventInput {
+  name: String
+  type: String
+  start: AWSDateTime
+  end: AWSDateTime
+  location: String
+  cover: String
+  research: String
+  eggTitle: String
+  eggDesc: String
+  bonuses: [String]
+  images: [String]
+  payment: PogoEventPaymentInput
+  featured: PogoEventFeaturedInput
+  paidResearch: PogoEventPaidResearchInput
+  spawnCategories: AWSJSON
+  attacks: AWSJSON
+  raidsList: AWSJSON
+  customTexts: AWSJSON
+  eggs: AWSJSON
+  id: ID!
+}
+
+input DeletePogoEventInput {
+  id: ID!
+}
+
+type Mutation {
+  createPogoEvent(input: CreatePogoEventInput!, condition: ModelPogoEventConditionInput): PogoEvent @aws_api_key @aws_iam
+  updatePogoEvent(input: UpdatePogoEventInput!, condition: ModelPogoEventConditionInput): PogoEvent @aws_api_key @aws_iam
+  deletePogoEvent(input: DeletePogoEventInput!, condition: ModelPogoEventConditionInput): PogoEvent @aws_api_key @aws_iam
+}
+
+input ModelSubscriptionPogoEventFilterInput {
+  name: ModelSubscriptionStringInput
+  type: ModelSubscriptionStringInput
+  start: ModelSubscriptionStringInput
+  end: ModelSubscriptionStringInput
+  location: ModelSubscriptionStringInput
+  cover: ModelSubscriptionStringInput
+  research: ModelSubscriptionStringInput
+  eggTitle: ModelSubscriptionStringInput
+  eggDesc: ModelSubscriptionStringInput
+  bonuses: ModelSubscriptionStringInput
+  images: ModelSubscriptionStringInput
+  spawnCategories: ModelSubscriptionStringInput
+  attacks: ModelSubscriptionStringInput
+  raidsList: ModelSubscriptionStringInput
+  customTexts: ModelSubscriptionStringInput
+  eggs: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionPogoEventFilterInput]
+  or: [ModelSubscriptionPogoEventFilterInput]
+}
+
+type Subscription {
+  onCreatePogoEvent(filter: ModelSubscriptionPogoEventFilterInput): PogoEvent @aws_subscribe(mutations: ["createPogoEvent"]) @aws_api_key @aws_iam
+  onUpdatePogoEvent(filter: ModelSubscriptionPogoEventFilterInput): PogoEvent @aws_subscribe(mutations: ["updatePogoEvent"]) @aws_api_key @aws_iam
+  onDeletePogoEvent(filter: ModelSubscriptionPogoEventFilterInput): PogoEvent @aws_subscribe(mutations: ["deletePogoEvent"]) @aws_api_key @aws_iam
+}

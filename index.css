@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- CONFIGURAÇÕES GERAIS --- */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* --- SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* --- INPUTS & FORMS --- */
+.event-input {
+  width: 100%;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  color: #f8fafc;
+  outline: none;
+  transition: all 0.2s;
+}
+.event-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+.event-input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Loading Indicator inside input */
+.input-loading {
+  background-image: url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%233b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cline x1="12" y1="2" x2="12" y2="6"%3E%3C/line%3E%3Cline x1="12" y1="18" x2="12" y2="22"%3E%3C/line%3E%3Cline x1="4.93" y1="4.93" x2="7.76" y2="7.76"%3E%3C/line%3E%3Cline x1="16.24" y1="16.24" x2="19.07" y2="19.07"%3E%3C/line%3E%3Cline x1="2" y1="12" x2="6" y2="12"%3E%3C/line%3E%3Cline x1="18" y1="12" x2="22" y2="12"%3E%3C/line%3E%3Cline x1="4.93" y1="19.07" x2="7.76" y2="16.24"%3E%3C/line%3E%3Cline x1="16.24" y1="7.76" x2="19.07" y2="4.93"%3E%3C/line%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* --- LOADERS & ANIMATIONS --- */
+.loader {
+  border: 3px solid #1e293b;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes shundoPulse {
+  0% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.7), 0 0 5px rgba(250, 204, 21, 0.5); }
+  100% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); }
+}
+
+/* --- CATALOG EFFECTS --- */
+.catalog-item {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.catalog-item.shundo-completed {
+  background: linear-gradient(145deg, rgba(234, 179, 8, 0.15), rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.15));
+  border: 2px solid transparent;
+  background-image: linear-gradient(#1e293b, #1e293b), linear-gradient(135deg, #facc15, #a855f7, #ec4899);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.25), inset 0 0 20px rgba(250, 204, 21, 0.05);
+}
+
+.variant-btn.active-normal { background-color: #dc2626; color: white; border-color: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+.variant-btn.active-shiny { background-color: #ca8a04; color: white; border-color: #eab308; box-shadow: 0 0 8px rgba(234, 179, 8, 0.6); }
+.variant-btn.active-hundo { background-color: #db2777; color: white; border-color: #f472b6; box-shadow: 0 0 8px rgba(244, 114, 182, 0.6); }
+.variant-btn.active-xxl { background-color: #2563eb; color: white; border-color: #60a5fa; box-shadow: 0 0 8px rgba(96, 165, 250, 0.6); }
+.variant-btn.active-xxs { background-color: #0891b2; color: white; border-color: #22d3ee; box-shadow: 0 0 8px rgba(34, 211, 238, 0.6); }
+.variant-btn.active-shadow { background-color: #4c1d95; color: white; border-color: #8b5cf6; box-shadow: 0 0 8px rgba(76, 29, 149, 0.6); }
+.variant-btn.active-purified { background-color: #ffffff; color: #4c1d95; border-color: #e2e8f0; box-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
+
+.shundo-btn.active-shundo {
+  background: linear-gradient(135deg, #facc15 0%, #a855f7 50%, #ec4899 100%);
+  border-color: transparent;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+  animation: shundoPulse 2.5s infinite;
+}
+
+.egg-card-v2:hover .egg-card-v2-shiny { opacity: 1; }
+.egg-card-v2:hover .egg-card-v2-normal { opacity: 0; }
