@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { PogoEvent } from '../types';
 import { HeroSection, InfoGrid, TicketCard, CustomSectionsDisplay, RaidDisplay, AttackDisplay, FeaturedDisplay, FreeResearchDisplay } from './detail/DetailSections';
 import { EggDetailDisplay } from './detail/EggDetail';
+import { EventInfographic } from './detail/EventInfographic';
+import { toPng } from 'html-to-image';
 
 interface EventDetailProps {
   event: PogoEvent;
@@ -12,9 +14,46 @@ interface EventDetailProps {
 
 const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog }) => {
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const [inlineCss, setInlineCss] = useState('');
+
+  // Fetch External CSS (FontAwesome, Google Fonts) to embed in the capture
+  useEffect(() => {
+      const loadStyles = async () => {
+          try {
+              const faUrl = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+              const fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap';
+
+              // Fetch concurrently but handle failures individually if needed
+              const [faRes, fontRes] = await Promise.all([
+                  fetch(faUrl).catch(e => { console.warn('Failed FA fetch', e); return null; }),
+                  fetch(fontUrl).catch(e => { console.warn('Failed Font fetch', e); return null; })
+              ]);
+
+              let cssCombined = '';
+
+              if (fontRes && fontRes.ok) {
+                  const fontCss = await fontRes.text();
+                  cssCombined += fontCss + '\n';
+              }
+
+              if (faRes && faRes.ok) {
+                  let faCss = await faRes.text();
+                  // Fix relative font paths in FontAwesome CSS to be absolute CDN paths
+                  // Usually they are '../webfonts/fa-solid-900.woff2'
+                  faCss = faCss.replace(/\.\.\/webfonts\//g, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/');
+                  cssCombined += faCss;
+              }
+
+              setInlineCss(cssCombined);
+          } catch (e) {
+              console.error('Error loading remote styles for export', e);
+          }
+      };
+      loadStyles();
+  }, []);
 
   // Filter Raids vs Max Battles
-  // Max Battles now use prefixes like 'Max-' or specific names like 'Gigamax'
   const maxBattles = event.raidsList?.filter(r => 
     r.tier.startsWith('Max') || r.tier === 'Gigamax' || r.tier === 'Dinamax'
   ) || [];
@@ -22,6 +61,49 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
   const standardRaids = event.raidsList?.filter(r => 
     !r.tier.startsWith('Max') && r.tier !== 'Gigamax' && r.tier !== 'Dinamax'
   ) || [];
+
+  const handleExportImage = async () => {
+      setExporting(true);
+      const node = document.getElementById('event-infographic-capture');
+      if (node) {
+          try {
+              // Ensure images are fully loaded before capture
+              const imgs = node.querySelectorAll('img');
+              await Promise.all(Array.from(imgs).map(img => {
+                  if (img.complete) return Promise.resolve();
+                  return new Promise((resolve) => { img.onload = resolve; img.onerror = resolve; });
+              }));
+
+              // Configuration to ignore external stylesheets (we injected them manually)
+              const options = { 
+                  quality: 0.95, 
+                  pixelRatio: 2,
+                  cacheBust: true,
+                  filter: (domNode: HTMLElement) => {
+                      // CRITICAL: Exclude external link tags from the capture.
+                      // html-to-image tries to read cssRules from them, which fails due to CORS.
+                      // We have already injected the necessary CSS via the <style> tag in EventInfographic.
+                      return domNode.tagName !== 'LINK';
+                  }
+              };
+
+              // First render pass (helps with layout stabilization/font loading)
+              try { await toPng(node, options); } catch(e) { /* ignore first pass error */ }
+              
+              // Actual Capture
+              const dataUrl = await toPng(node, options);
+              
+              const link = document.createElement('a');
+              link.download = `evento-${event.name.replace(/\s+/g, '-').toLowerCase()}.png`;
+              link.href = dataUrl;
+              link.click();
+          } catch (err) {
+              console.error('Failed to export image', err);
+              alert('Erro ao gerar imagem. Verifique se os assets (imagens) estão acessíveis.');
+          }
+      }
+      setExporting(false);
+  };
 
   return (
     <div className="animate-fade-in relative">
@@ -33,9 +115,22 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
            </div>
        )}
 
-       <div className="mb-4">
+       {/* Hidden Infographic for Capture */}
+       <div className="fixed top-0 left-[-9999px] pointer-events-none">
+           <EventInfographic event={event} id="event-infographic-capture" inlineStyles={inlineCss} />
+       </div>
+
+       <div className="mb-4 flex justify-between items-center">
            <button onClick={onBack} className="text-slate-400 hover:text-white transition flex items-center gap-2 text-sm font-bold">
                <i className="fa-solid fa-arrow-left"></i> Voltar para Lista
+           </button>
+           <button 
+                onClick={handleExportImage} 
+                disabled={exporting}
+                className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transition disabled:opacity-50"
+           >
+               {exporting ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-share-nodes"></i>}
+               {exporting ? 'Gerando...' : 'Exportar Imagem'}
            </button>
        </div>
 

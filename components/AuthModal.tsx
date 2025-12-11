@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { signIn, signUp, confirmSignUp, signOut } from 'aws-amplify/auth';
 
@@ -104,9 +105,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
             <button type="submit" disabled={loading} className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold transition">
               {loading ? 'Carregando...' : 'Entrar'}
             </button>
+            {/* Sign up link temporarily disabled
             <p className="text-center text-xs text-slate-500 mt-4 cursor-pointer hover:text-blue-400" onClick={() => setMode('signup')}>
               Criar conta
             </p>
+            */}
           </form>
         )}
 

@@ -103,7 +103,14 @@ const App: React.FC = () => {
       });
       
       // Sort by start date desc
-      parsedEvents.sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime());
+      parsedEvents.sort((a, b) => {
+          const timeA = new Date(a.start).getTime();
+          const timeB = new Date(b.start).getTime();
+          // Handle invalid dates safely
+          if (isNaN(timeA)) return 1;
+          if (isNaN(timeB)) return -1;
+          return timeB - timeA;
+      });
       
       setEvents(parsedEvents);
     } catch (e) {
@@ -270,28 +277,77 @@ const App: React.FC = () => {
                     </button>
                 </div>
             )}
-            {events.map(evt => (
-              <div key={evt.id} className="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-md group hover:border-blue-500 transition cursor-pointer" onClick={() => { setSelectedEventId(evt.id); setView('details'); }}>
-                <div className="h-40 bg-slate-900 relative">
-                   {evt.cover ? 
-                    <img src={evt.cover} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition" /> : 
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-purple-900"><i className="fa-solid fa-ghost text-4xl text-white/20"></i></div>
-                   }
-                   <div className="absolute top-2 right-2 bg-black/60 backdrop-blur text-xs px-2 py-1 rounded text-white font-bold">{evt.type}</div>
-                </div>
-                <div className="p-5">
-                  <h3 className="text-xl font-bold text-white mb-1 truncate">{evt.name}</h3>
-                  <div className="text-xs text-slate-400 font-bold uppercase mb-4 flex items-center gap-2">
-                    <i className="fa-regular fa-clock"></i> {new Date(evt.start).toLocaleDateString()}
+            {events.map(evt => {
+                // Date Formatting
+                const start = evt.start ? new Date(evt.start).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : '???';
+                const end = evt.end ? new Date(evt.end).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : '???';
+                
+                // Cover Image Logic
+                let coverImg = evt.cover || (evt.images && evt.images[0]) || (evt.featured ? evt.featured.image : 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg');
+                const coverClass = (evt.cover || (evt.images && evt.images.length > 0)) ? 'object-cover' : (evt.featured ? 'object-contain p-4' : 'object-cover opacity-20 scale-150');
+                
+                // Price Badge Logic
+                let priceBadge = <span className="bg-green-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">Gratuito</span>;
+                if (evt.payment?.type === 'paid_event') priceBadge = <span className="bg-red-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">{evt.payment.cost}</span>;
+                else if (evt.payment?.type === 'free_ticket') priceBadge = <span className="bg-blue-600/90 text-white text-[10px] px-2 py-1 rounded font-bold uppercase">Gratuito + Ticket</span>;
+
+                return (
+                  <div key={evt.id} className="event-card bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-md flex flex-col h-full hover:border-blue-500 transition cursor-pointer" onClick={() => { setSelectedEventId(evt.id); setView('details'); }}>
+                    <div className="h-40 bg-slate-900 relative flex items-center justify-center overflow-hidden group">
+                        <div className="absolute inset-0 opacity-30 bg-gradient-to-br from-blue-900 to-purple-900"></div>
+                        <img 
+                            src={coverImg} 
+                            className={`h-full w-full ${coverClass} relative z-10 transition group-hover:scale-105 duration-500`}
+                            onError={(e) => { e.currentTarget.src='https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg'; e.currentTarget.style.opacity='0.2'; }}
+                        />
+                        <div className="absolute top-2 right-2 z-20 flex flex-col gap-1 items-end">
+                            <span className="bg-black/60 backdrop-blur text-xs px-2 py-1 rounded text-white font-bold">{evt.type}</span>
+                            {priceBadge}
+                        </div>
+                    </div>
+                    
+                    <div className="p-5 flex-1 flex flex-col">
+                        <h3 className="text-xl font-bold text-white mb-1 leading-tight hover:text-blue-400 transition">{evt.name}</h3>
+                        <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
+                            <i className="fa-regular fa-clock"></i> {start} - {end}
+                        </div>
+                        
+                        <div className="mt-auto flex flex-col gap-2 border-t border-slate-700/50 pt-4">
+                            <div className="flex gap-2">
+                                <button 
+                                    onClick={(e) => { e.stopPropagation(); setSelectedEventId(evt.id); setView('catalog'); }} 
+                                    className="flex-1 bg-green-600 hover:bg-green-500 text-white text-sm px-3 py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-2"
+                                >
+                                    <i className="fa-solid fa-list-check"></i> Catálogo
+                                </button>
+                            </div>
+                            <div className="flex justify-between items-center mt-2">
+                                <button 
+                                    onClick={(e) => requestDelete(evt.id, e)} 
+                                    className="text-red-400 hover:text-red-300 text-sm transition px-2 py-1 rounded hover:bg-red-900/20 flex items-center gap-1"
+                                >
+                                    <i className="fa-solid fa-trash"></i> Excluir
+                                </button>
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={(e) => { e.stopPropagation(); setSelectedEventId(evt.id); setView('create'); }} 
+                                        className="text-slate-400 hover:text-white text-sm px-2 py-1 transition"
+                                    >
+                                        <i className="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button 
+                                        onClick={(e) => { e.stopPropagation(); setSelectedEventId(evt.id); setView('details'); }} 
+                                        className="bg-slate-700 hover:bg-blue-600 text-white text-sm px-4 py-1.5 rounded-lg transition font-bold"
+                                    >
+                                        Detalhes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                   </div>
-                  <div className="flex gap-2 border-t border-slate-700 pt-4">
-                      <button onClick={(e) => { e.stopPropagation(); setSelectedEventId(evt.id); setView('details'); }} className="flex-1 bg-slate-700 hover:bg-slate-600 text-white text-sm py-2 rounded font-bold">Detalhes</button>
-                      <button onClick={(e) => { e.stopPropagation(); setSelectedEventId(evt.id); setView('create'); }} className="text-slate-400 hover:text-white px-3"><i className="fa-solid fa-pen"></i></button>
-                      <button onClick={(e) => requestDelete(evt.id, e)} className="text-red-400 hover:text-red-300 px-3"><i className="fa-solid fa-trash"></i></button>
-                  </div>
-                </div>
-              </div>
-            ))}
+                );
+            })}
           </div>
         );
     }
