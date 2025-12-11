@@ -1,4 +1,6 @@
 
+import { getPokemonAsset } from './assets';
+
 const API_URL = 'https://pokeapi.co/api/v2';
 
 let pokemonListCache: { name: string; url: string }[] | null = null;
@@ -31,10 +33,15 @@ export const fetchPokemon = async (query: string) => {
     const res = await fetch(`${API_URL}/pokemon/${cleanQuery}`);
     if (!res.ok) throw new Error('Pokemon not found');
     const data = await res.json();
+    
+    // Use the Asset Service to get the Pogo-style 3D model
+    const image = getPokemonAsset(data.id, false);
+    const shinyImage = getPokemonAsset(data.id, true);
+
     return {
       name: data.name,
-      image: data.sprites.other['home'].front_default || data.sprites.front_default,
-      shinyImage: data.sprites.other['home'].front_shiny || data.sprites.front_shiny,
+      image: image,
+      shinyImage: shinyImage,
       types: data.types.map((t: any) => t.type.name),
       id: data.id,
       stats: data.stats

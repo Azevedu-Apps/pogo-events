@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { PogoEvent, CustomText, Raid, Attack } from '../../types';
-import { typeColors } from '../../utils/visuals';
+import { getTypeIcon } from '../../services/assets';
 import { fetchPokemon } from '../../services/pokeapi';
+import { RaidCardSkeleton } from '../ui/Skeletons';
 
 export const HeroSection: React.FC<{ event: PogoEvent, onOpenCatalog: () => void }> = ({ event, onOpenCatalog }) => {
     let priceBadge = <span className="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold uppercase">Gratuito</span>;
@@ -139,6 +140,7 @@ const RaidCard: React.FC<{ raid: Raid }> = ({ raid }) => {
 
     useEffect(() => {
         let active = true;
+        setLoading(true);
         const load = async () => {
             const data = await fetchPokemon(raid.boss);
             if (active && data) {
@@ -149,6 +151,10 @@ const RaidCard: React.FC<{ raid: Raid }> = ({ raid }) => {
         load();
         return () => { active = false; };
     }, [raid.boss]);
+
+    if (loading) {
+        return <RaidCardSkeleton />;
+    }
 
     const isMax = raid.tier === 'Max' || raid.tier === 'Gigamax' || raid.tier === 'Dinamax';
     const isMega = raid.tier === 'Mega';
@@ -219,7 +225,7 @@ export const AttackDisplay: React.FC<{ attacks: Attack[] }> = ({ attacks }) => (
                     <div>
                         <div className="font-bold text-white capitalize">{atk.pokemon}</div>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className={`${typeColors[atk.type] || 'bg-slate-500'} text-[10px] text-white px-2 py-0.5 rounded font-bold uppercase`}>{atk.type}</span>
+                            <img src={getTypeIcon(atk.type || 'normal')} className="w-4 h-4 object-contain" />
                             <span className="text-purple-300 text-sm font-medium">{atk.move}</span>
                         </div>
                         {atk.method && <div className="text-[10px] text-slate-400 mt-1 italic"><i className="fa-solid fa-circle-info mr-1"></i> {atk.method}</div>}

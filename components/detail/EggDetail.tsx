@@ -2,9 +2,9 @@ import React from 'react';
 import { EggGroup } from '../../types';
 import { getEggSvg } from '../../utils/visuals';
 
-const EggCardIncubator: React.FC<{ pokemon: any, eggColor: string, borderColor: string, glowColor: string }> = ({ pokemon, eggColor, borderColor, glowColor }) => {
+const EggCardIncubator: React.FC<{ pokemon: any, eggSvg: string, glowColor: string }> = ({ pokemon, eggSvg, glowColor }) => {
     return (
-        <div className={`egg-card-v2 group relative w-36 h-48 bg-slate-800 rounded-[2rem] border-2 ${borderColor} shadow-lg ${glowColor} flex flex-col items-center justify-between p-4 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer`}>
+        <div className={`egg-card-v2 group relative w-36 h-48 bg-slate-800 rounded-[2rem] border-2 border-slate-700 shadow-lg ${glowColor} flex flex-col items-center justify-between p-4 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer`}>
              <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
              
              <div className="bg-slate-900/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 border border-slate-700 w-full text-center truncate">
@@ -21,7 +21,8 @@ const EggCardIncubator: React.FC<{ pokemon: any, eggColor: string, borderColor: 
                  {pokemon.form && <div className="text-[9px] text-slate-300 bg-slate-700/50 px-2 py-0.5 rounded text-center leading-tight w-full truncate">{pokemon.form}</div>}
              </div>
              
-             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+             {/* Egg Watermark */}
+             <div className="absolute -bottom-8 -right-8 opacity-20 rotate-12 pointer-events-none w-32 h-32" dangerouslySetInnerHTML={{__html: eggSvg}}></div>
         </div>
     );
 };
@@ -39,25 +40,25 @@ export const EggDetailDisplay: React.FC<{ groups: EggGroup[], title?: string, de
             
             <div className="flex flex-col gap-12">
                 {sortedEggs.map(group => {
-                    let eggColor = '#3b82f6';
-                    let borderColor = 'border-blue-500';
-                    let glowColor = 'shadow-blue-500/20';
+                    let color = '#22c55e'; // 2km green
+                    let glowColor = 'shadow-green-500/20';
           
-                    if (group.distance.includes('2')) { eggColor = '#22c55e'; borderColor = 'border-green-500'; glowColor = 'shadow-green-500/20'; }
-                    if (group.distance.includes('5')) { eggColor = '#f97316'; borderColor = 'border-orange-500'; glowColor = 'shadow-orange-500/20'; }
-                    if (group.distance.includes('7')) { eggColor = '#eab308'; borderColor = 'border-yellow-500'; glowColor = 'shadow-yellow-500/20'; }
-                    if (group.distance.includes('10')) { eggColor = '#a855f7'; borderColor = 'border-purple-500'; glowColor = 'shadow-purple-500/20'; }
-                    if (group.distance.includes('12')) { eggColor = '#ef4444'; borderColor = 'border-red-500'; glowColor = 'shadow-red-500/20'; }
+                    if (group.distance.includes('5')) { color = '#f97316'; glowColor = 'shadow-orange-500/20'; }
+                    if (group.distance.includes('7')) { color = '#eab308'; glowColor = 'shadow-yellow-500/20'; }
+                    if (group.distance.includes('10')) { color = '#a855f7'; glowColor = 'shadow-purple-500/20'; }
+                    if (group.distance.includes('12')) { color = '#ef4444'; glowColor = 'shadow-red-500/20'; }
+                    
+                    const eggSvg = getEggSvg(color);
 
                     return (
                         <div key={group.distance} className="w-full">
                             <div className="flex items-center gap-3 mb-4 bg-slate-800/50 p-3 rounded-xl border border-slate-700 w-fit mx-auto">
-                                <div className="w-8 h-10" dangerouslySetInnerHTML={{__html: getEggSvg(eggColor)}} />
+                                <div className="w-8 h-10 drop-shadow-md" dangerouslySetInnerHTML={{__html: eggSvg}}></div>
                                 <span className="font-black text-xl text-white">Ovos de {group.distance}</span>
                             </div>
                             <div className="flex flex-wrap justify-center gap-6">
                                 {group.spawns.map((p, i) => (
-                                    <EggCardIncubator key={i} pokemon={p} eggColor={eggColor} borderColor={borderColor} glowColor={glowColor} />
+                                    <EggCardIncubator key={i} pokemon={p} eggSvg={eggSvg} glowColor={glowColor} />
                                 ))}
                             </div>
                         </div>

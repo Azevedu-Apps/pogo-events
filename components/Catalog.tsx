@@ -2,7 +2,8 @@
 import React, { useState, useEffect, memo } from 'react';
 import { PogoEvent, CatalogProgress } from '../types';
 import { fetchPokemon } from '../services/pokeapi';
-import { typeColors } from '../utils/visuals';
+import { getTypeIcon } from '../services/assets';
+import { CatalogCardSkeleton } from './ui/Skeletons';
 
 interface CatalogProps {
   event: PogoEvent;
@@ -21,6 +22,7 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
     // Local state for fetched details (ID, Types) and Image fallback
     const [imgSrc, setImgSrc] = useState(item.image);
     const [details, setDetails] = useState<{id: number, types: string[]} | null>(null);
+    const [loading, setLoading] = useState(true);
 
     // Fetch details on mount (Id, Types, and correct Image for Raids)
     useEffect(() => {
@@ -28,6 +30,7 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
         
         const load = async () => {
              if (!item.name) return;
+             setLoading(true);
 
              const data = await fetchPokemon(item.name);
              if (active && data) {
@@ -38,11 +41,16 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
                      setImgSrc(data.image);
                  }
              }
+             if (active) setLoading(false);
         };
 
         load();
         return () => { active = false; };
     }, [item.name, type]);
+
+    if (loading) {
+        return <CatalogCardSkeleton />;
+    }
 
     const variants = type === 'raid' 
         ? ['normal', 'shiny', 'hundo', 'shadow', 'purified']
@@ -101,17 +109,22 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
             <div className="z-10 text-center w-full mb-3">
                 <span className={`font-bold capitalize leading-tight block ${isShundoComplete ? 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 drop-shadow-sm' : 'text-white'}`}>{item.name}</span>
                 
-                {/* Type Dots */}
-                <div className="flex justify-center gap-1 mt-1 h-3">
-                    {details?.types.map(t => {
-                        const capType = t.charAt(0).toUpperCase() + t.slice(1);
-                        return <span key={t} className={`${typeColors[capType] || 'bg-gray-500'} w-2.5 h-2.5 rounded-full shadow-sm`} title={capType}></span>;
-                    })}
+                {/* Type Icons */}
+                <div className="flex justify-center gap-1 mt-1">
+                    {details?.types.map(t => (
+                        <img 
+                            key={t} 
+                            src={getTypeIcon(t)} 
+                            className="w-4 h-4 object-contain shadow-sm" 
+                            title={t} 
+                            alt={t}
+                        />
+                    ))}
                 </div>
 
                 {type === 'attack' && item.move && (
                     <div className="flex items-center justify-center gap-2 mt-2 bg-slate-900/50 px-2 py-1 rounded border border-slate-700/50">
-                        <span className={`${typeColors[item.moveType] || 'bg-gray-500'} text-white text-[9px] px-1.5 py-0.5 rounded uppercase font-bold shadow-sm`}>{item.moveType || '?'}</span>
+                         <img src={getTypeIcon(item.moveType || 'normal')} className="w-3 h-3" />
                         <span className="text-xs text-white font-medium leading-none">{item.move}</span>
                     </div>
                 )}
@@ -266,7 +279,7 @@ const Catalog: React.FC<CatalogProps> = ({ event, onBack }) => {
   const percentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 animate-fade-in">
       <div className="sticky top-0 bg-slate-900/95 backdrop-blur z-30 py-4 border-b border-slate-800 shadow-sm mb-6">
           <div className="flex justify-between items-center px-4">
             <div className="flex items-center gap-3">

@@ -14,6 +14,7 @@ import EventForm from './components/EventForm';
 import EventDetail from './components/EventDetail';
 import Catalog from './components/Catalog';
 import { ConfirmModal } from './components/ui/ConfirmModal';
+import { EventCardSkeleton } from './components/ui/Skeletons';
 
 // Configure Amplify
 Amplify.configure(amplifyConfig);
@@ -25,7 +26,8 @@ const App: React.FC = () => {
   const [events, setEvents] = useState<PogoEvent[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // Start with loading true to prevent flash of empty content
+  const [loading, setLoading] = useState(true);
   
   // Delete Modal State
   const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean, id: string | null }>({ show: false, id: null });
@@ -37,12 +39,14 @@ const App: React.FC = () => {
   }, []);
 
   const checkAuth = async () => {
+    setLoading(true);
     try {
       const u = await getCurrentUser();
       setUser(u);
       fetchEvents();
     } catch {
       setUser(null);
+      setLoading(false);
       setShowAuthModal(true);
     }
   };
@@ -244,7 +248,16 @@ const App: React.FC = () => {
 
   // Render Logic
   const renderContent = () => {
-    if (loading) return <div className="flex justify-center py-20"><div className="loader w-12 h-12 border-4 border-blue-500"></div></div>;
+    // SKELETON LOADING STATE
+    if (loading) {
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                    <EventCardSkeleton key={i} />
+                ))}
+            </div>
+        );
+    }
 
     switch (view) {
       case 'create':
