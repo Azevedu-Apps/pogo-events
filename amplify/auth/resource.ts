@@ -19,11 +19,11 @@ export const auth = defineAuth({
       },
       callbackUrls: [
         'http://localhost:5500/', // Ajuste para sua porta local se não for 5500 ou 3000
-        'https://main.d1czh377za5dxp.amplifyapp.com/' // Sua URL de produção do print
+        'https://main.d3rhcvo6ldzarf.amplifyapp.com/' // Sua URL de produção do print
       ],
       logoutUrls: [
         'http://localhost:5500/',
-        'https://main.d1czh377za5dxp.amplifyapp.com/'
+        'https://main.d3rhcvo6ldzarf.amplifyapp.com/'
       ]
     }
   },
