@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "sa-east-1_wPch0YBrW",
+    "user_pool_id": "sa-east-1_jS0w3mICn",
     "aws_region": "sa-east-1",
-    "user_pool_client_id": "2gn11hm790f6l282ggup2jelkv",
-    "identity_pool_id": "sa-east-1:2eaf0bd4-72a7-462e-b9e6-abdec4e0d887",
+    "user_pool_client_id": "7gm7t9h7t6sj5hhpb9ml1go1ji",
+    "identity_pool_id": "sa-east-1:b16c0d7c-6f25-4e1c-adcc-45c2170a7273",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -23,34 +23,12 @@
       "require_symbols": true,
       "require_uppercase": true
     },
-    "oauth": {
-      "identity_providers": [
-        "GOOGLE"
-      ],
-      "redirect_sign_in_uri": [
-        "http://localhost:5500/",
-        "https://main.d1czh377za5dxp.amplifyapp.com/"
-      ],
-      "redirect_sign_out_uri": [
-        "http://localhost:5500/",
-        "https://main.d1czh377za5dxp.amplifyapp.com/"
-      ],
-      "response_type": "code",
-      "scopes": [
-        "phone",
-        "email",
-        "openid",
-        "profile",
-        "aws.cognito.signin.user.admin"
-      ],
-      "domain": "2eb0ea8067ca6d554c2b.auth.sa-east-1.amazoncognito.com"
-    },
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://twsd7li3n5dg7m2jsbnsyiyh3m.appsync-api.sa-east-1.amazonaws.com/graphql",
+    "url": "https://sdwa6ammqrfs5cpfyf55lmr7wi.appsync-api.sa-east-1.amazonaws.com/graphql",
     "aws_region": "sa-east-1",
-    "api_key": "da2-5cfwechqgbho3o3qybz7zksswe",
+    "api_key": "da2-4gzmhvdjdzej5jwm6j3cpmieje",
     "default_authorization_type": "API_KEY",
     "authorization_types": [
       "AMAZON_COGNITO_USER_POOLS",
@@ -238,167 +216,6 @@
               "type": "auth",
               "properties": {
                 "rules": [
-                  {
-                    "allow": "public",
-                    "provider": "apiKey",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "UserEventProgress": {
-          "name": "UserEventProgress",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "eventId": {
-              "name": "eventId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "progressData": {
-              "name": "progressData",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": false,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "UserEventProgresses",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "provider": "userPools",
-                    "ownerField": "owner",
-                    "allow": "owner",
-                    "identityClaim": "cognito:username",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  },
-                  {
-                    "allow": "public",
-                    "provider": "apiKey",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "UserPokedex": {
-          "name": "UserPokedex",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "progressData": {
-              "name": "progressData",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": false,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "UserPokedexes",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "provider": "userPools",
-                    "ownerField": "owner",
-                    "allow": "owner",
-                    "identityClaim": "cognito:username",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  },
                   {
                     "allow": "public",
                     "provider": "apiKey",
