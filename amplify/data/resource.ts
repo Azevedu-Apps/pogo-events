@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
+// --- Seus Tipos Customizados (Mantidos iguais) ---
 const PaymentInfo = a.customType({
   type: a.string(),
   cost: a.string(),
@@ -18,7 +19,9 @@ const PaidResearch = a.customType({
   details: a.string(),
 });
 
+// --- Definição do Esquema ---
 const schema = a.schema({
+  // Seu modelo existente
   PogoEvent: a
     .model({
       name: a.string().required(),
@@ -44,6 +47,17 @@ const schema = a.schema({
     })
     .authorization(allow => [
       allow.publicApiKey(),
+    ]),
+
+  // --- NOVO MODELO: UserEventProgress ---
+  // Isso cria a tabela que estava faltando e corrige o Sync Error
+  UserEventProgress: a
+    .model({
+      eventId: a.string().required(),
+      progressData: a.json(), // JSON permite salvar: { pikachu: { shiny: true, hundo: false } }
+    })
+    .authorization(allow => [
+      allow.owner(), // Apenas o dono (usuário logado) pode ver/editar sua lista
     ]),
 });
 
