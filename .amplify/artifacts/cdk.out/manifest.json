@@ -1,19 +1,19 @@
 {
   "version": "48.0.0",
   "artifacts": {
-    "amplify-awsamplify-Biskela-sandbox-991f242447.assets": {
+    "amplify-pogoevents-Biskela-sandbox-346f944261.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "amplify-awsamplify-Biskela-sandbox-991f242447.assets.json",
+        "file": "amplify-pogoevents-Biskela-sandbox-346f944261.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "amplify-awsamplify-Biskela-sandbox-991f242447": {
+    "amplify-pogoevents-Biskela-sandbox-346f944261": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "amplify-awsamplify-Biskela-sandbox-991f242447.template.json",
+        "templateFile": "amplify-pogoevents-Biskela-sandbox-346f944261.template.json",
         "terminationProtection": false,
         "tags": {
           "amplify:deployment-type": "sandbox",
@@ -22,11 +22,11 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/86dbae666b97332d8b4c0cd4d80047eb69734a862f5c9ce11ed9ea6d56eb78ea.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/721f38883655bfe07297d4dd3ecf6a78b092b794e1b319807560d0e063648a10.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "amplify-awsamplify-Biskela-sandbox-991f242447.assets"
+          "amplify-pogoevents-Biskela-sandbox-346f944261.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -35,10 +35,10 @@
         }
       },
       "dependencies": [
-        "amplify-awsamplify-Biskela-sandbox-991f242447.assets"
+        "amplify-pogoevents-Biskela-sandbox-346f944261.assets"
       ],
       "metadata": {
-        "/amplify-awsamplify-Biskela-sandbox-991f242447": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261": [
           {
             "type": "aws:cdk:stack-tags",
             "data": [
@@ -53,313 +53,307 @@
             ]
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/deploymentType": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/deploymentType": [
           {
             "type": "aws:cdk:logicalId",
             "data": "deploymentType"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/region": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/region": [
           {
             "type": "aws:cdk:logicalId",
             "data": "region"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/AmplifySecretFetcherResourceProviderLambda/ServiceRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/AmplifySecretFetcherResourceProviderLambda/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifySecretFetcherResourceProviderLambdaServiceRole3F02FB0D"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/AmplifySecretFetcherResourceProviderLambda/ServiceRole/DefaultPolicy/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/AmplifySecretFetcherResourceProviderLambda/ServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifySecretFetcherResourceProviderLambdaServiceRoleDefaultPolicy080657DD"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/AmplifySecretFetcherResourceProviderLambda/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/AmplifySecretFetcherResourceProviderLambda/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifySecretFetcherResourceProviderLambda27823B35"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/AmplifySecretFetcherResourceProvider/framework-onEvent/ServiceRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/AmplifySecretFetcherResourceProvider/framework-onEvent/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifySecretFetcherResourceProviderframeworkonEventServiceRole0941C6B4"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/AmplifySecretFetcherResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/AmplifySecretFetcherResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifySecretFetcherResourceProviderframeworkonEventServiceRoleDefaultPolicy749EBE05"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/AmplifySecretFetcherResourceProvider/framework-onEvent/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/AmplifySecretFetcherResourceProvider/framework-onEvent/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifySecretFetcherResourceProviderframeworkonEventA62AE3A8"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/AmplifySecretFetcherResource/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/AmplifySecretFetcherResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifySecretFetcherResource"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/UserPool/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/UserPool/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthUserPool4BA7F805"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/UserPool/UserPoolDomain/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/UserPool/UserPoolDomain/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthUserPoolUserPoolDomain1F688B5B"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/GoogleIdP/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/GoogleIdP/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthGoogleIdPA9736819"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/UserPoolAppClient/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/UserPoolAppClient/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthUserPoolAppClient2626C6F8"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/IdentityPool": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/IdentityPool": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthIdentityPool3FDE84CC"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/authenticatedUserRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/authenticatedUserRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthauthenticatedUserRoleD8DA3689"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/unauthenticatedUserRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/unauthenticatedUserRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthunauthenticatedUserRole2B524D9E"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyAuth/IdentityPoolRoleAttachment": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifyAuth/IdentityPoolRoleAttachment": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthIdentityPoolRoleAttachment045F17C8"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/CDKMetadata/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/CDKMetadata/Condition": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/CDKMetadata/Condition": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadataAvailable"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolF29A72AFRef": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPool9B659D79Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolF29A72AFRef"
+            "data": "amplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPool9B659D79Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolAppClient18A19B43Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPoolAppClient5AB6A676Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolAppClient18A19B43Ref"
+            "data": "amplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPoolAppClient5AB6A676Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthIdentityPool4E44F730Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthIdentityPool4E44F730Ref"
+            "data": "amplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolUserPoolDomainBE3BD422Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPoolUserPoolDomain7E18C096Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolUserPoolDomainBE3BD422Ref"
+            "data": "amplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPoolUserPoolDomain7E18C096Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthauthenticatedUserRoleD0D8AF71Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthauthenticatedUserRoleD0D8AF71Ref"
+            "data": "amplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth/amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthunauthenticatedUserRole565A6372Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth/amplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthunauthenticatedUserRole565A6372Ref"
+            "data": "amplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/auth.NestedStack/auth.NestedStackResource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/auth.NestedStack/auth.NestedStackResource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "auth179371D7"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/userPoolId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/userPoolId": [
           {
             "type": "aws:cdk:logicalId",
             "data": "userPoolId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/webClientId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/webClientId": [
           {
             "type": "aws:cdk:logicalId",
             "data": "webClientId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/identityPoolId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/identityPoolId": [
           {
             "type": "aws:cdk:logicalId",
             "data": "identityPoolId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/authRegion": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/authRegion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "authRegion"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/allowUnauthenticatedIdentities": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/allowUnauthenticatedIdentities": [
           {
             "type": "aws:cdk:logicalId",
             "data": "allowUnauthenticatedIdentities"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/signupAttributes": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/signupAttributes": [
           {
             "type": "aws:cdk:logicalId",
             "data": "signupAttributes"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/usernameAttributes": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/usernameAttributes": [
           {
             "type": "aws:cdk:logicalId",
             "data": "usernameAttributes"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/verificationMechanisms": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/verificationMechanisms": [
           {
             "type": "aws:cdk:logicalId",
             "data": "verificationMechanisms"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/passwordPolicyMinLength": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/passwordPolicyMinLength": [
           {
             "type": "aws:cdk:logicalId",
             "data": "passwordPolicyMinLength"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/passwordPolicyRequirements": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/passwordPolicyRequirements": [
           {
             "type": "aws:cdk:logicalId",
             "data": "passwordPolicyRequirements"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/mfaConfiguration": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/mfaConfiguration": [
           {
             "type": "aws:cdk:logicalId",
             "data": "mfaConfiguration"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/mfaTypes": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/mfaTypes": [
           {
             "type": "aws:cdk:logicalId",
             "data": "mfaTypes"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/socialProviders": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/socialProviders": [
           {
             "type": "aws:cdk:logicalId",
             "data": "socialProviders"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/oauthCognitoDomain": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/oauthCognitoDomain": [
           {
             "type": "aws:cdk:logicalId",
             "data": "oauthCognitoDomain"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/oauthScope": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/oauthScope": [
           {
             "type": "aws:cdk:logicalId",
             "data": "oauthScope"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/oauthRedirectSignIn": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/oauthRedirectSignIn": [
           {
             "type": "aws:cdk:logicalId",
             "data": "oauthRedirectSignIn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/oauthRedirectSignOut": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/oauthRedirectSignOut": [
           {
             "type": "aws:cdk:logicalId",
             "data": "oauthRedirectSignOut"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/oauthResponseType": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/oauthResponseType": [
           {
             "type": "aws:cdk:logicalId",
             "data": "oauthResponseType"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/oauthClientId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/oauthClientId": [
           {
             "type": "aws:cdk:logicalId",
             "data": "oauthClientId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/groups": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/groups": [
           {
             "type": "aws:cdk:logicalId",
             "data": "groups"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/GraphQLAPI/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/GraphQLAPI/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyDataGraphQLAPI42A6FA33"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/GraphQLAPI/TransformerSchema": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/GraphQLAPI/TransformerSchema": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyDataGraphQLAPITransformerSchemaFF50A789"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/GraphQLAPI/DefaultApiKey": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/GraphQLAPI/DefaultApiKey": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyDataGraphQLAPIDefaultApiKey1C8ED374"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/GraphQLAPI/NONE_DS": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/GraphQLAPI/NONE_DS": [
           {
             "type": "graphqltransformer:resourceName",
             "data": "NONE_DS"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/GraphQLAPI/NONE_DS/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/GraphQLAPI/NONE_DS/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyDataGraphQLAPINONEDS684BF699"
@@ -369,139 +363,139 @@
             "data": "NONE_DS"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/AmplifyManagedTableIsCompleteRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/AmplifyManagedTableIsCompleteRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifyManagedTableIsCompleteRoleF825222C"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/AmplifyManagedTableOnEventRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/AmplifyManagedTableOnEventRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifyManagedTableOnEventRoleB4E71DEA"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/AmplifyManagedTableOnEventRole/DefaultPolicy/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/AmplifyManagedTableOnEventRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifyManagedTableOnEventRoleDefaultPolicyF6DABCB6"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-onEvent/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-onEvent/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "TableManagerCustomProviderframeworkonEvent1DFC2ECC"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-isComplete/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-isComplete/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "TableManagerCustomProviderframeworkisComplete2E51021B"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Role/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifyTableWaiterStateMachineRole470BE899"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Role/DefaultPolicy/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Role/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifyTableWaiterStateMachineRoleDefaultPolicy89F3836A"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AmplifyTableWaiterStateMachine060600BC"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/CDKMetadata/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/CDKMetadata/Condition": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/CDKMetadata/Condition": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadataAvailable"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/reference-to-amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FApiId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FApiId"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager/amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEventD5191C24Arn": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager/amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent931C9254Arn": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEventD5191C24Arn"
+            "data": "amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent931C9254Arn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyTableManager.NestedStack/AmplifyTableManager.NestedStackResource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyTableManager.NestedStack/AmplifyTableManager.NestedStackResource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource86290833"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/DynamoDBModelTableReadIOPS": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/DynamoDBModelTableReadIOPS": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBModelTableReadIOPS"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/DynamoDBModelTableWriteIOPS": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/DynamoDBModelTableWriteIOPS": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBModelTableWriteIOPS"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/DynamoDBBillingMode": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/DynamoDBBillingMode": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBBillingMode"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/DynamoDBEnablePointInTimeRecovery": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/DynamoDBEnablePointInTimeRecovery": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBEnablePointInTimeRecovery"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/DynamoDBEnableServerSideEncryption": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/DynamoDBEnableServerSideEncryption": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBEnableServerSideEncryption"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/HasEnvironmentParameter": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/HasEnvironmentParameter": [
           {
             "type": "aws:cdk:logicalId",
             "data": "HasEnvironmentParameter"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/ShouldUsePayPerRequestBilling": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/ShouldUsePayPerRequestBilling": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ShouldUsePayPerRequestBilling"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/ShouldUsePointInTimeRecovery": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/ShouldUsePointInTimeRecovery": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ShouldUsePointInTimeRecovery"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/PogoEventTable": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/PogoEventTable": [
           {
             "type": "graphqltransformer:resourceName",
             "data": "PogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/PogoEventTable/Default/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/PogoEventTable/Default/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "PogoEventTable"
@@ -511,31 +505,31 @@
             "data": "PogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/CustomTablePogoEventTable": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/CustomTablePogoEventTable": [
           {
             "type": "graphqltransformer:resourceName",
             "data": "PogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/GetAttPogoEventTableStreamArn": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/GetAttPogoEventTableStreamArn": [
           {
             "type": "aws:cdk:logicalId",
             "data": "GetAttPogoEventTableStreamArn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/GetAttPogoEventTableName": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/GetAttPogoEventTableName": [
           {
             "type": "aws:cdk:logicalId",
             "data": "GetAttPogoEventTableName"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/PogoEventIAMRole": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/PogoEventIAMRole": [
           {
             "type": "graphqltransformer:resourceName",
             "data": "PogoEventIAMRole"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/PogoEventIAMRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/PogoEventIAMRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "PogoEventIAMRoleBE4F2A64"
@@ -545,13 +539,13 @@
             "data": "PogoEventIAMRole"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/PogoEventDataSource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/PogoEventDataSource": [
           {
             "type": "graphqltransformer:resourceName",
             "data": "PogoEventTable"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/PogoEventDataSource/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/PogoEventDataSource/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "PogoEventDataSource"
@@ -561,7 +555,7 @@
             "data": "PogoEventTable"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/QuerygetPogoEventauth0Function/QuerygetPogoEventauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/QuerygetPogoEventauth0Function/QuerygetPogoEventauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QuerygetPogoEventauth0FunctionQuerygetPogoEventauth0FunctionAppSyncFunction050D0297"
@@ -571,7 +565,7 @@
             "data": "QuerygetPogoEventauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/QuerygetPogoEventpostAuth0Function/QuerygetPogoEventpostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/QuerygetPogoEventpostAuth0Function/QuerygetPogoEventpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QuerygetPogoEventpostAuth0FunctionQuerygetPogoEventpostAuth0FunctionAppSyncFunction6B282499"
@@ -581,7 +575,7 @@
             "data": "QuerygetPogoEventpostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/QueryGetPogoEventDataResolverFn/QueryGetPogoEventDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/QueryGetPogoEventDataResolverFn/QueryGetPogoEventDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QueryGetPogoEventDataResolverFnQueryGetPogoEventDataResolverFnAppSyncFunction934FC851"
@@ -591,7 +585,7 @@
             "data": "QueryGetPogoEventDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/queryGetPogoEventResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/queryGetPogoEventResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "GetPogoEventResolver"
@@ -601,7 +595,7 @@
             "data": "Query.getPogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/QuerylistPogoEventsauth0Function/QuerylistPogoEventsauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/QuerylistPogoEventsauth0Function/QuerylistPogoEventsauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QuerylistPogoEventsauth0FunctionQuerylistPogoEventsauth0FunctionAppSyncFunction8314458A"
@@ -611,7 +605,7 @@
             "data": "QuerylistPogoEventsauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/QuerylistPogoEventspostAuth0Function/QuerylistPogoEventspostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/QuerylistPogoEventspostAuth0Function/QuerylistPogoEventspostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QuerylistPogoEventspostAuth0FunctionQuerylistPogoEventspostAuth0FunctionAppSyncFunction24705F2F"
@@ -621,7 +615,7 @@
             "data": "QuerylistPogoEventspostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/QueryListPogoEventsDataResolverFn/QueryListPogoEventsDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/QueryListPogoEventsDataResolverFn/QueryListPogoEventsDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QueryListPogoEventsDataResolverFnQueryListPogoEventsDataResolverFnAppSyncFunction37C698CE"
@@ -631,7 +625,7 @@
             "data": "QueryListPogoEventsDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/queryListPogoEventsResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/queryListPogoEventsResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ListPogoEventResolver"
@@ -641,7 +635,7 @@
             "data": "Query.listPogoEvents"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationcreatePogoEventinit0Function/MutationcreatePogoEventinit0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationcreatePogoEventinit0Function/MutationcreatePogoEventinit0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationcreatePogoEventinit0FunctionMutationcreatePogoEventinit0FunctionAppSyncFunction6037F619"
@@ -651,7 +645,7 @@
             "data": "MutationcreatePogoEventinit0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationcreatePogoEventauth0Function/MutationcreatePogoEventauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationcreatePogoEventauth0Function/MutationcreatePogoEventauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationcreatePogoEventauth0FunctionMutationcreatePogoEventauth0FunctionAppSyncFunction74E42625"
@@ -661,7 +655,7 @@
             "data": "MutationcreatePogoEventauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationcreatePogoEventpostAuth0Function/MutationcreatePogoEventpostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationcreatePogoEventpostAuth0Function/MutationcreatePogoEventpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationcreatePogoEventpostAuth0FunctionMutationcreatePogoEventpostAuth0FunctionAppSyncFunction06277385"
@@ -671,7 +665,7 @@
             "data": "MutationcreatePogoEventpostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationCreatePogoEventDataResolverFn/MutationCreatePogoEventDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationCreatePogoEventDataResolverFn/MutationCreatePogoEventDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationCreatePogoEventDataResolverFnMutationCreatePogoEventDataResolverFnAppSyncFunctionBCD63291"
@@ -681,7 +675,7 @@
             "data": "MutationCreatePogoEventDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/mutationCreatePogoEventResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/mutationCreatePogoEventResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CreatePogoEventResolver"
@@ -691,7 +685,7 @@
             "data": "Mutation.createPogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationupdatePogoEventinit0Function/MutationupdatePogoEventinit0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationupdatePogoEventinit0Function/MutationupdatePogoEventinit0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationupdatePogoEventinit0FunctionMutationupdatePogoEventinit0FunctionAppSyncFunctionF9D0A0BA"
@@ -701,7 +695,7 @@
             "data": "MutationupdatePogoEventinit0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationupdatePogoEventauth0Function/MutationupdatePogoEventauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationupdatePogoEventauth0Function/MutationupdatePogoEventauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationupdatePogoEventauth0FunctionMutationupdatePogoEventauth0FunctionAppSyncFunctionB09A8CFC"
@@ -711,7 +705,7 @@
             "data": "MutationupdatePogoEventauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationupdatePogoEventpostAuth0Function/MutationupdatePogoEventpostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationupdatePogoEventpostAuth0Function/MutationupdatePogoEventpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationupdatePogoEventpostAuth0FunctionMutationupdatePogoEventpostAuth0FunctionAppSyncFunction5572908A"
@@ -721,7 +715,7 @@
             "data": "MutationupdatePogoEventpostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationUpdatePogoEventDataResolverFn/MutationUpdatePogoEventDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationUpdatePogoEventDataResolverFn/MutationUpdatePogoEventDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationUpdatePogoEventDataResolverFnMutationUpdatePogoEventDataResolverFnAppSyncFunction8491531A"
@@ -731,7 +725,7 @@
             "data": "MutationUpdatePogoEventDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/mutationUpdatePogoEventResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/mutationUpdatePogoEventResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "UpdatePogoEventResolver"
@@ -741,7 +735,7 @@
             "data": "Mutation.updatePogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationdeletePogoEventauth0Function/MutationdeletePogoEventauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationdeletePogoEventauth0Function/MutationdeletePogoEventauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationdeletePogoEventauth0FunctionMutationdeletePogoEventauth0FunctionAppSyncFunction9B4A9396"
@@ -751,7 +745,7 @@
             "data": "MutationdeletePogoEventauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationdeletePogoEventpostAuth0Function/MutationdeletePogoEventpostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationdeletePogoEventpostAuth0Function/MutationdeletePogoEventpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationdeletePogoEventpostAuth0FunctionMutationdeletePogoEventpostAuth0FunctionAppSyncFunctionACC69EEF"
@@ -761,7 +755,7 @@
             "data": "MutationdeletePogoEventpostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/MutationDeletePogoEventDataResolverFn/MutationDeletePogoEventDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/MutationDeletePogoEventDataResolverFn/MutationDeletePogoEventDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MutationDeletePogoEventDataResolverFnMutationDeletePogoEventDataResolverFnAppSyncFunctionF9EE0C95"
@@ -771,7 +765,7 @@
             "data": "MutationDeletePogoEventDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/mutationDeletePogoEventResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/mutationDeletePogoEventResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DeletePogoEventResolver"
@@ -781,7 +775,7 @@
             "data": "Mutation.deletePogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptiononCreatePogoEventauth0Function/SubscriptiononCreatePogoEventauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptiononCreatePogoEventauth0Function/SubscriptiononCreatePogoEventauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononCreatePogoEventauth0FunctionSubscriptiononCreatePogoEventauth0FunctionAppSyncFunctionB686905E"
@@ -791,7 +785,7 @@
             "data": "SubscriptiononCreatePogoEventauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptiononCreatePogoEventpostAuth0Function/SubscriptiononCreatePogoEventpostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptiononCreatePogoEventpostAuth0Function/SubscriptiononCreatePogoEventpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononCreatePogoEventpostAuth0FunctionSubscriptiononCreatePogoEventpostAuth0FunctionAppSyncFunction53F200FE"
@@ -801,7 +795,7 @@
             "data": "SubscriptiononCreatePogoEventpostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptionOnCreatePogoEventDataResolverFn/SubscriptionOnCreatePogoEventDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptionOnCreatePogoEventDataResolverFn/SubscriptionOnCreatePogoEventDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptionOnCreatePogoEventDataResolverFnSubscriptionOnCreatePogoEventDataResolverFnAppSyncFunction620CD47B"
@@ -811,7 +805,7 @@
             "data": "SubscriptionOnCreatePogoEventDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/subscriptionOnCreatePogoEventResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/subscriptionOnCreatePogoEventResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononCreatePogoEventResolver"
@@ -821,7 +815,7 @@
             "data": "Subscription.onCreatePogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptiononUpdatePogoEventauth0Function/SubscriptiononUpdatePogoEventauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptiononUpdatePogoEventauth0Function/SubscriptiononUpdatePogoEventauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononUpdatePogoEventauth0FunctionSubscriptiononUpdatePogoEventauth0FunctionAppSyncFunction6B5AA298"
@@ -831,7 +825,7 @@
             "data": "SubscriptiononUpdatePogoEventauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptiononUpdatePogoEventpostAuth0Function/SubscriptiononUpdatePogoEventpostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptiononUpdatePogoEventpostAuth0Function/SubscriptiononUpdatePogoEventpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononUpdatePogoEventpostAuth0FunctionSubscriptiononUpdatePogoEventpostAuth0FunctionAppSyncFunction7A1B5B5B"
@@ -841,7 +835,7 @@
             "data": "SubscriptiononUpdatePogoEventpostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptionOnUpdatePogoEventDataResolverFn/SubscriptionOnUpdatePogoEventDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptionOnUpdatePogoEventDataResolverFn/SubscriptionOnUpdatePogoEventDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptionOnUpdatePogoEventDataResolverFnSubscriptionOnUpdatePogoEventDataResolverFnAppSyncFunctionB00C8F5A"
@@ -851,7 +845,7 @@
             "data": "SubscriptionOnUpdatePogoEventDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/subscriptionOnUpdatePogoEventResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/subscriptionOnUpdatePogoEventResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononUpdatePogoEventResolver"
@@ -861,7 +855,7 @@
             "data": "Subscription.onUpdatePogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptiononDeletePogoEventauth0Function/SubscriptiononDeletePogoEventauth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptiononDeletePogoEventauth0Function/SubscriptiononDeletePogoEventauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononDeletePogoEventauth0FunctionSubscriptiononDeletePogoEventauth0FunctionAppSyncFunction2BF89275"
@@ -871,7 +865,7 @@
             "data": "SubscriptiononDeletePogoEventauth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptiononDeletePogoEventpostAuth0Function/SubscriptiononDeletePogoEventpostAuth0Function.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptiononDeletePogoEventpostAuth0Function/SubscriptiononDeletePogoEventpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononDeletePogoEventpostAuth0FunctionSubscriptiononDeletePogoEventpostAuth0FunctionAppSyncFunction7BAC5FEA"
@@ -881,7 +875,7 @@
             "data": "SubscriptiononDeletePogoEventpostAuth0Function"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/SubscriptionOnDeletePogoEventDataResolverFn/SubscriptionOnDeletePogoEventDataResolverFn.AppSyncFunction": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/SubscriptionOnDeletePogoEventDataResolverFn/SubscriptionOnDeletePogoEventDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptionOnDeletePogoEventDataResolverFnSubscriptionOnDeletePogoEventDataResolverFnAppSyncFunctionF5B732C6"
@@ -891,7 +885,7 @@
             "data": "SubscriptionOnDeletePogoEventDataResolverFn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/subscriptionOnDeletePogoEventResolver": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/subscriptionOnDeletePogoEventResolver": [
           {
             "type": "aws:cdk:logicalId",
             "data": "SubscriptiononDeletePogoEventResolver"
@@ -901,145 +895,1195 @@
             "data": "Subscription.onDeletePogoEvent"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/CDKMetadata/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/CDKMetadata/Condition": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/CDKMetadata/Condition": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadataAvailable"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/reference-to-amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0F35A3D0Outputs.amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEventD5191C24Arn": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceE38B66C4Outputs.amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent931C9254Arn": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0F35A3D0OutputsamplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyTableManagerTableManagerCus14908C9F"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceE38B66C4OutputsamplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCusC997E9A3"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/reference-to-amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FApiId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FApiId"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/reference-to-amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPINONEDSBE9860BBName": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPINONEDS12A4C2CEName": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPINONEDSBE9860BBName"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPINONEDS12A4C2CEName"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/reference-to-amplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputs.amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthauthenticatedUserRoleD0D8AF71Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputsamplifyawsamplifyBiskelasandbox991f242447authamplifyAuthauthenticatedUserRoleD0D8AF71Ref"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/reference-to-amplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputs.amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthunauthenticatedUserRole565A6372Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputsamplifyawsamplifyBiskelasandbox991f242447authamplifyAuthunauthenticatedUserRole565A6372Ref"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent/reference-to-amplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputs.amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthIdentityPool4E44F730Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputsamplifyawsamplifyBiskelasandbox991f242447authamplifyAuthIdentityPool4E44F730Ref"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/PogoEvent.NestedStack/PogoEvent.NestedStackResource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/PogoEvent.NestedStack/PogoEvent.NestedStackResource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyDataPogoEventNestedStackPogoEventNestedStackResource6CD0CFFB"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucket9CCB4ACA"
-          }
-        ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucketPolicyF1C1C548"
-          }
-        ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucketAutoDeleteObjectsCustomResource437F26F5"
-          }
-        ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsDeployment/AwsCliLayer/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentAwsCliLayerE322F905"
-          }
-        ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsDeployment/CustomResource-1536MiB/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB21775929"
-          }
-        ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/DynamoDBModelTableReadIOPS": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/DynamoDBModelTableReadIOPS": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBModelTableReadIOPS"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/DynamoDBModelTableWriteIOPS": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/DynamoDBModelTableWriteIOPS": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBModelTableWriteIOPS"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/DynamoDBBillingMode": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/DynamoDBBillingMode": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBBillingMode"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/DynamoDBEnablePointInTimeRecovery": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/DynamoDBEnablePointInTimeRecovery": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBEnablePointInTimeRecovery"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/DynamoDBEnableServerSideEncryption": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/DynamoDBEnableServerSideEncryption": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBEnableServerSideEncryption"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/LatestNodeRuntimeMap": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/HasEnvironmentParameter": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
+            "data": "HasEnvironmentParameter"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/ShouldUsePayPerRequestBilling": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePayPerRequestBilling"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/ShouldUsePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePointInTimeRecovery"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/UserEventProgressTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/UserEventProgressTable/Default/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserEventProgressTable"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/CustomTableUserEventProgressTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/GetAttUserEventProgressTableStreamArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttUserEventProgressTableStreamArn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/GetAttUserEventProgressTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttUserEventProgressTableName"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/UserEventProgressIAMRole": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgressIAMRole"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/UserEventProgressIAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserEventProgressIAMRole2630E574"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgressIAMRole"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/UserEventProgressDataSource": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgressTable"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/UserEventProgressDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserEventProgressDataSource"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgressTable"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/QuerygetUserEventProgressauth0Function/QuerygetUserEventProgressauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetUserEventProgressauth0FunctionQuerygetUserEventProgressauth0FunctionAppSyncFunction7035ACD9"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetUserEventProgressauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/QuerygetUserEventProgresspostAuth0Function/QuerygetUserEventProgresspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetUserEventProgresspostAuth0FunctionQuerygetUserEventProgresspostAuth0FunctionAppSyncFunction78E588BE"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetUserEventProgresspostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/QueryGetUserEventProgressDataResolverFn/QueryGetUserEventProgressDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryGetUserEventProgressDataResolverFnQueryGetUserEventProgressDataResolverFnAppSyncFunction2EEC958E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryGetUserEventProgressDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/queryGetUserEventProgressResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.getUserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/QuerylistUserEventProgressesauth0Function/QuerylistUserEventProgressesauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistUserEventProgressesauth0FunctionQuerylistUserEventProgressesauth0FunctionAppSyncFunction4637739F"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistUserEventProgressesauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/QuerylistUserEventProgressespostAuth0Function/QuerylistUserEventProgressespostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistUserEventProgressespostAuth0FunctionQuerylistUserEventProgressespostAuth0FunctionAppSyncFunctionBDA58B0D"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistUserEventProgressespostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/QueryListUserEventProgressesDataResolverFn/QueryListUserEventProgressesDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryListUserEventProgressesDataResolverFnQueryListUserEventProgressesDataResolverFnAppSyncFunctionD9F02B91"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryListUserEventProgressesDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/queryListUserEventProgressesResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.listUserEventProgresses"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationcreateUserEventProgressinit0Function/MutationcreateUserEventProgressinit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserEventProgressinit0FunctionMutationcreateUserEventProgressinit0FunctionAppSyncFunction62A2D014"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserEventProgressinit0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationcreateUserEventProgressauth0Function/MutationcreateUserEventProgressauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserEventProgressauth0FunctionMutationcreateUserEventProgressauth0FunctionAppSyncFunctionBF164357"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserEventProgressauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationcreateUserEventProgresspostAuth0Function/MutationcreateUserEventProgresspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserEventProgresspostAuth0FunctionMutationcreateUserEventProgresspostAuth0FunctionAppSyncFunctionCB20CC8A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserEventProgresspostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationCreateUserEventProgressDataResolverFn/MutationCreateUserEventProgressDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationCreateUserEventProgressDataResolverFnMutationCreateUserEventProgressDataResolverFnAppSyncFunctionE9D5DA2C"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationCreateUserEventProgressDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/mutationCreateUserEventProgressResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.createUserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationupdateUserEventProgressinit0Function/MutationupdateUserEventProgressinit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserEventProgressinit0FunctionMutationupdateUserEventProgressinit0FunctionAppSyncFunction8A582246"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserEventProgressinit0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationupdateUserEventProgressauth0Function/MutationupdateUserEventProgressauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserEventProgressauth0FunctionMutationupdateUserEventProgressauth0FunctionAppSyncFunction1D4B097B"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserEventProgressauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationupdateUserEventProgresspostAuth0Function/MutationupdateUserEventProgresspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserEventProgresspostAuth0FunctionMutationupdateUserEventProgresspostAuth0FunctionAppSyncFunctionC2829584"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserEventProgresspostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationUpdateUserEventProgressDataResolverFn/MutationUpdateUserEventProgressDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationUpdateUserEventProgressDataResolverFnMutationUpdateUserEventProgressDataResolverFnAppSyncFunctionA96B5C35"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationUpdateUserEventProgressDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/mutationUpdateUserEventProgressResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdateUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.updateUserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationdeleteUserEventProgressauth0Function/MutationdeleteUserEventProgressauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteUserEventProgressauth0FunctionMutationdeleteUserEventProgressauth0FunctionAppSyncFunction1447A71E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteUserEventProgressauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationdeleteUserEventProgresspostAuth0Function/MutationdeleteUserEventProgresspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteUserEventProgresspostAuth0FunctionMutationdeleteUserEventProgresspostAuth0FunctionAppSyncFunctionF6393013"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteUserEventProgresspostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/MutationDeleteUserEventProgressDataResolverFn/MutationDeleteUserEventProgressDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationDeleteUserEventProgressDataResolverFnMutationDeleteUserEventProgressDataResolverFnAppSyncFunctionC6173B78"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationDeleteUserEventProgressDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/mutationDeleteUserEventProgressResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.deleteUserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptiononCreateUserEventProgressauth0Function/SubscriptiononCreateUserEventProgressauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserEventProgressauth0FunctionSubscriptiononCreateUserEventProgressauth0FunctionAppSyncFunction9CF21D97"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateUserEventProgressauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptiononCreateUserEventProgresspostAuth0Function/SubscriptiononCreateUserEventProgresspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserEventProgresspostAuth0FunctionSubscriptiononCreateUserEventProgresspostAuth0FunctionAppSyncFunction0CB66963"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateUserEventProgresspostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptionOnCreateUserEventProgressDataResolverFn/SubscriptionOnCreateUserEventProgressDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnCreateUserEventProgressDataResolverFnSubscriptionOnCreateUserEventProgressDataResolverFnAppSyncFunction7D1345CB"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnCreateUserEventProgressDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/subscriptionOnCreateUserEventProgressResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onCreateUserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptiononUpdateUserEventProgressauth0Function/SubscriptiononUpdateUserEventProgressauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserEventProgressauth0FunctionSubscriptiononUpdateUserEventProgressauth0FunctionAppSyncFunctionF74E10BA"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateUserEventProgressauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptiononUpdateUserEventProgresspostAuth0Function/SubscriptiononUpdateUserEventProgresspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserEventProgresspostAuth0FunctionSubscriptiononUpdateUserEventProgresspostAuth0FunctionAppSyncFunction2F8DBB43"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateUserEventProgresspostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptionOnUpdateUserEventProgressDataResolverFn/SubscriptionOnUpdateUserEventProgressDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnUpdateUserEventProgressDataResolverFnSubscriptionOnUpdateUserEventProgressDataResolverFnAppSyncFunction93B8B3D1"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnUpdateUserEventProgressDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/subscriptionOnUpdateUserEventProgressResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onUpdateUserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptiononDeleteUserEventProgressauth0Function/SubscriptiononDeleteUserEventProgressauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserEventProgressauth0FunctionSubscriptiononDeleteUserEventProgressauth0FunctionAppSyncFunctionB2706E34"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteUserEventProgressauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptiononDeleteUserEventProgresspostAuth0Function/SubscriptiononDeleteUserEventProgresspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserEventProgresspostAuth0FunctionSubscriptiononDeleteUserEventProgresspostAuth0FunctionAppSyncFunctionE3D130F5"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteUserEventProgresspostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/SubscriptionOnDeleteUserEventProgressDataResolverFn/SubscriptionOnDeleteUserEventProgressDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnDeleteUserEventProgressDataResolverFnSubscriptionOnDeleteUserEventProgressDataResolverFnAppSyncFunction4CBD4169"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnDeleteUserEventProgressDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/subscriptionOnDeleteUserEventProgressResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserEventProgressResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onDeleteUserEventProgress"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/UserEventProgressOwnerDataResolverFn/UserEventProgressOwnerDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserEventProgressOwnerDataResolverFnUserEventProgressOwnerDataResolverFnAppSyncFunction8C787185"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgressOwnerDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/userEventProgressOwnerResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserEventProgressownerResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserEventProgress.owner"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceE38B66C4Outputs.amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent931C9254Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceE38B66C4OutputsamplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCusC997E9A3"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPINONEDS12A4C2CEName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPINONEDS12A4C2CEName"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserEventProgress.NestedStack/UserEventProgress.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataUserEventProgressNestedStackUserEventProgressNestedStackResourceB5D2FED8"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/DynamoDBModelTableReadIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableReadIOPS"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/DynamoDBModelTableWriteIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableWriteIOPS"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/DynamoDBBillingMode": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBBillingMode"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/DynamoDBEnablePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnablePointInTimeRecovery"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/DynamoDBEnableServerSideEncryption": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnableServerSideEncryption"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/HasEnvironmentParameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasEnvironmentParameter"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/ShouldUsePayPerRequestBilling": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePayPerRequestBilling"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/ShouldUsePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePointInTimeRecovery"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/UserPokedexTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/UserPokedexTable/Default/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPokedexTable"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/CustomTableUserPokedexTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/GetAttUserPokedexTableStreamArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttUserPokedexTableStreamArn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/GetAttUserPokedexTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttUserPokedexTableName"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/UserPokedexIAMRole": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedexIAMRole"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/UserPokedexIAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPokedexIAMRole2050444E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedexIAMRole"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/UserPokedexDataSource": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedexTable"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/UserPokedexDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPokedexDataSource"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedexTable"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/QuerygetUserPokedexauth0Function/QuerygetUserPokedexauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetUserPokedexauth0FunctionQuerygetUserPokedexauth0FunctionAppSyncFunction2EE6BA27"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetUserPokedexauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/QuerygetUserPokedexpostAuth0Function/QuerygetUserPokedexpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetUserPokedexpostAuth0FunctionQuerygetUserPokedexpostAuth0FunctionAppSyncFunctionFFC3A38F"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetUserPokedexpostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/QueryGetUserPokedexDataResolverFn/QueryGetUserPokedexDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryGetUserPokedexDataResolverFnQueryGetUserPokedexDataResolverFnAppSyncFunction697FBC82"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryGetUserPokedexDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/queryGetUserPokedexResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.getUserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/QuerylistUserPokedexesauth0Function/QuerylistUserPokedexesauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistUserPokedexesauth0FunctionQuerylistUserPokedexesauth0FunctionAppSyncFunctionF278BF95"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistUserPokedexesauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/QuerylistUserPokedexespostAuth0Function/QuerylistUserPokedexespostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistUserPokedexespostAuth0FunctionQuerylistUserPokedexespostAuth0FunctionAppSyncFunction31766ADC"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistUserPokedexespostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/QueryListUserPokedexesDataResolverFn/QueryListUserPokedexesDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryListUserPokedexesDataResolverFnQueryListUserPokedexesDataResolverFnAppSyncFunctionB60EF786"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryListUserPokedexesDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/queryListUserPokedexesResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.listUserPokedexes"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationcreateUserPokedexinit0Function/MutationcreateUserPokedexinit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserPokedexinit0FunctionMutationcreateUserPokedexinit0FunctionAppSyncFunction9A535DD4"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserPokedexinit0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationcreateUserPokedexauth0Function/MutationcreateUserPokedexauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserPokedexauth0FunctionMutationcreateUserPokedexauth0FunctionAppSyncFunction0A378D3C"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserPokedexauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationcreateUserPokedexpostAuth0Function/MutationcreateUserPokedexpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserPokedexpostAuth0FunctionMutationcreateUserPokedexpostAuth0FunctionAppSyncFunctionCA1AC3EA"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserPokedexpostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationCreateUserPokedexDataResolverFn/MutationCreateUserPokedexDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationCreateUserPokedexDataResolverFnMutationCreateUserPokedexDataResolverFnAppSyncFunctionF70C3A52"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationCreateUserPokedexDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/mutationCreateUserPokedexResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.createUserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationupdateUserPokedexinit0Function/MutationupdateUserPokedexinit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserPokedexinit0FunctionMutationupdateUserPokedexinit0FunctionAppSyncFunctionDDB052EB"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserPokedexinit0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationupdateUserPokedexauth0Function/MutationupdateUserPokedexauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserPokedexauth0FunctionMutationupdateUserPokedexauth0FunctionAppSyncFunctionC7CA2BF0"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserPokedexauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationupdateUserPokedexpostAuth0Function/MutationupdateUserPokedexpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserPokedexpostAuth0FunctionMutationupdateUserPokedexpostAuth0FunctionAppSyncFunctionA8A92444"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserPokedexpostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationUpdateUserPokedexDataResolverFn/MutationUpdateUserPokedexDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationUpdateUserPokedexDataResolverFnMutationUpdateUserPokedexDataResolverFnAppSyncFunction5F099FCE"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationUpdateUserPokedexDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/mutationUpdateUserPokedexResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdateUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.updateUserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationdeleteUserPokedexauth0Function/MutationdeleteUserPokedexauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteUserPokedexauth0FunctionMutationdeleteUserPokedexauth0FunctionAppSyncFunction769F3F72"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteUserPokedexauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationdeleteUserPokedexpostAuth0Function/MutationdeleteUserPokedexpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteUserPokedexpostAuth0FunctionMutationdeleteUserPokedexpostAuth0FunctionAppSyncFunction3D9C9583"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteUserPokedexpostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/MutationDeleteUserPokedexDataResolverFn/MutationDeleteUserPokedexDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationDeleteUserPokedexDataResolverFnMutationDeleteUserPokedexDataResolverFnAppSyncFunctionB3487539"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationDeleteUserPokedexDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/mutationDeleteUserPokedexResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.deleteUserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptiononCreateUserPokedexauth0Function/SubscriptiononCreateUserPokedexauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserPokedexauth0FunctionSubscriptiononCreateUserPokedexauth0FunctionAppSyncFunctionB61B2DB1"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateUserPokedexauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptiononCreateUserPokedexpostAuth0Function/SubscriptiononCreateUserPokedexpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserPokedexpostAuth0FunctionSubscriptiononCreateUserPokedexpostAuth0FunctionAppSyncFunctionEE8DE875"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateUserPokedexpostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptionOnCreateUserPokedexDataResolverFn/SubscriptionOnCreateUserPokedexDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnCreateUserPokedexDataResolverFnSubscriptionOnCreateUserPokedexDataResolverFnAppSyncFunctionBDDEA236"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnCreateUserPokedexDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/subscriptionOnCreateUserPokedexResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onCreateUserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptiononUpdateUserPokedexauth0Function/SubscriptiononUpdateUserPokedexauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserPokedexauth0FunctionSubscriptiononUpdateUserPokedexauth0FunctionAppSyncFunction58E8B451"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateUserPokedexauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptiononUpdateUserPokedexpostAuth0Function/SubscriptiononUpdateUserPokedexpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserPokedexpostAuth0FunctionSubscriptiononUpdateUserPokedexpostAuth0FunctionAppSyncFunctionAC04CE42"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateUserPokedexpostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptionOnUpdateUserPokedexDataResolverFn/SubscriptionOnUpdateUserPokedexDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnUpdateUserPokedexDataResolverFnSubscriptionOnUpdateUserPokedexDataResolverFnAppSyncFunction593A5C55"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnUpdateUserPokedexDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/subscriptionOnUpdateUserPokedexResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onUpdateUserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptiononDeleteUserPokedexauth0Function/SubscriptiononDeleteUserPokedexauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserPokedexauth0FunctionSubscriptiononDeleteUserPokedexauth0FunctionAppSyncFunction019177DF"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteUserPokedexauth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptiononDeleteUserPokedexpostAuth0Function/SubscriptiononDeleteUserPokedexpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserPokedexpostAuth0FunctionSubscriptiononDeleteUserPokedexpostAuth0FunctionAppSyncFunction50926D62"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteUserPokedexpostAuth0Function"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/SubscriptionOnDeleteUserPokedexDataResolverFn/SubscriptionOnDeleteUserPokedexDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnDeleteUserPokedexDataResolverFnSubscriptionOnDeleteUserPokedexDataResolverFnAppSyncFunctionC0C1FFF2"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnDeleteUserPokedexDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/subscriptionOnDeleteUserPokedexResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserPokedexResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onDeleteUserPokedex"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/UserPokedexOwnerDataResolverFn/UserPokedexOwnerDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPokedexOwnerDataResolverFnUserPokedexOwnerDataResolverFnAppSyncFunction0B2E294A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedexOwnerDataResolverFn"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/userPokedexOwnerResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPokedexownerResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserPokedex.owner"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceE38B66C4Outputs.amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent931C9254Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceE38B66C4OutputsamplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyTableManagerTableManagerCusC997E9A3"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/reference-to-amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPINONEDS12A4C2CEName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPINONEDS12A4C2CEName"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/UserPokedex.NestedStack/UserPokedex.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataUserPokedexNestedStackUserPokedexNestedStackResource67A6C2CD"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucket9CCB4ACA"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucketPolicyF1C1C548"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucketAutoDeleteObjectsCustomResource437F26F5"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsDeployment/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentAwsCliLayerE322F905"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsDeployment/CustomResource-1536MiB/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB21775929"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/DynamoDBModelTableReadIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableReadIOPS"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/DynamoDBModelTableWriteIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableWriteIOPS"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/DynamoDBBillingMode": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBBillingMode"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/DynamoDBEnablePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnablePointInTimeRecovery"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/DynamoDBEnableServerSideEncryption": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnableServerSideEncryption"
+          }
+        ],
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
             "data": true
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB": [
           {
             "type": "aws:cdk:is-custom-resource-handler-singleton",
             "data": true
@@ -1057,212 +2101,212 @@
             "data": 2
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/ServiceRole/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiBServiceRoleA41FC8C2"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/ServiceRole/DefaultPolicy/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/ServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiBServiceRoleDefaultPolicyFF1C635B"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiBC5D8AB21"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/modelIntrospectionSchemaBucket/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/modelIntrospectionSchemaBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "modelIntrospectionSchemaBucketF566B665"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/modelIntrospectionSchemaBucket/Policy/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/modelIntrospectionSchemaBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "modelIntrospectionSchemaBucketPolicy4DAB0D15"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/modelIntrospectionSchemaBucket/AutoDeleteObjectsCustomResource/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/modelIntrospectionSchemaBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "modelIntrospectionSchemaBucketAutoDeleteObjectsCustomResourceFE57309F"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/modelIntrospectionSchemaBucketDeployment/AwsCliLayer/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/modelIntrospectionSchemaBucketDeployment/AwsCliLayer/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "modelIntrospectionSchemaBucketDeploymentAwsCliLayer13C432F7"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/modelIntrospectionSchemaBucketDeployment/CustomResource-1536MiB/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/modelIntrospectionSchemaBucketDeployment/CustomResource-1536MiB/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "modelIntrospectionSchemaBucketDeploymentCustomResource1536MiB104B97EC"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/AMPLIFY_DATA_GRAPHQL_ENDPOINTParameter/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/AMPLIFY_DATA_GRAPHQL_ENDPOINTParameter/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AMPLIFYDATAGRAPHQLENDPOINTParameter1C2CBB16"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAMEParameter/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAMEParameter/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AMPLIFYDATAMODELINTROSPECTIONSCHEMABUCKETNAMEParameter47BF4F44"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEYParameter/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEYParameter/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AMPLIFYDATAMODELINTROSPECTIONSCHEMAKEYParameterB6AEAE8A"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/AMPLIFY_DATA_DEFAULT_NAMEParameter/Resource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/AMPLIFY_DATA_DEFAULT_NAMEParameter/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AMPLIFYDATADEFAULTNAMEParameterE7C23CC4"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/CDKMetadata/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/CDKMetadata/Condition": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/CDKMetadata/Condition": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadataAvailable"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/reference-to-amplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputs.amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolF29A72AFRef": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPool9B659D79Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputsamplifyawsamplifyBiskelasandbox991f242447authamplifyAuthUserPoolF29A72AFRef"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthUserPool9B659D79Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/reference-to-amplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputs.amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthauthenticatedUserRoleD0D8AF71Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputsamplifyawsamplifyBiskelasandbox991f242447authamplifyAuthauthenticatedUserRoleD0D8AF71Ref"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthauthenticatedUserRole6FBEBB5CRef"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/reference-to-amplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputs.amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthunauthenticatedUserRole565A6372Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputsamplifyawsamplifyBiskelasandbox991f242447authamplifyAuthunauthenticatedUserRole565A6372Ref"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthunauthenticatedUserRole69B2BF27Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/reference-to-amplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputs.amplifyawsamplifyBiskelasandbox991f242447authamplifyAuthIdentityPool4E44F730Ref": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/reference-to-amplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputs.amplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "referencetoamplifyawsamplifyBiskelasandbox991f242447authNestedStackauthNestedStackResource4B250F9BOutputsamplifyawsamplifyBiskelasandbox991f242447authamplifyAuthIdentityPool4E44F730Ref"
+            "data": "referencetoamplifypogoeventsBiskelasandbox346f944261authNestedStackauthNestedStackResource95E936FAOutputsamplifypogoeventsBiskelasandbox346f944261authamplifyAuthIdentityPool4D0C03D4Ref"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FApiId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FApiId"
+            "data": "amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125ApiId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FGraphQLUrl": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125GraphQLUrl": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPI4F5EE48FGraphQLUrl"
+            "data": "amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPI008B8125GraphQLUrl"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB58B21F47DestinationBucketArn": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB311C67CADestinationBucketArn": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB58B21F47DestinationBucketArn"
+            "data": "amplifypogoeventsBiskelasandbox346f944261dataamplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB311C67CADestinationBucketArn"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data/amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPIDefaultApiKeyF1B49FEBApiKey": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data/amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPIDefaultApiKeyE1983A88ApiKey": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyawsamplifyBiskelasandbox991f242447dataamplifyDataGraphQLAPIDefaultApiKeyF1B49FEBApiKey"
+            "data": "amplifypogoeventsBiskelasandbox346f944261dataamplifyDataGraphQLAPIDefaultApiKeyE1983A88ApiKey"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/data.NestedStack/data.NestedStackResource": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/data.NestedStack/data.NestedStackResource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "data7552DF31"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/awsAppsyncApiId": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/awsAppsyncApiId": [
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncApiId"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/awsAppsyncApiEndpoint": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/awsAppsyncApiEndpoint": [
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncApiEndpoint"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/awsAppsyncAuthenticationType": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/awsAppsyncAuthenticationType": [
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncAuthenticationType"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/awsAppsyncRegion": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/awsAppsyncRegion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncRegion"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/amplifyApiModelSchemaS3Uri": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/amplifyApiModelSchemaS3Uri": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyApiModelSchemaS3Uri"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/awsAppsyncApiKey": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/awsAppsyncApiKey": [
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncApiKey"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/awsAppsyncAdditionalAuthenticationTypes": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/awsAppsyncAdditionalAuthenticationTypes": [
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncAdditionalAuthenticationTypes"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/CDKMetadata/Default": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/CDKMetadata/Condition": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/CDKMetadata/Condition": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadataAvailable"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/BootstrapVersion": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/amplify-awsamplify-Biskela-sandbox-991f242447/CheckBootstrapVersion": [
+        "/amplify-pogoevents-Biskela-sandbox-346f944261/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "amplify-awsamplify-Biskela-sandbox-991f242447"
+      "displayName": "amplify-pogoevents-Biskela-sandbox-346f944261"
     },
     "Tree": {
       "type": "cdk:tree",
@@ -1390,7 +2434,7 @@
           },
           "@aws-cdk/aws-iam:importedRoleStackSafeDefaultPolicyName": {
             "recommendedValue": true,
-            "explanation": "Enable this feature to by default create default policy names for imported roles that depend on the stack the role is in."
+            "explanation": "Enable this feature to create default policy names for imported roles that depend on the stack the role is in."
           },
           "@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy": {
             "recommendedValue": true,
@@ -1670,6 +2714,21 @@
           "@aws-cdk/aws-lambda:useCdkManagedLogGroup": {
             "recommendedValue": true,
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "recommendedValue": true,
+            "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:httpInvokeDynamicJsonPathEndpoint": {
+            "recommendedValue": true,
+            "explanation": "When enabled, allows using a dynamic apiEndpoint with JSONPath format in HttpInvoke tasks.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "recommendedValue": true,
+            "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
           }
         }
       }
