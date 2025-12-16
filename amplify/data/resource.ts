@@ -56,13 +56,15 @@ const schema = a.schema({
     })
     .authorization(allow => [
       allow.owner(),
+      allow.publicApiKey()
     ]),
   UserPokedex: a
     .model({
-      progressData: a.json(), // Salva o objeto global { pikachu: { shiny: true, normal: true } }
+      progressData: a.json(),
     })
     .authorization(allow => [
       allow.owner(),
+      allow.publicApiKey()
     ]),
 });
 
