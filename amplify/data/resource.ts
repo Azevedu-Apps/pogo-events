@@ -57,6 +57,13 @@ const schema = a.schema({
     .authorization(allow => [
       allow.owner(),
     ]),
+  UserPokedex: a
+    .model({
+      progressData: a.json(), // Salva o objeto global { pikachu: { shiny: true, normal: true } }
+    })
+    .authorization(allow => [
+      allow.owner(),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
