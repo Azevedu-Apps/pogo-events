@@ -3,98 +3,31 @@ import React, { useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, signOut } from 'aws-amplify/auth';
-import { amplifyConfig } from './services/aws-config';
-import { PogoEvent } from './types';
-import { listPogoEvents, createPogoEvent, updatePogoEvent, deletePogoEvent } from './services/graphql';
-import { isAdmin } from './utils/roles';
-import { getEventTheme } from './utils/visuals';
+import { amplifyConfig } from '../services/aws-config';
+import { PogoEvent } from '../types';
+import { listPogoEvents, createPogoEvent, updatePogoEvent, deletePogoEvent } from '../services/graphql';
+import { isAdmin } from '../utils/roles';
+import { getEventTheme } from '../utils/visuals';
 
 // Components
-import AuthModal from './components/AuthModal';
-import Sidebar from './components/Sidebar';
-import Calendar from './components/Calendar';
-import EventForm from './components/EventForm';
-import EventDetail from './components/EventDetail';
-import Catalog from './components/Catalog';
-import Documentation from './components/Documentation';
-import Pokedex from './components/Pokedex';
-import { ToolsPage } from './components/ToolsPage'; 
-import { ConfirmModal } from './components/ui/ConfirmModal';
-import { EventCardSkeleton } from './components/ui/Skeletons';
+import AuthModal from './AuthModal';
+import Sidebar from './Sidebar';
+import Calendar from './Calendar';
+import EventForm from './EventForm';
+import EventDetail from './EventDetail';
+import Catalog from './Catalog';
+import Documentation from './Documentation';
+import Pokedex from './Pokedex';
+import { ToolsPage } from './ToolsPage'; 
+import { ConfirmModal } from './ui/ConfirmModal';
+import { EventCardSkeleton } from './ui/Skeletons';
 
-// Configure Amplify
+// Configure Amplify immediately
 try {
     Amplify.configure(amplifyConfig);
 } catch (e) {
     console.error("Amplify config error:", e);
 }
-
-// --- SUB-COMPONENT: STATUS BADGE (Timer Logic) ---
-const EventStatusBadge = ({ start, end }: { start: string, end: string }) => {
-    const [now, setNow] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => setNow(new Date()), 1000);
-        return () => clearInterval(timer);
-    }, []);
-
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    
-    // Check basic states
-    if (now > endDate) {
-        return (
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-slate-800/50 border border-slate-700 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-solid fa-lock text-[9px]"></i> ENCERRADO
-            </div>
-        );
-    }
-
-    if (now >= startDate) {
-        return (
-            <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                </span>
-                <span className="text-xs font-bold text-red-500 uppercase tracking-widest animate-pulse">ACONTECENDO AGORA</span>
-            </div>
-        );
-    }
-
-    // Future Logic
-    const diffMs = startDate.getTime() - now.getTime();
-    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-    // More than 7 days
-    if (days > 7) {
-        return (
-            <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest bg-blue-900/20 border border-blue-500/30 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-regular fa-clock text-[9px]"></i> EM BREVE
-            </div>
-        );
-    }
-
-    // Between 1 and 7 days
-    if (days >= 1) {
-        return (
-            <div className="text-[10px] font-bold text-orange-400 uppercase tracking-widest bg-orange-900/20 border border-orange-500/30 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-solid fa-hourglass-half text-[9px]"></i> FALTAM {days} DIAS
-            </div>
-        );
-    }
-
-    // Less than 24 hours (Countdown)
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return (
-        <div className="text-[10px] font-bold text-yellow-400 uppercase tracking-widest bg-yellow-900/20 border border-yellow-500/30 px-2 py-1 rounded flex items-center gap-1.5 animate-pulse">
-            <i className="fa-solid fa-stopwatch text-[9px]"></i> FALTAM {pad(hours)}:{pad(minutes)}:{pad(seconds)}
-        </div>
-    );
-};
 
 const App: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -118,10 +51,10 @@ const App: React.FC = () => {
     try {
       const u = await getCurrentUser();
       setUser(u);
+      fetchEvents();
     } catch {
       setUser(null);
-    } finally {
-      // Fetch events regardless of auth status (Public Read)
+      // Even if auth fails, we try to fetch public events
       fetchEvents();
     }
   };
@@ -173,45 +106,18 @@ const App: React.FC = () => {
         };
       });
       
-      // --- FILTER & SORT LOGIC ---
-      const now = new Date();
-      const oneMonthAgo = new Date();
-      oneMonthAgo.setMonth(now.getMonth() - 1);
-
-      // 1. Filter: Hide events ended more than 30 days ago
-      const activeEvents = parsedEvents.filter(e => {
-          if (!e.end) return true; // Keep if no end date
-          const end = new Date(e.end);
-          return end > oneMonthAgo;
-      });
-
-      // 2. Sort: 
-      // Priority A: Live Events & Upcoming Events (Sorted by Start Date Ascending - Closest first)
-      // Priority B: Ended Events (Sorted by End Date Descending - Recently ended first)
-      activeEvents.sort((a, b) => {
-          const startA = new Date(a.start).getTime();
-          const startB = new Date(b.start).getTime();
-          const endA = new Date(a.end).getTime();
-          const endB = new Date(b.end).getTime();
-          const nowTime = now.getTime();
-
-          const aEnded = endA < nowTime;
-          const bEnded = endB < nowTime;
-
-          // If one is ended and the other is not, the not-ended one comes first
-          if (aEnded && !bEnded) return 1;
-          if (!aEnded && bEnded) return -1;
-
-          // If both are ended, sort by most recently ended (Descending)
-          if (aEnded && bEnded) return endB - endA;
-
-          // If both are future/live, sort by which one starts soonest (Ascending)
-          return startA - startB;
+      parsedEvents.sort((a, b) => {
+          const timeA = new Date(a.start).getTime();
+          const timeB = new Date(b.start).getTime();
+          if (isNaN(timeA)) return 1;
+          if (isNaN(timeB)) return -1;
+          return timeB - timeA;
       });
       
-      setEvents(activeEvents);
+      setEvents(parsedEvents);
     } catch (e) {
       console.error("Error fetching events", e);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -562,7 +468,7 @@ const App: React.FC = () => {
 
                                 {/* Status Line */}
                                 <div className="flex items-center gap-2 mt-2">
-                                    <EventStatusBadge start={evt.start} end={evt.end} />
+                                    {/* STATUS BADGE WOULD GO HERE */}
                                 </div>
                             </div>
 

@@ -17,88 +17,17 @@ import EventForm from './components/EventForm';
 import EventDetail from './components/EventDetail';
 import Catalog from './components/Catalog';
 import Documentation from './components/Documentation';
-import Pokedex from './components/Pokedex';
 import { ToolsPage } from './components/ToolsPage'; 
 import { ConfirmModal } from './components/ui/ConfirmModal';
 import { EventCardSkeleton } from './components/ui/Skeletons';
 
 // Configure Amplify
-try {
-    Amplify.configure(amplifyConfig);
-} catch (e) {
-    console.error("Amplify config error:", e);
-}
-
-// --- SUB-COMPONENT: STATUS BADGE (Timer Logic) ---
-const EventStatusBadge = ({ start, end }: { start: string, end: string }) => {
-    const [now, setNow] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => setNow(new Date()), 1000);
-        return () => clearInterval(timer);
-    }, []);
-
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    
-    // Check basic states
-    if (now > endDate) {
-        return (
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-slate-800/50 border border-slate-700 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-solid fa-lock text-[9px]"></i> ENCERRADO
-            </div>
-        );
-    }
-
-    if (now >= startDate) {
-        return (
-            <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                </span>
-                <span className="text-xs font-bold text-red-500 uppercase tracking-widest animate-pulse">ACONTECENDO AGORA</span>
-            </div>
-        );
-    }
-
-    // Future Logic
-    const diffMs = startDate.getTime() - now.getTime();
-    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-    // More than 7 days
-    if (days > 7) {
-        return (
-            <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest bg-blue-900/20 border border-blue-500/30 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-regular fa-clock text-[9px]"></i> EM BREVE
-            </div>
-        );
-    }
-
-    // Between 1 and 7 days
-    if (days >= 1) {
-        return (
-            <div className="text-[10px] font-bold text-orange-400 uppercase tracking-widest bg-orange-900/20 border border-orange-500/30 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-solid fa-hourglass-half text-[9px]"></i> FALTAM {days} DIAS
-            </div>
-        );
-    }
-
-    // Less than 24 hours (Countdown)
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return (
-        <div className="text-[10px] font-bold text-yellow-400 uppercase tracking-widest bg-yellow-900/20 border border-yellow-500/30 px-2 py-1 rounded flex items-center gap-1.5 animate-pulse">
-            <i className="fa-solid fa-stopwatch text-[9px]"></i> FALTAM {pad(hours)}:{pad(minutes)}:{pad(seconds)}
-        </div>
-    );
-};
+Amplify.configure(amplifyConfig);
+const client = generateClient();
 
 const App: React.FC = () => {
   const [user, setUser] = useState<any>(null);
-  const [view, setView] = useState<'list' | 'create' | 'calendar' | 'details' | 'catalog' | 'docs' | 'tools' | 'pokedex'>('list');
+  const [view, setView] = useState<'list' | 'create' | 'calendar' | 'details' | 'catalog' | 'docs' | 'tools'>('list');
   const [events, setEvents] = useState<PogoEvent[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -118,17 +47,15 @@ const App: React.FC = () => {
     try {
       const u = await getCurrentUser();
       setUser(u);
+      fetchEvents();
     } catch {
       setUser(null);
-    } finally {
-      // Fetch events regardless of auth status (Public Read)
-      fetchEvents();
+      setLoading(false);
     }
   };
 
   const fetchEvents = async () => {
     setLoading(true);
-    const client = generateClient();
     try {
       const result: any = await client.graphql({
         query: listPogoEvents,
@@ -173,43 +100,15 @@ const App: React.FC = () => {
         };
       });
       
-      // --- FILTER & SORT LOGIC ---
-      const now = new Date();
-      const oneMonthAgo = new Date();
-      oneMonthAgo.setMonth(now.getMonth() - 1);
-
-      // 1. Filter: Hide events ended more than 30 days ago
-      const activeEvents = parsedEvents.filter(e => {
-          if (!e.end) return true; // Keep if no end date
-          const end = new Date(e.end);
-          return end > oneMonthAgo;
-      });
-
-      // 2. Sort: 
-      // Priority A: Live Events & Upcoming Events (Sorted by Start Date Ascending - Closest first)
-      // Priority B: Ended Events (Sorted by End Date Descending - Recently ended first)
-      activeEvents.sort((a, b) => {
-          const startA = new Date(a.start).getTime();
-          const startB = new Date(b.start).getTime();
-          const endA = new Date(a.end).getTime();
-          const endB = new Date(b.end).getTime();
-          const nowTime = now.getTime();
-
-          const aEnded = endA < nowTime;
-          const bEnded = endB < nowTime;
-
-          // If one is ended and the other is not, the not-ended one comes first
-          if (aEnded && !bEnded) return 1;
-          if (!aEnded && bEnded) return -1;
-
-          // If both are ended, sort by most recently ended (Descending)
-          if (aEnded && bEnded) return endB - endA;
-
-          // If both are future/live, sort by which one starts soonest (Ascending)
-          return startA - startB;
+      parsedEvents.sort((a, b) => {
+          const timeA = new Date(a.start).getTime();
+          const timeB = new Date(b.start).getTime();
+          if (isNaN(timeA)) return 1;
+          if (isNaN(timeB)) return -1;
+          return timeB - timeA;
       });
       
-      setEvents(activeEvents);
+      setEvents(parsedEvents);
     } catch (e) {
       console.error("Error fetching events", e);
     } finally {
@@ -226,7 +125,7 @@ const App: React.FC = () => {
   const handleLogout = async () => {
     await signOut();
     setUser(null);
-    // Don't clear events, public can see them
+    setEvents([]);
     setView('list'); 
   };
 
@@ -237,7 +136,6 @@ const App: React.FC = () => {
     }
 
     setLoading(true);
-    const client = generateClient();
     try {
         const paymentPayload = event.payment ? {
             type: event.payment.type,
@@ -316,7 +214,6 @@ const App: React.FC = () => {
       }
       
       setIsDeleting(true);
-      const client = generateClient();
       
       try {
          await client.graphql({
@@ -384,11 +281,9 @@ const App: React.FC = () => {
             onOpenCatalog={() => setView('catalog')}
         /> : <div>Evento não encontrado</div>;
       case 'catalog':
-        return selectedEvent ? <Catalog event={selectedEvent} user={user} onBack={() => setView('details')} /> : <div>Err</div>;
+        return selectedEvent ? <Catalog event={selectedEvent} onBack={() => setView('details')} /> : <div>Err</div>;
       case 'tools':
         return <ToolsPage events={events} />;
-      case 'pokedex':
-        return <Pokedex user={user} />;
       case 'docs':
         if (!isAdmin(user)) return <div>Acesso restrito</div>;
         return <Documentation />;
@@ -396,7 +291,7 @@ const App: React.FC = () => {
       default:
         return (
           <>
-            {/* --- HERO BANNER (Top Featured - First event in list) --- */}
+            {/* --- HERO BANNER (Top Featured) --- */}
             {events.length > 0 && events[0].featured && (
                 <div 
                     className="w-full h-[350px] rounded-3xl mb-12 relative overflow-hidden group cursor-pointer border border-blue-900/50 shadow-2xl bg-black" 
@@ -420,7 +315,7 @@ const App: React.FC = () => {
                         <div className="max-w-3xl relative z-10 animate-fade-in">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="h-px w-8 bg-blue-500"></div>
-                                <span className="text-blue-400 font-bold font-rajdhani uppercase tracking-[0.2em] text-sm">Destaque Principal</span>
+                                <span className="text-blue-400 font-bold font-rajdhani uppercase tracking-[0.2em] text-sm">Próximo Grande Evento</span>
                             </div>
                             <h1 className="text-6xl md:text-7xl font-black text-white uppercase font-rajdhani leading-[0.85] mb-6 italic transform -skew-x-6 drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] text-outline group-hover:text-white transition-all duration-500">
                                 {events[0].name}
@@ -469,6 +364,9 @@ const App: React.FC = () => {
                 {events.map((evt, index) => {
                     const theme = getEventTheme(evt.type);
                     const startDate = new Date(evt.start);
+                    const endDate = new Date(evt.end);
+                    const now = new Date();
+                    const isLive = now >= startDate && now <= endDate;
                     
                     const day = startDate.getDate().toString().padStart(2, '0');
                     const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
@@ -515,7 +413,7 @@ const App: React.FC = () => {
                                 <div className={`w-1.5 h-1.5 rounded-full ${stripeColor.replace('text-', 'bg-')}`}></div>
                                 <div className={`w-1.5 h-1.5 rounded-full ${stripeColor.replace('text-', 'bg-')}`}></div>
                                 <div className={`w-1.5 h-1.5 rounded-full ${stripeColor.replace('text-', 'bg-')}`}></div>
-                                <span className="font-mono text-xs text-white ml-2 tracking-widest">SYS.0{index + 1}</span>
+                                <span className="font-mono text-[8px] text-white ml-2 tracking-widest">SYS.0{index + 1}</span>
                             </div>
 
                             {/* Bottom Right Stripes */}
@@ -523,7 +421,7 @@ const App: React.FC = () => {
 
                             {/* Left Vertical Tech Text */}
                             <div className="absolute top-1/2 left-3 transform -translate-y-1/2 -rotate-90 origin-center opacity-30 pointer-events-none hidden sm:block">
-                                <span className="text-xs font-mono tracking-[0.3em] text-white uppercase whitespace-nowrap">
+                                <span className="text-[9px] font-mono tracking-[0.3em] text-white uppercase whitespace-nowrap">
                                     POKEMON GO EVENT PROTOCOL // {year}
                                 </span>
                             </div>
@@ -534,7 +432,7 @@ const App: React.FC = () => {
                                 {/* Header: Type */}
                                 <div className="flex flex-col items-start">
                                     <div className={`
-                                        text-xs font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded border ${borderColor} ${textColor}
+                                        text-[9px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded border ${borderColor} ${textColor}
                                         bg-black/40 backdrop-blur mb-1
                                     `}>
                                         [{evt.type}]
@@ -562,7 +460,19 @@ const App: React.FC = () => {
 
                                 {/* Status Line */}
                                 <div className="flex items-center gap-2 mt-2">
-                                    <EventStatusBadge start={evt.start} end={evt.end} />
+                                    {isLive ? (
+                                        <div className="flex items-center gap-2">
+                                            <span className="relative flex h-2 w-2">
+                                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                            </span>
+                                            <span className="text-xs font-bold text-red-500 uppercase tracking-widest animate-pulse">AO VIVO</span>
+                                        </div>
+                                    ) : (
+                                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-black/30 px-2 py-1 rounded">
+                                            STATUS: AGUARDANDO
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -632,7 +542,7 @@ const App: React.FC = () => {
                     <div className="flex items-center gap-3">
                         <div className="text-right hidden sm:block">
                             <div className="text-xs font-bold text-white font-rajdhani uppercase tracking-wide">{user.username}</div>
-                            <div className="text-xs text-green-400 font-bold uppercase tracking-widest">Online</div>
+                            <div className="text-[10px] text-green-400 font-bold uppercase tracking-widest">Online</div>
                         </div>
                         <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 p-0.5 transform -skew-x-12 shadow-[0_0_10px_rgba(34,211,238,0.3)]">
                             <div className="w-full h-full bg-[#0b0e14] flex items-center justify-center text-xs font-bold text-white transform skew-x-12">

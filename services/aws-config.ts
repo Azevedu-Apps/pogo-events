@@ -1,3 +1,4 @@
+
 import { ResourcesConfig } from 'aws-amplify';
 
 export const amplifyConfig: ResourcesConfig = {
@@ -67,6 +68,39 @@ export const amplifyConfig: ResourcesConfig = {
             "attributes": [
               { "type": "model", "properties": {} },
               { "type": "auth", "properties": { "rules": [{ "allow": "public", "provider": "apiKey", "operations": ["create", "update", "delete", "read"] }] } }
+            ],
+            "primaryKeyInfo": { "isCustomPrimaryKey": false, "primaryKeyFieldName": "id", "sortKeyFieldNames": [] }
+          },
+          "UserEventProgress": {
+            "name": "UserEventProgress",
+            "fields": {
+              "id": { "name": "id", "isArray": false, "type": "ID", "isRequired": true, "attributes": [] },
+              "eventId": { "name": "eventId", "isArray": false, "type": "String", "isRequired": true, "attributes": [] },
+              "progressData": { "name": "progressData", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
+              "createdAt": { "name": "createdAt", "isArray": false, "type": "AWSDateTime", "isRequired": false, "attributes": [], "isReadOnly": true },
+              "updatedAt": { "name": "updatedAt", "isArray": false, "type": "AWSDateTime", "isRequired": false, "attributes": [], "isReadOnly": true }
+            },
+            "syncable": true,
+            "pluralName": "UserEventProgresses",
+            "attributes": [
+              { "type": "model", "properties": {} },
+              { "type": "auth", "properties": { "rules": [{ "allow": "owner", "provider": "userPools", "operations": ["create", "update", "delete", "read"] }] } }
+            ],
+            "primaryKeyInfo": { "isCustomPrimaryKey": false, "primaryKeyFieldName": "id", "sortKeyFieldNames": [] }
+          },
+          "UserPokedex": {
+            "name": "UserPokedex",
+            "fields": {
+              "id": { "name": "id", "isArray": false, "type": "ID", "isRequired": true, "attributes": [] },
+              "progressData": { "name": "progressData", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
+              "createdAt": { "name": "createdAt", "isArray": false, "type": "AWSDateTime", "isRequired": false, "attributes": [], "isReadOnly": true },
+              "updatedAt": { "name": "updatedAt", "isArray": false, "type": "AWSDateTime", "isRequired": false, "attributes": [], "isReadOnly": true }
+            },
+            "syncable": true,
+            "pluralName": "UserPokedexes",
+            "attributes": [
+              { "type": "model", "properties": {} },
+              { "type": "auth", "properties": { "rules": [{ "allow": "owner", "provider": "userPools", "operations": ["create", "update", "delete", "read"] }] } }
             ],
             "primaryKeyInfo": { "isCustomPrimaryKey": false, "primaryKeyFieldName": "id", "sortKeyFieldNames": [] }
           }

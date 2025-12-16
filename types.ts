@@ -1,3 +1,4 @@
+
 export interface Pokemon {
   name: string;
   image: string;
@@ -17,7 +18,9 @@ export interface Attack {
   move: string;
   image: string;
   type: string;
-  energy: string;
+  energy: string; // Para carregados: "1", "2", "3" (barras). Para ágil: "fast"
+  category?: 'fast' | 'charged';
+  power?: string;
   method?: string;
 }
 
