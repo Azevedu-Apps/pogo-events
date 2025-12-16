@@ -547,16 +547,16 @@
         }
       }
     },
-    "8c8555d6751ef66d38a122c6ceaf9ed8de52b2b552837f4127ba218cb04e042e": {
+    "b5966020a891d977ace8fef5c34b02af1b077f5b06d3c70e7f65a84be2e7953f": {
       "displayName": "auth Nested Stack Template",
       "source": {
         "path": "amplifypogoeventsBiskelasandbox346f944261authE6C38D94.nested.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-bbe333d8": {
+        "current_account-current_region-b63bc684": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "8c8555d6751ef66d38a122c6ceaf9ed8de52b2b552837f4127ba218cb04e042e.json",
+          "objectKey": "b5966020a891d977ace8fef5c34b02af1b077f5b06d3c70e7f65a84be2e7953f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
@@ -617,30 +617,30 @@
         }
       }
     },
-    "b5441b4b82371b27785a47098f42f4493f6f2bf3d31eda874bb4b3012c21cb8f": {
+    "4b68b1846b0b3a31dfff53ab301bb51dad1494994f2570b5fa93c6b749b31481": {
       "displayName": "data Nested Stack Template",
       "source": {
         "path": "amplifypogoeventsBiskelasandbox346f944261data9CA49FB0.nested.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-c8ae68f7": {
+        "current_account-current_region-935cb87b": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "b5441b4b82371b27785a47098f42f4493f6f2bf3d31eda874bb4b3012c21cb8f.json",
+          "objectKey": "4b68b1846b0b3a31dfff53ab301bb51dad1494994f2570b5fa93c6b749b31481.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "721f38883655bfe07297d4dd3ecf6a78b092b794e1b319807560d0e063648a10": {
+    "50d212bcd7e229f82fb0f4451bbd10bcc489781252f5db493233dd4cb518a41c": {
       "displayName": "amplify-pogoevents-Biskela-sandbox-346f944261 Template",
       "source": {
         "path": "amplify-pogoevents-Biskela-sandbox-346f944261.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-d767d211": {
+        "current_account-current_region-7cc71e56": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "721f38883655bfe07297d4dd3ecf6a78b092b794e1b319807560d0e063648a10.json",
+          "objectKey": "50d212bcd7e229f82fb0f4451bbd10bcc489781252f5db493233dd4cb518a41c.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

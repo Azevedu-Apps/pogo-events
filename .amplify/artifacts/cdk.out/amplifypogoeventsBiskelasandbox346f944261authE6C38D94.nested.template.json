@@ -291,8 +291,8 @@
     "name": "Biskela",
     "type": "sandbox",
     "secretNames": [
-     "320973602966-hussnucuofqubsqlf0ngjianslo5bsvq.apps.googleusercontent.com",
-     "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"
+     "GOOGLE_CLIENT_ID",
+     "GOOGLE_CLIENT_SECRET"
     ],
     "secretLastUpdated": 1765853404159
    },
@@ -391,13 +391,13 @@
      "client_id": {
       "Fn::GetAtt": [
        "AmplifySecretFetcherResource",
-       "320973602966-hussnucuofqubsqlf0ngjianslo5bsvq.apps.googleusercontent.com"
+       "GOOGLE_CLIENT_ID"
       ]
      },
      "client_secret": {
       "Fn::GetAtt": [
        "AmplifySecretFetcherResource",
-       "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"
+       "GOOGLE_CLIENT_SECRET"
       ]
      },
      "authorize_scopes": "email profile"
@@ -502,7 +502,7 @@
      "accounts.google.com": {
       "Fn::GetAtt": [
        "AmplifySecretFetcherResource",
-       "320973602966-hussnucuofqubsqlf0ngjianslo5bsvq.apps.googleusercontent.com"
+       "GOOGLE_CLIENT_ID"
       ]
      }
     }
