@@ -53,14 +53,11 @@ const schema = a.schema({
   // Isso cria a tabela que estava faltando e corrige o Sync Error
   UserEventProgress: a
     .model({
-      eventId: a.string().required(),   // ID para saber de qual evento é o progresso
-      checklist: a.string().array(),    // Array com os IDs das tarefas concluídas
-      isCompleted: a.boolean(),         // Se completou tudo
-      lastUpdated: a.datetime(),        // Data da última atualização
+      eventId: a.string().required(),
+      progressData: a.json(), // JSON permite salvar: { pikachu: { shiny: true, hundo: false } }
     })
     .authorization(allow => [
-      // Mantendo público por enquanto para seus testes (igual ao PogoEvent)
-      allow.publicApiKey(),
+      allow.owner(), // Apenas o dono (usuário logado) pode ver/editar sua lista
     ]),
 });
 
