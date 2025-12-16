@@ -49,15 +49,13 @@ const schema = a.schema({
       allow.publicApiKey(),
     ]),
 
-  // --- NOVO MODELO: UserEventProgress ---
-  // Isso cria a tabela que estava faltando e corrige o Sync Error
   UserEventProgress: a
     .model({
       eventId: a.string().required(),
-      progressData: a.json(), // JSON permite salvar: { pikachu: { shiny: true, hundo: false } }
+      progressData: a.json(),
     })
     .authorization(allow => [
-      allow.owner(), // Apenas o dono (usuário logado) pode ver/editar sua lista
+      allow.owner(),
     ]),
 });
 
