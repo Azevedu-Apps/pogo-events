@@ -1,0 +1,56 @@
+type PogoEvent @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  name: String!
+  type: String
+  start: AWSDateTime
+  end: AWSDateTime
+  location: String
+  cover: String
+  research: String
+  eggTitle: String
+  eggDesc: String
+  bonuses: [String]
+  images: [String]
+  payment: PogoEventPayment
+  featured: PogoEventFeatured
+  paidResearch: PogoEventPaidResearch
+  spawnCategories: AWSJSON
+  attacks: AWSJSON
+  raidsList: AWSJSON
+  customTexts: AWSJSON
+  eggs: AWSJSON
+}
+
+type UserEventProgress @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: public, provider: apiKey}])
+{
+  eventId: String!
+  progressData: AWSJSON
+}
+
+type UserPokedex @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: public, provider: apiKey}])
+{
+  progressData: AWSJSON
+}
+
+type PogoEventPayment 
+{
+  type: String
+  cost: String
+  ticketCost: String
+  ticketBonuses: [String]
+}
+
+type PogoEventFeatured 
+{
+  name: String
+  image: String
+}
+
+type PogoEventPaidResearch 
+{
+  name: String
+  cost: String
+  details: String
+}
