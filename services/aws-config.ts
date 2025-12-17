@@ -4,9 +4,9 @@ import { ResourcesConfig } from 'aws-amplify';
 export const amplifyConfig: ResourcesConfig = {
   Auth: {
     Cognito: {
-      userPoolId: "sa-east-1_jS0w3mICn",
+      userPoolId: "sa-east-1_KDmQHc1Yu",
       userPoolClientId: "2hubn8meq2598afuro18h1agcf",
-      identityPoolId: "sa-east-1:b16c0d7c-6f25-4e1c-adcc-45c2170a7273",
+      identityPoolId: "sa-east-1:1e1acc38-2e31-45cc-b3e8-fb2711ebe816",
       loginWith: {
         email: true
       },
@@ -28,10 +28,10 @@ export const amplifyConfig: ResourcesConfig = {
   },
   API: {
     GraphQL: {
-      endpoint: "https://sdwa6ammqrfs5cpfyf55lmr7wi.appsync-api.sa-east-1.amazonaws.com/graphql",
+      endpoint: "https://63rnjd5nlvfrjlgxobywy34gu4.appsync-api.sa-east-1.amazonaws.com/graphql",
       region: "sa-east-1",
       defaultAuthMode: 'apiKey',
-      apiKey: "da2-4gzmhvdjdzej5jwm6j3cpmieje",
+      apiKey: "da2-srl5u24xzjdgtpbj3udi4rdw7q",
       modelIntrospection: {
         "version": 1,
         "models": {
