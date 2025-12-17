@@ -5,7 +5,7 @@ export const amplifyConfig: ResourcesConfig = {
   Auth: {
     Cognito: {
       userPoolId: "sa-east-1_jS0w3mICn",
-      userPoolClientId: "7gm7t9h7t6sj5hhpb9ml1go1ji",
+      userPoolClientId: "2hubn8meq2598afuro18h1agcf",
       identityPoolId: "sa-east-1:b16c0d7c-6f25-4e1c-adcc-45c2170a7273",
       loginWith: {
         email: true
@@ -50,7 +50,7 @@ export const amplifyConfig: ResourcesConfig = {
               "eggDesc": { "name": "eggDesc", "isArray": false, "type": "String", "isRequired": false, "attributes": [] },
               "bonuses": { "name": "bonuses", "isArray": true, "type": "String", "isRequired": false, "attributes": [] },
               "images": { "name": "images", "isArray": true, "type": "String", "isRequired": false, "attributes": [] },
-              
+
               "payment": { "name": "payment", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
               "featured": { "name": "featured", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
               "paidResearch": { "name": "paidResearch", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
@@ -59,7 +59,7 @@ export const amplifyConfig: ResourcesConfig = {
               "raidsList": { "name": "raidsList", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
               "customTexts": { "name": "customTexts", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
               "eggs": { "name": "eggs", "isArray": false, "type": "AWSJSON", "isRequired": false, "attributes": [] },
-              
+
               "createdAt": { "name": "createdAt", "isArray": false, "type": "AWSDateTime", "isRequired": false, "attributes": [], "isReadOnly": true },
               "updatedAt": { "name": "updatedAt", "isArray": false, "type": "AWSDateTime", "isRequired": false, "attributes": [], "isReadOnly": true }
             },
