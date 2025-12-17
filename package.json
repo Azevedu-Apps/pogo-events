@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-amplify/backend": "^1.19.0",
     "aws-amplify": "^6.15.9",
     "html-to-image": "^1.11.13",
     "react": "^19.2.1",
