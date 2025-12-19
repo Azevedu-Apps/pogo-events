@@ -1,0 +1,1789 @@
+[
+  {
+    "id": "ROWLET",
+    "dexNr": 722,
+    "types": [
+      "POKEMON_TYPE_GRASS",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 169,
+      "baseAttack": 102,
+      "baseDefense": 99
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_722_00.png"
+      }
+    ]
+  },
+  {
+    "id": "DARTRIX",
+    "dexNr": 723,
+    "types": [
+      "POKEMON_TYPE_GRASS",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 186,
+      "baseAttack": 142,
+      "baseDefense": 139
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_723_00.png"
+      }
+    ]
+  },
+  {
+    "id": "DECIDUEYE",
+    "dexNr": 724,
+    "types": [
+      "POKEMON_TYPE_GRASS",
+      "POKEMON_TYPE_GHOST"
+    ],
+    "stats": {
+      "baseStamina": 186,
+      "baseAttack": 210,
+      "baseDefense": 179
+    },
+    "forms": [
+      {
+        "name": "DECIDUEYE_HISUIAN",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_724_00.png"
+      },
+      {
+        "name": "DECIDUEYE_NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_724_00.png"
+      }
+    ]
+  },
+  {
+    "id": "LITTEN",
+    "dexNr": 725,
+    "types": [
+      "POKEMON_TYPE_FIRE"
+    ],
+    "stats": {
+      "baseStamina": 128,
+      "baseAttack": 128,
+      "baseDefense": 79
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_725_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TORRACAT",
+    "dexNr": 726,
+    "types": [
+      "POKEMON_TYPE_FIRE"
+    ],
+    "stats": {
+      "baseStamina": 163,
+      "baseAttack": 174,
+      "baseDefense": 103
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_726_00.png"
+      }
+    ]
+  },
+  {
+    "id": "INCINEROAR",
+    "dexNr": 727,
+    "types": [
+      "POKEMON_TYPE_FIRE",
+      "POKEMON_TYPE_DARK"
+    ],
+    "stats": {
+      "baseStamina": 216,
+      "baseAttack": 214,
+      "baseDefense": 175
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_727_00.png"
+      }
+    ]
+  },
+  {
+    "id": "POPPLIO",
+    "dexNr": 728,
+    "types": [
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 137,
+      "baseAttack": 120,
+      "baseDefense": 103
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_728_00.png"
+      }
+    ]
+  },
+  {
+    "id": "BRIONNE",
+    "dexNr": 729,
+    "types": [
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 155,
+      "baseAttack": 168,
+      "baseDefense": 145
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_729_00.png"
+      }
+    ]
+  },
+  {
+    "id": "PRIMARINA",
+    "dexNr": 730,
+    "types": [
+      "POKEMON_TYPE_WATER",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 190,
+      "baseAttack": 232,
+      "baseDefense": 195
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_730_00.png"
+      }
+    ]
+  },
+  {
+    "id": "PIKIPEK",
+    "dexNr": 731,
+    "types": [
+      "POKEMON_TYPE_NORMAL",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 111,
+      "baseAttack": 136,
+      "baseDefense": 59
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_731_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TRUMBEAK",
+    "dexNr": 732,
+    "types": [
+      "POKEMON_TYPE_NORMAL",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 146,
+      "baseAttack": 159,
+      "baseDefense": 100
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_732_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TOUCANNON",
+    "dexNr": 733,
+    "types": [
+      "POKEMON_TYPE_NORMAL",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 190,
+      "baseAttack": 222,
+      "baseDefense": 146
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_733_00.png"
+      }
+    ]
+  },
+  {
+    "id": "YUNGOOS",
+    "dexNr": 734,
+    "types": [
+      "POKEMON_TYPE_NORMAL"
+    ],
+    "stats": {
+      "baseStamina": 134,
+      "baseAttack": 122,
+      "baseDefense": 56
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_734_00.png"
+      }
+    ]
+  },
+  {
+    "id": "GUMSHOOS",
+    "dexNr": 735,
+    "types": [
+      "POKEMON_TYPE_NORMAL"
+    ],
+    "stats": {
+      "baseStamina": 204,
+      "baseAttack": 194,
+      "baseDefense": 113
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_735_00.png"
+      }
+    ]
+  },
+  {
+    "id": "GRUBBIN",
+    "dexNr": 736,
+    "types": [
+      "POKEMON_TYPE_BUG"
+    ],
+    "stats": {
+      "baseStamina": 132,
+      "baseAttack": 115,
+      "baseDefense": 85
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_736_00.png"
+      }
+    ]
+  },
+  {
+    "id": "CHARJABUG",
+    "dexNr": 737,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_ELECTRIC"
+    ],
+    "stats": {
+      "baseStamina": 149,
+      "baseAttack": 145,
+      "baseDefense": 161
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_737_00.png"
+      }
+    ]
+  },
+  {
+    "id": "VIKAVOLT",
+    "dexNr": 738,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_ELECTRIC"
+    ],
+    "stats": {
+      "baseStamina": 184,
+      "baseAttack": 254,
+      "baseDefense": 158
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_738_00.png"
+      }
+    ]
+  },
+  {
+    "id": "CRABRAWLER",
+    "dexNr": 739,
+    "types": [
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 132,
+      "baseAttack": 150,
+      "baseDefense": 104
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_739_00.png"
+      }
+    ]
+  },
+  {
+    "id": "CRABOMINABLE",
+    "dexNr": 740,
+    "types": [
+      "POKEMON_TYPE_FIGHTING",
+      "POKEMON_TYPE_ICE"
+    ],
+    "stats": {
+      "baseStamina": 219,
+      "baseAttack": 231,
+      "baseDefense": 138
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_740_00.png"
+      }
+    ]
+  },
+  {
+    "id": "ORICORIO",
+    "dexNr": 741,
+    "types": [
+      "POKEMON_TYPE_FIRE",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 181,
+      "baseAttack": 196,
+      "baseDefense": 145
+    },
+    "forms": [
+      {
+        "name": "ORICORIO_BAILE",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_741_00.png"
+      },
+      {
+        "name": "ORICORIO_PAU",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_741_00.png"
+      },
+      {
+        "name": "ORICORIO_POMPOM",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_741_00.png"
+      },
+      {
+        "name": "ORICORIO_SENSU",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_741_00.png"
+      }
+    ]
+  },
+  {
+    "id": "CUTIEFLY",
+    "dexNr": 742,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 120,
+      "baseAttack": 110,
+      "baseDefense": 81
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_742_00.png"
+      }
+    ]
+  },
+  {
+    "id": "RIBOMBEE",
+    "dexNr": 743,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 155,
+      "baseAttack": 198,
+      "baseDefense": 146
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_743_00.png"
+      }
+    ]
+  },
+  {
+    "id": "ROCKRUFF",
+    "dexNr": 744,
+    "types": [
+      "POKEMON_TYPE_ROCK"
+    ],
+    "stats": {
+      "baseStamina": 128,
+      "baseAttack": 117,
+      "baseDefense": 78
+    },
+    "forms": [
+      {
+        "name": "ROCKRUFF_DUSK",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_744_00.png"
+      },
+      {
+        "name": "ROCKRUFF_NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_744_00.png"
+      }
+    ]
+  },
+  {
+    "id": "LYCANROC",
+    "dexNr": 745,
+    "types": [
+      "POKEMON_TYPE_ROCK"
+    ],
+    "stats": {
+      "baseStamina": 181,
+      "baseAttack": 231,
+      "baseDefense": 140
+    },
+    "forms": [
+      {
+        "name": "LYCANROC_DUSK",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_745_00.png"
+      },
+      {
+        "name": "LYCANROC_MIDDAY",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_745_00.png"
+      },
+      {
+        "name": "LYCANROC_MIDNIGHT",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_745_00.png"
+      }
+    ]
+  },
+  {
+    "id": "WISHIWASHI",
+    "dexNr": 746,
+    "types": [
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 128,
+      "baseAttack": 46,
+      "baseDefense": 43
+    },
+    "forms": [
+      {
+        "name": "WISHIWASHI_SCHOOL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_746_00.png"
+      },
+      {
+        "name": "WISHIWASHI_SOLO",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_746_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MAREANIE",
+    "dexNr": 747,
+    "types": [
+      "POKEMON_TYPE_POISON",
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 137,
+      "baseAttack": 98,
+      "baseDefense": 110
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_747_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TOXAPEX",
+    "dexNr": 748,
+    "types": [
+      "POKEMON_TYPE_POISON",
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 137,
+      "baseAttack": 114,
+      "baseDefense": 273
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_748_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MUDBRAY",
+    "dexNr": 749,
+    "types": [
+      "POKEMON_TYPE_GROUND"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 175,
+      "baseDefense": 121
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_749_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MUDSDALE",
+    "dexNr": 750,
+    "types": [
+      "POKEMON_TYPE_GROUND"
+    ],
+    "stats": {
+      "baseStamina": 225,
+      "baseAttack": 214,
+      "baseDefense": 174
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_750_00.png"
+      }
+    ]
+  },
+  {
+    "id": "DEWPIDER",
+    "dexNr": 751,
+    "types": [
+      "POKEMON_TYPE_WATER",
+      "POKEMON_TYPE_BUG"
+    ],
+    "stats": {
+      "baseStamina": 116,
+      "baseAttack": 72,
+      "baseDefense": 117
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_751_00.png"
+      }
+    ]
+  },
+  {
+    "id": "ARAQUANID",
+    "dexNr": 752,
+    "types": [
+      "POKEMON_TYPE_WATER",
+      "POKEMON_TYPE_BUG"
+    ],
+    "stats": {
+      "baseStamina": 169,
+      "baseAttack": 126,
+      "baseDefense": 219
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_752_00.png"
+      }
+    ]
+  },
+  {
+    "id": "FOMANTIS",
+    "dexNr": 753,
+    "types": [
+      "POKEMON_TYPE_GRASS"
+    ],
+    "stats": {
+      "baseStamina": 120,
+      "baseAttack": 100,
+      "baseDefense": 64
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_753_00.png"
+      }
+    ]
+  },
+  {
+    "id": "LURANTIS",
+    "dexNr": 754,
+    "types": [
+      "POKEMON_TYPE_GRASS"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 192,
+      "baseDefense": 169
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_754_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MORELULL",
+    "dexNr": 755,
+    "types": [
+      "POKEMON_TYPE_GRASS",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 120,
+      "baseAttack": 108,
+      "baseDefense": 119
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_755_00.png"
+      }
+    ]
+  },
+  {
+    "id": "SHIINOTIC",
+    "dexNr": 756,
+    "types": [
+      "POKEMON_TYPE_GRASS",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 155,
+      "baseAttack": 154,
+      "baseDefense": 168
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_756_00.png"
+      }
+    ]
+  },
+  {
+    "id": "SALANDIT",
+    "dexNr": 757,
+    "types": [
+      "POKEMON_TYPE_POISON",
+      "POKEMON_TYPE_FIRE"
+    ],
+    "stats": {
+      "baseStamina": 134,
+      "baseAttack": 136,
+      "baseDefense": 80
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_757_00.png"
+      }
+    ]
+  },
+  {
+    "id": "SALAZZLE",
+    "dexNr": 758,
+    "types": [
+      "POKEMON_TYPE_POISON",
+      "POKEMON_TYPE_FIRE"
+    ],
+    "stats": {
+      "baseStamina": 169,
+      "baseAttack": 228,
+      "baseDefense": 130
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_758_00.png"
+      }
+    ]
+  },
+  {
+    "id": "STUFFUL",
+    "dexNr": 759,
+    "types": [
+      "POKEMON_TYPE_NORMAL",
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 136,
+      "baseDefense": 95
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_759_00.png"
+      }
+    ]
+  },
+  {
+    "id": "BEWEAR",
+    "dexNr": 760,
+    "types": [
+      "POKEMON_TYPE_NORMAL",
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 260,
+      "baseAttack": 226,
+      "baseDefense": 141
+    },
+    "forms": [
+      {
+        "name": "3020",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_760_00.png"
+      },
+      {
+        "name": "3021",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_760_00.png"
+      }
+    ]
+  },
+  {
+    "id": "BOUNSWEET",
+    "dexNr": 761,
+    "types": [
+      "POKEMON_TYPE_GRASS"
+    ],
+    "stats": {
+      "baseStamina": 123,
+      "baseAttack": 55,
+      "baseDefense": 69
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_761_00.png"
+      }
+    ]
+  },
+  {
+    "id": "STEENEE",
+    "dexNr": 762,
+    "types": [
+      "POKEMON_TYPE_GRASS"
+    ],
+    "stats": {
+      "baseStamina": 141,
+      "baseAttack": 78,
+      "baseDefense": 94
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_762_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TSAREENA",
+    "dexNr": 763,
+    "types": [
+      "POKEMON_TYPE_GRASS"
+    ],
+    "stats": {
+      "baseStamina": 176,
+      "baseAttack": 222,
+      "baseDefense": 195
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_763_00.png"
+      }
+    ]
+  },
+  {
+    "id": "COMFEY",
+    "dexNr": 764,
+    "types": [
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 139,
+      "baseAttack": 165,
+      "baseDefense": 215
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_764_00.png"
+      }
+    ]
+  },
+  {
+    "id": "ORANGURU",
+    "dexNr": 765,
+    "types": [
+      "POKEMON_TYPE_NORMAL",
+      "POKEMON_TYPE_PSYCHIC"
+    ],
+    "stats": {
+      "baseStamina": 207,
+      "baseAttack": 168,
+      "baseDefense": 192
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_765_00.png"
+      }
+    ]
+  },
+  {
+    "id": "PASSIMIAN",
+    "dexNr": 766,
+    "types": [
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 225,
+      "baseAttack": 222,
+      "baseDefense": 160
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_766_00.png"
+      }
+    ]
+  },
+  {
+    "id": "WIMPOD",
+    "dexNr": 767,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 93,
+      "baseAttack": 67,
+      "baseDefense": 74
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_767_00.png"
+      }
+    ]
+  },
+  {
+    "id": "GOLISOPOD",
+    "dexNr": 768,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 181,
+      "baseAttack": 218,
+      "baseDefense": 226
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_768_00.png"
+      }
+    ]
+  },
+  {
+    "id": "SANDYGAST",
+    "dexNr": 769,
+    "types": [
+      "POKEMON_TYPE_GHOST",
+      "POKEMON_TYPE_GROUND"
+    ],
+    "stats": {
+      "baseStamina": 146,
+      "baseAttack": 120,
+      "baseDefense": 118
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_769_00.png"
+      }
+    ]
+  },
+  {
+    "id": "PALOSSAND",
+    "dexNr": 770,
+    "types": [
+      "POKEMON_TYPE_GHOST",
+      "POKEMON_TYPE_GROUND"
+    ],
+    "stats": {
+      "baseStamina": 198,
+      "baseAttack": 178,
+      "baseDefense": 178
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_770_00.png"
+      }
+    ]
+  },
+  {
+    "id": "PYUKUMUKU",
+    "dexNr": 771,
+    "types": [
+      "POKEMON_TYPE_WATER"
+    ],
+    "stats": {
+      "baseStamina": 146,
+      "baseAttack": 97,
+      "baseDefense": 224
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_771_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TYPE_NULL",
+    "dexNr": 772,
+    "types": [
+      "POKEMON_TYPE_NORMAL"
+    ],
+    "stats": {
+      "baseStamina": 216,
+      "baseAttack": 184,
+      "baseDefense": 184
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_772_00.png"
+      }
+    ]
+  },
+  {
+    "id": "SILVALLY",
+    "dexNr": 773,
+    "types": [
+      "POKEMON_TYPE_NORMAL"
+    ],
+    "stats": {
+      "baseStamina": 216,
+      "baseAttack": 198,
+      "baseDefense": 198
+    },
+    "forms": [
+      {
+        "name": "SILVALLY_BUG",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_17.png"
+      },
+      {
+        "name": "SILVALLY_DARK",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_27.png"
+      },
+      {
+        "name": "SILVALLY_DRAGON",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_26.png"
+      },
+      {
+        "name": "SILVALLY_ELECTRIC",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_23.png"
+      },
+      {
+        "name": "SILVALLY_FAIRY",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_28.png"
+      },
+      {
+        "name": "SILVALLY_FIGHTING",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_12.png"
+      },
+      {
+        "name": "SILVALLY_FIRE",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_20.png"
+      },
+      {
+        "name": "SILVALLY_FLYING",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_13.png"
+      },
+      {
+        "name": "SILVALLY_GHOST",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_18.png"
+      },
+      {
+        "name": "SILVALLY_GRASS",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_22.png"
+      },
+      {
+        "name": "SILVALLY_GROUND",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_15.png"
+      },
+      {
+        "name": "SILVALLY_ICE",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_25.png"
+      },
+      {
+        "name": "SILVALLY_NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_11.png"
+      },
+      {
+        "name": "SILVALLY_POISON",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_14.png"
+      },
+      {
+        "name": "SILVALLY_PSYCHIC",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_24.png"
+      },
+      {
+        "name": "SILVALLY_ROCK",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_16.png"
+      },
+      {
+        "name": "SILVALLY_STEEL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_19.png"
+      },
+      {
+        "name": "SILVALLY_WATER",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_773_21.png"
+      }
+    ]
+  },
+  {
+    "id": "MINIOR",
+    "dexNr": 774,
+    "types": [
+      "POKEMON_TYPE_ROCK",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 155,
+      "baseAttack": 116,
+      "baseDefense": 194
+    },
+    "forms": [
+      {
+        "name": "MINIOR_BLUE",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_774_00.png"
+      },
+      {
+        "name": "MINIOR_GREEN",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_774_00.png"
+      },
+      {
+        "name": "MINIOR_INDIGO",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_774_00.png"
+      },
+      {
+        "name": "MINIOR_ORANGE",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_774_00.png"
+      },
+      {
+        "name": "MINIOR_RED",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_774_00.png"
+      },
+      {
+        "name": "MINIOR_VIOLET",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_774_00.png"
+      },
+      {
+        "name": "MINIOR_YELLOW",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_774_00.png"
+      }
+    ]
+  },
+  {
+    "id": "KOMALA",
+    "dexNr": 775,
+    "types": [
+      "POKEMON_TYPE_NORMAL"
+    ],
+    "stats": {
+      "baseStamina": 163,
+      "baseAttack": 216,
+      "baseDefense": 165
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_775_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TURTONATOR",
+    "dexNr": 776,
+    "types": [
+      "POKEMON_TYPE_FIRE",
+      "POKEMON_TYPE_DRAGON"
+    ],
+    "stats": {
+      "baseStamina": 155,
+      "baseAttack": 165,
+      "baseDefense": 215
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_776_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TOGEDEMARU",
+    "dexNr": 777,
+    "types": [
+      "POKEMON_TYPE_ELECTRIC",
+      "POKEMON_TYPE_STEEL"
+    ],
+    "stats": {
+      "baseStamina": 163,
+      "baseAttack": 190,
+      "baseDefense": 145
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_777_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MIMIKYU",
+    "dexNr": 778,
+    "types": [
+      "POKEMON_TYPE_GHOST",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 146,
+      "baseAttack": 177,
+      "baseDefense": 199
+    },
+    "forms": [
+      {
+        "name": "MIMIKYU_BUSTED",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_778_00.png"
+      },
+      {
+        "name": "MIMIKYU_DISGUISED",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_778_00.png"
+      }
+    ]
+  },
+  {
+    "id": "BRUXISH",
+    "dexNr": 779,
+    "types": [
+      "POKEMON_TYPE_WATER",
+      "POKEMON_TYPE_PSYCHIC"
+    ],
+    "stats": {
+      "baseStamina": 169,
+      "baseAttack": 208,
+      "baseDefense": 145
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_779_00.png"
+      }
+    ]
+  },
+  {
+    "id": "DRAMPA",
+    "dexNr": 780,
+    "types": [
+      "POKEMON_TYPE_NORMAL",
+      "POKEMON_TYPE_DRAGON"
+    ],
+    "stats": {
+      "baseStamina": 186,
+      "baseAttack": 231,
+      "baseDefense": 164
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_780_00.png"
+      }
+    ]
+  },
+  {
+    "id": "DHELMISE",
+    "dexNr": 781,
+    "types": [
+      "POKEMON_TYPE_GHOST",
+      "POKEMON_TYPE_GRASS"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 233,
+      "baseDefense": 179
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_781_00.png"
+      }
+    ]
+  },
+  {
+    "id": "JANGMO_O",
+    "dexNr": 782,
+    "types": [
+      "POKEMON_TYPE_DRAGON"
+    ],
+    "stats": {
+      "baseStamina": 128,
+      "baseAttack": 102,
+      "baseDefense": 108
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_782_00.png"
+      }
+    ]
+  },
+  {
+    "id": "HAKAMO_O",
+    "dexNr": 783,
+    "types": [
+      "POKEMON_TYPE_DRAGON",
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 146,
+      "baseAttack": 145,
+      "baseDefense": 162
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_783_00.png"
+      }
+    ]
+  },
+  {
+    "id": "KOMMO_O",
+    "dexNr": 784,
+    "types": [
+      "POKEMON_TYPE_DRAGON",
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 181,
+      "baseAttack": 222,
+      "baseDefense": 240
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_784_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TAPU_KOKO",
+    "dexNr": 785,
+    "types": [
+      "POKEMON_TYPE_ELECTRIC",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 250,
+      "baseDefense": 181
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_785_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TAPU_LELE",
+    "dexNr": 786,
+    "types": [
+      "POKEMON_TYPE_PSYCHIC",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 259,
+      "baseDefense": 208
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_786_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TAPU_BULU",
+    "dexNr": 787,
+    "types": [
+      "POKEMON_TYPE_GRASS",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 249,
+      "baseDefense": 215
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_787_00.png"
+      }
+    ]
+  },
+  {
+    "id": "TAPU_FINI",
+    "dexNr": 788,
+    "types": [
+      "POKEMON_TYPE_WATER",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 172,
+      "baseAttack": 189,
+      "baseDefense": 254
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_788_00.png"
+      }
+    ]
+  },
+  {
+    "id": "COSMOG",
+    "dexNr": 789,
+    "types": [
+      "POKEMON_TYPE_PSYCHIC"
+    ],
+    "stats": {
+      "baseStamina": 125,
+      "baseAttack": 54,
+      "baseDefense": 57
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_789_00.png"
+      }
+    ]
+  },
+  {
+    "id": "COSMOEM",
+    "dexNr": 790,
+    "types": [
+      "POKEMON_TYPE_PSYCHIC"
+    ],
+    "stats": {
+      "baseStamina": 125,
+      "baseAttack": 54,
+      "baseDefense": 242
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_790_00.png"
+      }
+    ]
+  },
+  {
+    "id": "SOLGALEO",
+    "dexNr": 791,
+    "types": [
+      "POKEMON_TYPE_PSYCHIC",
+      "POKEMON_TYPE_STEEL"
+    ],
+    "stats": {
+      "baseStamina": 264,
+      "baseAttack": 255,
+      "baseDefense": 191
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_791_00.png"
+      }
+    ]
+  },
+  {
+    "id": "LUNALA",
+    "dexNr": 792,
+    "types": [
+      "POKEMON_TYPE_PSYCHIC",
+      "POKEMON_TYPE_GHOST"
+    ],
+    "stats": {
+      "baseStamina": 264,
+      "baseAttack": 255,
+      "baseDefense": 191
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_792_00.png"
+      }
+    ]
+  },
+  {
+    "id": "NIHILEGO",
+    "dexNr": 793,
+    "types": [
+      "POKEMON_TYPE_ROCK",
+      "POKEMON_TYPE_POISON"
+    ],
+    "stats": {
+      "baseStamina": 240,
+      "baseAttack": 249,
+      "baseDefense": 210
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_793_00.png"
+      }
+    ]
+  },
+  {
+    "id": "BUZZWOLE",
+    "dexNr": 794,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 216,
+      "baseAttack": 236,
+      "baseDefense": 196
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_794_00.png"
+      }
+    ]
+  },
+  {
+    "id": "PHEROMOSA",
+    "dexNr": 795,
+    "types": [
+      "POKEMON_TYPE_BUG",
+      "POKEMON_TYPE_FIGHTING"
+    ],
+    "stats": {
+      "baseStamina": 174,
+      "baseAttack": 316,
+      "baseDefense": 85
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_795_00.png"
+      }
+    ]
+  },
+  {
+    "id": "XURKITREE",
+    "dexNr": 796,
+    "types": [
+      "POKEMON_TYPE_ELECTRIC"
+    ],
+    "stats": {
+      "baseStamina": 195,
+      "baseAttack": 330,
+      "baseDefense": 144
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_796_00.png"
+      }
+    ]
+  },
+  {
+    "id": "CELESTEELA",
+    "dexNr": 797,
+    "types": [
+      "POKEMON_TYPE_STEEL",
+      "POKEMON_TYPE_FLYING"
+    ],
+    "stats": {
+      "baseStamina": 219,
+      "baseAttack": 207,
+      "baseDefense": 199
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_797_00.png"
+      }
+    ]
+  },
+  {
+    "id": "KARTANA",
+    "dexNr": 798,
+    "types": [
+      "POKEMON_TYPE_GRASS",
+      "POKEMON_TYPE_STEEL"
+    ],
+    "stats": {
+      "baseStamina": 139,
+      "baseAttack": 323,
+      "baseDefense": 182
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_798_00.png"
+      }
+    ]
+  },
+  {
+    "id": "GUZZLORD",
+    "dexNr": 799,
+    "types": [
+      "POKEMON_TYPE_DARK",
+      "POKEMON_TYPE_DRAGON"
+    ],
+    "stats": {
+      "baseStamina": 440,
+      "baseAttack": 188,
+      "baseDefense": 99
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_799_00.png"
+      }
+    ]
+  },
+  {
+    "id": "NECROZMA",
+    "dexNr": 800,
+    "types": [
+      "POKEMON_TYPE_PSYCHIC"
+    ],
+    "stats": {
+      "baseStamina": 219,
+      "baseAttack": 251,
+      "baseDefense": 195
+    },
+    "forms": [
+      {
+        "name": "NECROZMA_DAWN_WINGS",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_800_00.png"
+      },
+      {
+        "name": "NECROZMA_DUSK_MANE",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_800_00.png"
+      },
+      {
+        "name": "NECROZMA_NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_800_00.png"
+      },
+      {
+        "name": "NECROZMA_ULTRA",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_800_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MAGEARNA",
+    "dexNr": 801,
+    "types": [
+      "POKEMON_TYPE_STEEL",
+      "POKEMON_TYPE_FAIRY"
+    ],
+    "stats": {
+      "baseStamina": 190,
+      "baseAttack": 246,
+      "baseDefense": 225
+    },
+    "forms": [
+      {
+        "name": "MAGEARNA_NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_801_00.png"
+      },
+      {
+        "name": "MAGEARNA_ORIGINAL_COLOR",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_801_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MARSHADOW",
+    "dexNr": 802,
+    "types": [
+      "POKEMON_TYPE_FIGHTING",
+      "POKEMON_TYPE_GHOST"
+    ],
+    "stats": {
+      "baseStamina": 207,
+      "baseAttack": 265,
+      "baseDefense": 190
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_802_00.png"
+      }
+    ]
+  },
+  {
+    "id": "POIPOLE",
+    "dexNr": 803,
+    "types": [
+      "POKEMON_TYPE_POISON"
+    ],
+    "stats": {
+      "baseStamina": 167,
+      "baseAttack": 145,
+      "baseDefense": 133
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_803_00.png"
+      }
+    ]
+  },
+  {
+    "id": "NAGANADEL",
+    "dexNr": 804,
+    "types": [
+      "POKEMON_TYPE_POISON",
+      "POKEMON_TYPE_DRAGON"
+    ],
+    "stats": {
+      "baseStamina": 177,
+      "baseAttack": 263,
+      "baseDefense": 159
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_804_00.png"
+      }
+    ]
+  },
+  {
+    "id": "STAKATAKA",
+    "dexNr": 805,
+    "types": [
+      "POKEMON_TYPE_ROCK",
+      "POKEMON_TYPE_STEEL"
+    ],
+    "stats": {
+      "baseStamina": 156,
+      "baseAttack": 213,
+      "baseDefense": 298
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_805_00.png"
+      }
+    ]
+  },
+  {
+    "id": "BLACEPHALON",
+    "dexNr": 806,
+    "types": [
+      "POKEMON_TYPE_FIRE",
+      "POKEMON_TYPE_GHOST"
+    ],
+    "stats": {
+      "baseStamina": 142,
+      "baseAttack": 315,
+      "baseDefense": 148
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_806_00.png"
+      }
+    ]
+  },
+  {
+    "id": "ZERAORA",
+    "dexNr": 807,
+    "types": [
+      "POKEMON_TYPE_ELECTRIC"
+    ],
+    "stats": {
+      "baseStamina": 204,
+      "baseAttack": 252,
+      "baseDefense": 177
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_807_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MELTAN",
+    "dexNr": 808,
+    "types": [
+      "POKEMON_TYPE_STEEL"
+    ],
+    "stats": {
+      "baseStamina": 130,
+      "baseAttack": 118,
+      "baseDefense": 99
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_808_00.png"
+      }
+    ]
+  },
+  {
+    "id": "MELMETAL",
+    "dexNr": 809,
+    "types": [
+      "POKEMON_TYPE_STEEL"
+    ],
+    "stats": {
+      "baseStamina": 264,
+      "baseAttack": 226,
+      "baseDefense": 190
+    },
+    "forms": [
+      {
+        "name": "NORMAL",
+        "sprite": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_809_00.png"
+      }
+    ]
+  }
+]

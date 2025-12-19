@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "sa-east-1_KDmQHc1Yu",
+    "user_pool_id": "sa-east-1_wPch0YBrW",
     "aws_region": "sa-east-1",
-    "user_pool_client_id": "2hubn8meq2598afuro18h1agcf",
-    "identity_pool_id": "sa-east-1:1e1acc38-2e31-45cc-b3e8-fb2711ebe816",
+    "user_pool_client_id": "2gn11hm790f6l282ggup2jelkv",
+    "identity_pool_id": "sa-east-1:2eaf0bd4-72a7-462e-b9e6-abdec4e0d887",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -43,14 +43,14 @@
         "profile",
         "aws.cognito.signin.user.admin"
       ],
-      "domain": "6f1127dcfd510455d1c0.auth.sa-east-1.amazoncognito.com"
+      "domain": "2eb0ea8067ca6d554c2b.auth.sa-east-1.amazoncognito.com"
     },
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://63rnjd5nlvfrjlgxobywy34gu4.appsync-api.sa-east-1.amazonaws.com/graphql",
+    "url": "https://twsd7li3n5dg7m2jsbnsyiyh3m.appsync-api.sa-east-1.amazonaws.com/graphql",
     "aws_region": "sa-east-1",
-    "api_key": "da2-srl5u24xzjdgtpbj3udi4rdw7q",
+    "api_key": "da2-5cfwechqgbho3o3qybz7zksswe",
     "default_authorization_type": "API_KEY",
     "authorization_types": [
       "AMAZON_COGNITO_USER_POOLS",
@@ -399,6 +399,137 @@
                       "read"
                     ]
                   },
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "Pokemon": {
+          "name": "Pokemon",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "pokemonId": {
+              "name": "pokemonId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "dexNr": {
+              "name": "dexNr",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "region": {
+              "name": "region",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "types": {
+              "name": "types",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "stats": {
+              "name": "stats",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "forms": {
+              "name": "forms",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "Pokemon",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "pokemonByPokemonId",
+                "queryField": "listPokemonByPokemonId",
+                "fields": [
+                  "pokemonId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "pokemonByDexNr",
+                "queryField": "listPokemonByDexNr",
+                "fields": [
+                  "dexNr"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "pokemonByRegion",
+                "queryField": "listPokemonByRegion",
+                "fields": [
+                  "region"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
                   {
                     "allow": "public",
                     "provider": "apiKey",
