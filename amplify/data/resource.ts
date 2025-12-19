@@ -66,6 +66,25 @@ const schema = a.schema({
       allow.owner(),
       allow.publicApiKey()
     ]),
+  Pokemon: a
+    .model({
+      pokemonId: a.string().required(), // O ID textual (ex: "BULBASAUR")
+      dexNr: a.integer(),               // Número da Pokedex (ex: 1)
+      region: a.string(),               // Para filtro (ex: "kanto")
+      types: a.string().array(),        // ["POKEMON_TYPE_GRASS", ...]
+
+      // Armazenamos objetos complexos como JSON para economizar leitura e complexidade
+      stats: a.json(),                  // { baseStamina: 111, ... }
+      forms: a.json(),                  // [{ name: "...", sprite: "..." }, ...]
+    })
+    .secondaryIndexes((index) => [
+      index("pokemonId"), // Para buscar por nome: client.models.Pokemon.list({ pokemonId: 'PIKACHU' })
+      index("dexNr"),     // Para ordenar: client.models.Pokemon.list({ sort: ... })
+      index("region"),    // Para carregar por aba: client.models.Pokemon.list({ region: 'kanto' })
+    ])
+    .authorization(allow => [
+      allow.publicApiKey(), // Permite leitura/escrita via API Key (facilitará o script de seed)
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

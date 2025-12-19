@@ -9,7 +9,7 @@ import { PREDEFINED_BONUSES } from '../../utils/constants';
 // --- GENERAL INFO ---
 export const GeneralInfoSection: React.FC<{ data: Partial<PogoEvent>, onChange: (f: keyof PogoEvent, v: any) => void }> = ({ data, onChange }) => {
     const [showPaymentModal, setShowPaymentModal] = useState(false);
-    
+
     // Default Payment Structure
     const payment = data.payment || { type: 'free', cost: '', ticket: { cost: '', bonuses: [] } };
 
@@ -25,14 +25,16 @@ export const GeneralInfoSection: React.FC<{ data: Partial<PogoEvent>, onChange: 
                 </div>
                 <div className="col-span-2 md:col-span-1">
                     <Select label="Tipo de Evento" value={data.type} onChange={e => onChange('type', e.target.value)}>
-                    <option>Dia da Comunidade</option>
-                    <option>Hora em Destaque</option>
-                    <option>Dia de Reides</option>
-                    <option>Evento Sazonal</option>
-                    <option>Evento Global</option>
-                    <option>Evento Local/Ticket</option>
-                    <option>Batalhas Max - Gigamax</option>
-                    <option>Batalhas Max - Dinamax</option>
+                        <option>Dia da Comunidade</option>
+                        <option>Dia de Pesquisa</option>
+                        <option>Dia de Reides</option>
+                        <option>Dia de Destaque</option>
+                        <option>Hora em Destaque</option>
+                        <option>Evento Sazonal</option>
+                        <option>Evento Global</option>
+                        <option>Evento Local/Ticket</option>
+                        <option>Batalhas Max - Gigamax</option>
+                        <option>Batalhas Max - Dinamax</option>
                     </Select>
                 </div>
                 <div className="col-span-2">
@@ -47,7 +49,7 @@ export const GeneralInfoSection: React.FC<{ data: Partial<PogoEvent>, onChange: 
                 <div>
                     <Input label="Localização" value={data.location || 'Global'} onChange={e => onChange('location', e.target.value)} />
                 </div>
-                
+
                 {/* PAYMENT TRIGGER */}
                 <div>
                     <label className="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-widest font-rajdhani">Acesso / Monetização</label>
@@ -113,7 +115,7 @@ const PaymentConfig: React.FC<{ payment: PogoEventPayment, onChange: (p: PogoEve
 
     return (
         <div className="space-y-6">
-             {payment.type === 'paid_event' && (
+            {payment.type === 'paid_event' && (
                 <Input label="Custo do Evento" placeholder="Ex: R$ 14,90" value={payment.cost} onChange={e => onChange({ ...payment, cost: e.target.value })} />
             )}
             {payment.type === 'free_ticket' && (
@@ -128,10 +130,10 @@ const PaymentConfig: React.FC<{ payment: PogoEventPayment, onChange: (p: PogoEve
                 </div>
                 <ul className="space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
                     {payment.ticket?.bonuses?.map((b, i) => (
-                    <li key={i} className="flex justify-between items-center bg-[#0b0e14] px-3 py-2 border border-slate-800 text-sm text-yellow-100 hover:border-yellow-600/50 transition">
-                        <span><i className="fa-solid fa-ticket text-yellow-500 mr-2"></i>{b}</span>
-                        <button onClick={() => removeBonus(i)} className="text-red-500 hover:text-red-400"><i className="fa-solid fa-times"></i></button>
-                    </li>
+                        <li key={i} className="flex justify-between items-center bg-[#0b0e14] px-3 py-2 border border-slate-800 text-sm text-yellow-100 hover:border-yellow-600/50 transition">
+                            <span><i className="fa-solid fa-ticket text-yellow-500 mr-2"></i>{b}</span>
+                            <button onClick={() => removeBonus(i)} className="text-red-500 hover:text-red-400"><i className="fa-solid fa-times"></i></button>
+                        </li>
                     ))}
                 </ul>
             </div>
@@ -159,32 +161,32 @@ export const BonusSection: React.FC<{ bonuses: string[], onChange: (b: string[])
     return (
         <div className="mt-8 border-t border-slate-800 pt-6">
             <SectionTitle title="Bônus Gerais" colorClass="text-yellow-400" icon="fa-solid fa-gift" />
-            
+
             {/* SEARCH / ADD */}
             <div className="relative mb-6">
-                 <div className="flex gap-2">
-                    <Input 
-                        className="flex-1" 
-                        placeholder="Pesquisar ou digitar bônus personalizado..." 
-                        value={searchTerm} 
-                        onChange={e => setSearchTerm(e.target.value)} 
+                <div className="flex gap-2">
+                    <Input
+                        className="flex-1"
+                        placeholder="Pesquisar ou digitar bônus personalizado..."
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
                     />
                     <Button onClick={() => addBonus(searchTerm)} disabled={!searchTerm}><i className="fa-solid fa-plus"></i></Button>
-                 </div>
-                 
-                 {/* DROPDOWN */}
-                 {searchTerm && (
-                     <div className="absolute top-full left-0 right-0 bg-[#0b0e14] border border-slate-700 mt-1 z-50 max-h-40 overflow-y-auto shadow-2xl custom-scrollbar">
-                         {filteredPreset.map((p, i) => (
-                             <button key={i} onClick={() => addBonus(p.label)} className="w-full text-left px-3 py-2 hover:bg-slate-800 flex items-center gap-2 text-sm text-slate-200 border-b border-slate-800 last:border-0">
-                                 <i className={p.icon}></i> {p.label}
-                             </button>
-                         ))}
-                         {filteredPreset.length === 0 && (
-                             <div className="px-3 py-2 text-xs text-slate-500 italic">Nenhum bônus predefinido. Clique em + para adicionar o texto atual.</div>
-                         )}
-                     </div>
-                 )}
+                </div>
+
+                {/* DROPDOWN */}
+                {searchTerm && (
+                    <div className="absolute top-full left-0 right-0 bg-[#0b0e14] border border-slate-700 mt-1 z-50 max-h-40 overflow-y-auto shadow-2xl custom-scrollbar">
+                        {filteredPreset.map((p, i) => (
+                            <button key={i} onClick={() => addBonus(p.label)} className="w-full text-left px-3 py-2 hover:bg-slate-800 flex items-center gap-2 text-sm text-slate-200 border-b border-slate-800 last:border-0">
+                                <i className={p.icon}></i> {p.label}
+                            </button>
+                        ))}
+                        {filteredPreset.length === 0 && (
+                            <div className="px-3 py-2 text-xs text-slate-500 italic">Nenhum bônus predefinido. Clique em + para adicionar o texto atual.</div>
+                        )}
+                    </div>
+                )}
             </div>
 
             {/* LIST */}
@@ -209,20 +211,20 @@ export const BonusSection: React.FC<{ bonuses: string[], onChange: (b: string[])
 
 // --- CUSTOM TEXT ---
 export const CustomTextSection: React.FC<{ data: CustomText, onChange: (v: CustomText) => void }> = ({ data, onChange }) => {
-  return (
-    <div>
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <Select value={data.type} onChange={e => onChange({ ...data, type: e.target.value as any })} label="Layout">
-            <option value="text">Apenas Texto</option>
-            <option value="image">Apenas Imagem</option>
-            <option value="mixed">Imagem + Texto</option>
-          </Select>
-          <Input label="Título" placeholder="Ex: Detalhes da História" value={data.title} onChange={e => onChange({ ...data, title: e.target.value })} />
+    return (
+        <div>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+                <Select value={data.type} onChange={e => onChange({ ...data, type: e.target.value as any })} label="Layout">
+                    <option value="text">Apenas Texto</option>
+                    <option value="image">Apenas Imagem</option>
+                    <option value="mixed">Imagem + Texto</option>
+                </Select>
+                <Input label="Título" placeholder="Ex: Detalhes da História" value={data.title} onChange={e => onChange({ ...data, title: e.target.value })} />
+            </div>
+            {data.type !== 'text' && <Input label="URL da Imagem" placeholder="https://..." value={data.img || ''} onChange={e => onChange({ ...data, img: e.target.value })} className="mb-4" />}
+            {data.type !== 'image' && <TextArea label="Texto Descritivo" placeholder="Conteúdo da seção..." className="h-32 text-sm" value={data.desc || ''} onChange={e => onChange({ ...data, desc: e.target.value })} />}
         </div>
-        {data.type !== 'text' && <Input label="URL da Imagem" placeholder="https://..." value={data.img || ''} onChange={e => onChange({ ...data, img: e.target.value })} className="mb-4" />}
-        {data.type !== 'image' && <TextArea label="Texto Descritivo" placeholder="Conteúdo da seção..." className="h-32 text-sm" value={data.desc || ''} onChange={e => onChange({ ...data, desc: e.target.value })} />}
-    </div>
-  );
+    );
 };
 
 // --- FEATURED ---
@@ -244,12 +246,12 @@ export const FeaturedSection: React.FC<{ data: NonNullable<PogoEvent['featured']
         <div className="flex flex-col md:flex-row gap-6 items-start">
             <div className="flex-1 w-full space-y-4">
                 <div className="flex gap-2 items-end">
-                    <PokemonSearchInput 
+                    <PokemonSearchInput
                         label="Pokémon em Destaque"
-                        placeholder="Nome (Inglês)" 
-                        value={query} 
-                        onChange={setQuery} 
-                        className="flex-1" 
+                        placeholder="Nome (Inglês)"
+                        value={query}
+                        onChange={setQuery}
+                        className="flex-1"
                         loading={loading}
                     />
                     <Button onClick={search} variant="secondary"><i className="fa-solid fa-search"></i></Button>
@@ -261,7 +263,7 @@ export const FeaturedSection: React.FC<{ data: NonNullable<PogoEvent['featured']
                     <option>Shiny: Reide (1/20)</option>
                 </Select>
             </div>
-            
+
             {/* Visual Preview */}
             <div className="w-full md:w-32 h-32 bg-[#05060a] border border-slate-800 flex items-center justify-center relative overflow-hidden flex-shrink-0 group">
                 {/* Tech Corners */}
@@ -269,13 +271,13 @@ export const FeaturedSection: React.FC<{ data: NonNullable<PogoEvent['featured']
                 <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-slate-600"></div>
                 <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-slate-600"></div>
                 <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-slate-600"></div>
-                
+
                 {data.image ? (
-                        <>
+                    <>
                         <div className="absolute inset-0 bg-gradient-to-t from-pink-500/20 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                         <img src={data.image} className="w-full h-full object-contain p-2 z-10" />
                         <div className="absolute bottom-0 w-full bg-black/80 text-[9px] text-center text-white py-0.5 capitalize font-mono z-20">{data.name}</div>
-                        </>
+                    </>
                 ) : <span className="text-xs text-slate-600 font-rajdhani uppercase">Preview</span>}
             </div>
         </div>
