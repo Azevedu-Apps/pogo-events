@@ -1,7 +1,13 @@
+
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Define __dirname for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -27,11 +33,11 @@ export default defineConfig(({ mode }) => {
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
         manifest: {
-          name: 'Pogo Events',
-          short_name: 'Pogo',
-          description: 'App de eventos Pogo',
-          theme_color: '#ffffff',
-          background_color: '#ffffff',
+          name: 'CatchNexus | Creature Tracker',
+          short_name: 'CatchNexus',
+          description: 'Nexus de inteligência para colecionadores de criaturas.',
+          theme_color: '#0b0e14',
+          background_color: '#0b0e14',
           display: 'standalone',
           orientation: 'portrait',
           start_url: '/',

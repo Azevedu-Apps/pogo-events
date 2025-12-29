@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { PogoEvent } from '../types';
 import { SearchStringGenerator } from './tools/SearchStringGenerator';
+import { ProgressManager } from './tools/ProgressManager';
 
 interface ToolsPageProps {
     events: PogoEvent[];
 }
 
-type ToolType = 'list' | 'search_strings';
+type ToolType = 'list' | 'search_strings' | 'progress_manager';
 
 export const ToolsPage: React.FC<ToolsPageProps> = ({ events }) => {
     const [currentTool, setCurrentTool] = useState<ToolType>('list');
@@ -22,7 +23,15 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({ events }) => {
             bg: 'bg-emerald-900/20',
             border: 'border-emerald-500/30'
         },
-        // Future tools can be added here (e.g., CP Calculator, Type Chart, etc.)
+        {
+            id: 'progress_manager',
+            title: 'Gerenciar Dados',
+            desc: 'Exportar ou importar seu progresso de capturas para backup ou transferência entre dispositivos.',
+            icon: 'fa-solid fa-file-import',
+            color: 'text-blue-400',
+            bg: 'bg-blue-900/20',
+            border: 'border-blue-500/30'
+        },
         {
             id: 'coming_soon',
             title: 'Em Breve',
@@ -51,6 +60,26 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({ events }) => {
                     <p className="text-slate-400">Gere filtros automáticos baseados nos spawns dos eventos ativos.</p>
                 </div>
                 <SearchStringGenerator events={events} />
+            </div>
+        );
+    }
+
+    if (currentTool === 'progress_manager') {
+        return (
+            <div>
+                <button 
+                    onClick={() => setCurrentTool('list')} 
+                    className="mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition font-bold"
+                >
+                    <i className="fa-solid fa-arrow-left"></i> Voltar para Ferramentas
+                </button>
+                <div className="mb-6">
+                    <h1 className="text-3xl font-black text-white mb-2 flex items-center gap-3">
+                        <i className="fa-solid fa-file-import text-blue-400"></i> Gerenciador de Dados
+                    </h1>
+                    <p className="text-slate-400">Backup e restauração do progresso do catálogo.</p>
+                </div>
+                <ProgressManager events={events} />
             </div>
         );
     }

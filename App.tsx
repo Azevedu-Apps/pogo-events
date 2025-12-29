@@ -2,25 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/data';
-import { getCurrentUser, signOut } from 'aws-amplify/auth';
 import { amplifyConfig } from './services/aws-config';
 import { PogoEvent } from './types';
-import { listPogoEvents, createPogoEvent, updatePogoEvent, deletePogoEvent } from './services/graphql';
-import { isAdmin } from './utils/roles';
+import { listPogoEvents } from './services/graphql';
 import { getEventTheme } from './utils/visuals';
 
 // Components
-import AuthModal from './components/AuthModal';
 import Sidebar from './components/Sidebar';
 import Calendar from './components/Calendar';
-import EventForm from './components/EventForm';
 import EventDetail from './components/EventDetail';
 import Catalog from './components/Catalog';
-import Documentation from './components/Documentation';
-import Pokedex from './components/Pokedex';
 import { ToolsPage } from './components/ToolsPage'; 
-import { ConfirmModal } from './components/ui/ConfirmModal';
+import { BrandGenerator } from './components/BrandGenerator';
 import { EventCardSkeleton } from './components/ui/Skeletons';
+import { Button } from './components/ui/Shared';
 
 // Configure Amplify
 try {
@@ -29,7 +24,7 @@ try {
     console.error("Amplify config error:", e);
 }
 
-// --- SUB-COMPONENT: STATUS BADGE (Timer Logic) ---
+// --- SUB-COMPONENT: STATUS BADGE ---
 const EventStatusBadge = ({ start, end }: { start: string, end: string }) => {
     const [now, setNow] = useState(new Date());
 
@@ -41,7 +36,6 @@ const EventStatusBadge = ({ start, end }: { start: string, end: string }) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
     
-    // Check basic states
     if (now > endDate) {
         return (
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-slate-800/50 border border-slate-700 px-2 py-1 rounded flex items-center gap-1.5">
@@ -57,77 +51,43 @@ const EventStatusBadge = ({ start, end }: { start: string, end: string }) => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                 </span>
-                <span className="text-xs font-bold text-red-500 uppercase tracking-widest animate-pulse">ACONTECENDO AGORA</span>
+                <span className="text-xs font-bold text-red-500 uppercase tracking-widest animate-pulse">OPERANDO AGORA</span>
             </div>
         );
     }
 
-    // Future Logic
     const diffMs = startDate.getTime() - now.getTime();
-    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-    // More than 7 days
-    if (days > 7) {
-        return (
-            <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest bg-blue-900/20 border border-blue-500/30 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-regular fa-clock text-[9px]"></i> EM BREVE
-            </div>
-        );
-    }
-
-    // Between 1 and 7 days
-    if (days >= 1) {
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffDays <= 7) {
         return (
             <div className="text-[10px] font-bold text-orange-400 uppercase tracking-widest bg-orange-900/20 border border-orange-500/30 px-2 py-1 rounded flex items-center gap-1.5">
-                <i className="fa-solid fa-hourglass-half text-[9px]"></i> FALTAM {days} DIAS
+                <i className="fa-solid fa-hourglass-half text-[9px]"></i> T-MINUS {diffDays} DIAS
             </div>
         );
     }
 
-    // Less than 24 hours (Countdown)
-    const pad = (n: number) => n.toString().padStart(2, '0');
     return (
-        <div className="text-[10px] font-bold text-yellow-400 uppercase tracking-widest bg-yellow-900/20 border border-yellow-500/30 px-2 py-1 rounded flex items-center gap-1.5 animate-pulse">
-            <i className="fa-solid fa-stopwatch text-[9px]"></i> FALTAM {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+        <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest bg-blue-900/20 border border-blue-500/30 px-2 py-1 rounded flex items-center gap-1.5">
+            <i className="fa-regular fa-clock text-[9px]"></i> AGENDADO
         </div>
     );
 };
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<any>(null);
-  const [view, setView] = useState<'list' | 'create' | 'calendar' | 'details' | 'catalog' | 'docs' | 'tools' | 'pokedex'>('list');
+  const [view, setView] = useState<'list' | 'calendar' | 'details' | 'catalog' | 'tools' | 'brand_gen'>('list');
   const [events, setEvents] = useState<PogoEvent[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  
-  // Delete Modal State
-  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean, id: string | null }>({ show: false, id: null });
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  // Load initial data
   useEffect(() => {
-    checkAuth();
+    fetchEvents();
   }, []);
-
-  const checkAuth = async () => {
-    setLoading(true);
-    try {
-      const u = await getCurrentUser();
-      setUser(u);
-    } catch {
-      setUser(null);
-    } finally {
-      // Fetch events regardless of auth status (Public Read)
-      fetchEvents();
-    }
-  };
 
   const fetchEvents = async () => {
     setLoading(true);
+    setApiError(null);
     const client = generateClient();
     try {
       const result: any = await client.graphql({
@@ -135,30 +95,12 @@ const App: React.FC = () => {
         authMode: 'apiKey'
       });
       
+      if (result.errors) {
+          throw new Error(result.errors[0].message);
+      }
+
       const items = result.data.listPogoEvents.items;
-      const parsedEvents: PogoEvent[] = items.map((item: any) => {
-        let paymentApp: PogoEvent['payment'] = undefined;
-        if (item.payment) {
-            paymentApp = {
-                type: item.payment.type,
-                cost: item.payment.cost,
-                ticket: {
-                    cost: item.payment.ticketCost,
-                    bonuses: item.payment.ticketBonuses || []
-                }
-            };
-        }
-
-        let featuredApp = undefined;
-        if (item.featured) {
-            featuredApp = {
-                name: item.featured.name,
-                image: item.featured.image,
-                shinyRate: 'Shiny: Padrão'
-            };
-        }
-
-        return {
+      const parsedEvents: PogoEvent[] = items.map((item: any) => ({
           ...item,
           spawnCategories: item.spawnCategories ? JSON.parse(item.spawnCategories) : [],
           attacks: item.attacks ? JSON.parse(item.attacks) : [],
@@ -167,178 +109,56 @@ const App: React.FC = () => {
           eggs: item.eggs ? JSON.parse(item.eggs) : [],
           bonuses: item.bonuses || [],
           images: item.images || [],
-          payment: paymentApp,
-          featured: featuredApp,
+          payment: item.payment,
+          featured: item.featured,
           paidResearch: item.paidResearch,
-        };
-      });
-      
-      // --- FILTER & SORT LOGIC ---
+      }));
+
       const now = new Date();
-      const oneMonthAgo = new Date();
-      oneMonthAgo.setMonth(now.getMonth() - 1);
+      const currentYear = now.getFullYear();
 
-      // 1. Filter: Hide events ended more than 30 days ago
-      const activeEvents = parsedEvents.filter(e => {
-          if (!e.end) return true; // Keep if no end date
-          const end = new Date(e.end);
-          return end > oneMonthAgo;
-      });
-
-      // 2. Sort: 
-      // Priority A: Live Events & Upcoming Events (Sorted by Start Date Ascending - Closest first)
-      // Priority B: Ended Events (Sorted by End Date Descending - Recently ended first)
-      activeEvents.sort((a, b) => {
-          const startA = new Date(a.start).getTime();
-          const startB = new Date(b.start).getTime();
-          const endA = new Date(a.end).getTime();
-          const endB = new Date(b.end).getTime();
-          const nowTime = now.getTime();
-
-          const aEnded = endA < nowTime;
-          const bEnded = endB < nowTime;
-
-          // If one is ended and the other is not, the not-ended one comes first
-          if (aEnded && !bEnded) return 1;
-          if (!aEnded && bEnded) return -1;
-
-          // If both are ended, sort by most recently ended (Descending)
-          if (aEnded && bEnded) return endB - endA;
-
-          // If both are future/live, sort by which one starts soonest (Ascending)
-          return startA - startB;
+      // Filter: Strictly events from the current year
+      const filtered = parsedEvents.filter(e => {
+          const startDate = new Date(e.start);
+          return startDate.getFullYear() === currentYear;
       });
       
-      setEvents(activeEvents);
-    } catch (e) {
+      const sorted = filtered.sort((a, b) => {
+          const startA = new Date(a.start);
+          const endA = new Date(a.end);
+          const startB = new Date(b.start);
+          const endB = new Date(b.end);
+
+          const getPriority = (start: Date, end: Date) => {
+              if (now >= start && now <= end) return 1; // Now
+              if (now < start) {
+                  const dDays = (start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+                  if (dDays <= 7) return 2; // Close Future
+                  return 3; // Distant Future
+              }
+              return 4; // Past
+          };
+
+          const prioA = getPriority(startA, endA);
+          const prioB = getPriority(startB, endB);
+
+          if (prioA !== prioB) return prioA - prioB;
+          // Sub-sort by date
+          if (prioA === 4) return startB.getTime() - startA.getTime(); // Past: newest first
+          return startA.getTime() - startB.getTime(); // Others: oldest first
+      });
+
+      setEvents(sorted);
+    } catch (e: any) {
       console.error("Error fetching events", e);
+      setApiError(e.message || "Falha na conexão com o servidor de dados.");
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDateForAWS = (dateStr?: string) => {
-    if (!dateStr) return null;
-    const date = new Date(dateStr);
-    return isNaN(date.getTime()) ? null : date.toISOString();
-  };
-
-  const handleLogout = async () => {
-    await signOut();
-    setUser(null);
-    // Don't clear events, public can see them
-    setView('list'); 
-  };
-
-  const handleSaveEvent = async (event: PogoEvent) => {
-    if (!isAdmin(user)) {
-        alert("Você não tem permissão para salvar eventos.");
-        return;
-    }
-
-    setLoading(true);
-    const client = generateClient();
-    try {
-        const paymentPayload = event.payment ? {
-            type: event.payment.type,
-            cost: event.payment.cost,
-            ticketCost: event.payment.ticket?.cost,
-            ticketBonuses: event.payment.ticket?.bonuses || []
-        } : null;
-
-        const featuredPayload = event.featured ? {
-            name: event.featured.name,
-            image: event.featured.image
-        } : null;
-
-        const payload = {
-            id: event.id,
-            name: event.name,
-            type: event.type,
-            start: formatDateForAWS(event.start),
-            end: formatDateForAWS(event.end),
-            location: event.location,
-            cover: event.cover,
-            research: event.research,
-            eggTitle: event.eggTitle,
-            eggDesc: event.eggDesc,
-            bonuses: event.bonuses,
-            images: event.images,
-            spawnCategories: JSON.stringify(event.spawnCategories),
-            attacks: JSON.stringify(event.attacks),
-            raidsList: JSON.stringify(event.raidsList),
-            customTexts: JSON.stringify(event.customTexts),
-            eggs: JSON.stringify(event.eggs),
-            payment: paymentPayload, 
-            featured: featuredPayload,
-            paidResearch: event.paidResearch 
-        };
-
-        if (events.find(e => e.id === event.id)) {
-            await client.graphql({
-              query: updatePogoEvent,
-              variables: { input: payload },
-              authMode: 'apiKey'
-            });
-        } else {
-            await client.graphql({
-              query: createPogoEvent,
-              variables: { input: payload },
-              authMode: 'apiKey'
-            });
-        }
-
-        setTimeout(() => {
-          fetchEvents();
-          setView('list');
-        }, 1000);
-        
-    } catch (e: any) {
-        console.error("Error saving event", e);
-        const msg = e.errors ? e.errors.map((err: any) => err.message).join(', ') : e.message;
-        alert(`Erro ao salvar evento: ${msg || 'Verifique o console'}`);
-    } finally {
-        setLoading(false);
-    }
-  };
-
-  const requestDelete = (id: string, e: React.MouseEvent) => {
-      e.stopPropagation();
-      setDeleteConfirm({ show: true, id });
-  };
-
-  const executeDelete = async () => {
-      if (!deleteConfirm.id) return;
-      if (!isAdmin(user)) {
-          alert("Apenas administradores podem excluir eventos.");
-          setDeleteConfirm({ show: false, id: null });
-          return;
-      }
-      
-      setIsDeleting(true);
-      const client = generateClient();
-      
-      try {
-         await client.graphql({
-            query: deletePogoEvent,
-            variables: { input: { id: String(deleteConfirm.id) } },
-            authMode: 'apiKey'
-         });
-         
-         setDeleteConfirm({ show: false, id: null });
-         await fetchEvents(); 
-      } catch(err: any) {
-         console.error("Erro ao deletar:", err);
-         const msg = err.errors ? err.errors.map((e:any) => e.message).join(', ') : err.message;
-         alert("Erro ao deletar: " + msg);
-      } finally {
-         setIsDeleting(false);
-      }
-  };
-
   const selectedEvent = events.find(e => e.id === selectedEventId);
 
-  // Render Logic
   const renderContent = () => {
     if (loading) {
         return (
@@ -350,32 +170,19 @@ const App: React.FC = () => {
         );
     }
 
+    if (apiError && view !== 'brand_gen') {
+        return (
+            <div className="flex flex-col items-center justify-center p-20 text-center bg-red-900/10 border border-red-900/30 rounded-3xl">
+                <i className="fa-solid fa-triangle-exclamation text-red-500 text-6xl mb-6"></i>
+                <h2 className="text-2xl font-bold text-white mb-2">Erro de Rede</h2>
+                <p className="text-slate-400 mb-8">{apiError}</p>
+                <Button onClick={fetchEvents}><i className="fa-solid fa-rotate-right mr-2"></i> Reestabelecer Conexão</Button>
+            </div>
+        );
+    }
+
     switch (view) {
-      case 'create':
-        if (!isAdmin(user)) {
-             return (
-                 <div className="flex flex-col items-center justify-center h-[50vh] text-center animate-fade-in">
-                     <div className="w-24 h-24 bg-red-900/20 border border-red-500 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(220,38,38,0.3)] transform -skew-x-12">
-                        <i className="fa-solid fa-user-lock text-4xl text-red-500 transform skew-x-12"></i>
-                     </div>
-                     <h2 className="text-3xl font-black text-white mb-2 font-rajdhani uppercase tracking-widest text-glow">Acesso Não Autorizado</h2>
-                     <p className="text-red-400 font-mono text-sm max-w-md mb-8 border-l-2 border-red-500 pl-4 bg-red-950/20 py-2">
-                        ERRO 403: Privilégios insuficientes.<br/>
-                        Acesso ao módulo de criação restrito a administradores.
-                     </p>
-                     <button onClick={() => setView('list')} className="text-cyan-400 hover:text-white font-bold transition font-rajdhani uppercase tracking-widest border border-cyan-500/50 px-8 py-3 hover:bg-cyan-500/20 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]">
-                        <i className="fa-solid fa-arrow-left mr-2"></i> Retornar ao Dashboard
-                     </button>
-                 </div>
-             );
-        }
-        return <EventForm 
-            initialData={selectedEvent} 
-            onSave={handleSaveEvent} 
-            onCancel={() => { setSelectedEventId(null); setView('list'); }} 
-        />;
       case 'calendar':
-        // @ts-ignore
         return <Calendar events={events} onEventClick={(id) => { setSelectedEventId(id); setView('details'); }} />;
       case 'details':
         return selectedEvent ? <EventDetail 
@@ -384,173 +191,114 @@ const App: React.FC = () => {
             onOpenCatalog={() => setView('catalog')}
         /> : <div>Evento não encontrado</div>;
       case 'catalog':
-        return selectedEvent ? <Catalog event={selectedEvent} user={user} onBack={() => setView('details')} /> : <div>Err</div>;
+        return selectedEvent ? <Catalog event={selectedEvent} onBack={() => setView('details')} /> : <div>Erro ao carregar catálogo</div>;
       case 'tools':
         return <ToolsPage events={events} />;
-      case 'pokedex':
-        return <Pokedex user={user} />;
-      case 'docs':
-        if (!isAdmin(user)) return <div>Acesso restrito</div>;
-        return <Documentation />;
+      case 'brand_gen':
+        return <BrandGenerator />;
       case 'list':
       default:
-        return (
-          <>
-            {/* --- HERO BANNER (Top Featured - First event in list) --- */}
-            {events.length > 0 && events[0].featured && (
-                <div 
-                    className="w-full h-[350px] rounded-3xl mb-12 relative overflow-hidden group cursor-pointer border border-blue-900/50 shadow-2xl bg-black" 
-                    onClick={() => { setSelectedEventId(events[0].id); setView('details'); }}
-                >
-                    {/* Background Tech Grid */}
-                    <div className="absolute inset-0 bg-dot-pattern opacity-20"></div>
-                    
-                    {/* Image */}
-                    <div className="absolute inset-0">
-                        {events[0].cover ? (
-                            <img src={events[0].cover} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000" />
-                        ) : (
-                            <div className="w-full h-full bg-gradient-to-r from-blue-900 to-slate-900"></div>
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#0b0e14] via-[#0b0e14]/60 to-transparent"></div>
-                    </div>
+        const heroEvent = events[0];
+        const displayEvents = events.slice(1);
 
-                    {/* Content */}
-                    <div className="absolute inset-0 flex items-center p-10 md:p-16">
-                        <div className="max-w-3xl relative z-10 animate-fade-in">
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="h-px w-8 bg-blue-500"></div>
-                                <span className="text-blue-400 font-bold font-rajdhani uppercase tracking-[0.2em] text-sm">Destaque Principal</span>
-                            </div>
-                            <h1 className="text-6xl md:text-7xl font-black text-white uppercase font-rajdhani leading-[0.85] mb-6 italic transform -skew-x-6 drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] text-outline group-hover:text-white transition-all duration-500">
-                                {events[0].name}
-                            </h1>
-                            <div className="flex items-center gap-6">
-                                <div className="flex flex-col">
-                                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Início</span>
-                                    <span className="text-xl text-white font-rajdhani font-bold">{new Date(events[0].start).toLocaleDateString()}</span>
+        return (
+          <div className="animate-fade-in">
+            {/* --- HERO BANNER --- */}
+            {heroEvent && (
+                <div 
+                    className="w-full h-[400px] rounded-[2.5rem] mb-16 relative overflow-hidden group cursor-pointer border-2 border-transparent bg-[#0f131a] shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+                    onClick={() => { setSelectedEventId(heroEvent.id); setView('details'); }}
+                >
+                    <div className="absolute inset-[-50%] z-0 animate-border-spin opacity-40 group-hover:opacity-100 transition-opacity duration-500"
+                         style={{ background: 'conic-gradient(from 0deg, transparent 0 300deg, #3b82f6 360deg)' }}>
+                    </div>
+                    <div className="absolute inset-[2px] rounded-[2.4rem] bg-[#0f131a] z-10 overflow-hidden">
+                        <div className="absolute inset-0 bg-dot-pattern opacity-10"></div>
+                        <div className="absolute top-0 right-0 w-[75%] h-full overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#0f131a]/80 to-[#0f131a] z-20"></div>
+                            <img 
+                                src={heroEvent.cover || (heroEvent.featured ? heroEvent.featured.image : '')} 
+                                className="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-all duration-1000 animate-ken-burns"
+                            />
+                        </div>
+                        <div className="absolute inset-0 p-12 z-30 flex flex-col justify-center max-w-2xl">
+                            <div className="flex flex-col items-start gap-4">
+                                <div className="flex items-center gap-2">
+                                    <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div>
+                                    <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] font-rajdhani">Protocolo Prioritário</span>
                                 </div>
-                                <div className="h-8 w-px bg-slate-700 transform skew-x-12"></div>
-                                <button className="btn-tech btn-tech-blue w-auto inline-flex px-8 py-2 text-sm">
-                                    Acessar Dados
+                                <h1 className="text-6xl md:text-7xl font-black text-white uppercase font-rajdhani leading-[0.85] italic tracking-tighter drop-shadow-2xl">
+                                    {heroEvent.name}
+                                </h1>
+                                <div className="flex items-center gap-4 mt-2">
+                                    <EventStatusBadge start={heroEvent.start} end={heroEvent.end} />
+                                    <div className="h-4 w-px bg-white/10"></div>
+                                    <span className="text-xl font-black text-slate-400 font-rajdhani">
+                                        {new Date(heroEvent.start).toLocaleDateString('pt-BR')}
+                                    </span>
+                                </div>
+                                <button 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedEventId(heroEvent.id);
+                                        setView('catalog');
+                                    }}
+                                    className="btn-tech btn-tech-blue mt-8 px-10 py-3 text-sm group-hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] transition-all"
+                                >
+                                    <i className="fa-solid fa-list-check mr-2 animate-pulse"></i> Protocolo de Captura
                                 </button>
                             </div>
                         </div>
-
-                        {/* Hero Character */}
-                        {events[0].featured && (
-                            <div className="absolute right-[-20px] top-0 bottom-0 w-1/2 hidden md:flex items-center justify-center pointer-events-none">
-                                <div className="absolute inset-0 bg-gradient-to-l from-blue-500/10 to-transparent mix-blend-overlay"></div>
-                                <img 
-                                    src={events[0].featured.image} 
-                                    className="h-[130%] object-contain drop-shadow-[0_0_50px_rgba(37,99,235,0.4)] group-hover:scale-110 transition duration-700" 
-                                />
+                        {heroEvent.featured && (
+                            <div className="absolute right-10 bottom-0 top-0 w-1/3 hidden lg:flex items-center justify-center z-40 pointer-events-none animate-float">
+                                 <img 
+                                    src={heroEvent.featured.image} 
+                                    className="max-h-[110%] object-contain drop-shadow-[0_0_60px_rgba(59,130,246,0.4)] group-hover:scale-105 transition-transform duration-700" 
+                                 />
                             </div>
                         )}
                     </div>
                 </div>
             )}
 
-            {/* --- EVENTS GRID HEADER --- */}
             <div className="flex items-center justify-between mb-10 border-b border-white/10 pb-4">
                 <h2 className="text-4xl font-black text-white font-rajdhani uppercase flex items-center gap-3 tracking-tighter italic">
                     <span className="text-blue-500">///</span>
-                    Event Database
+                    Sinalizações de {new Date().getFullYear()}
                 </h2>
-                {isAdmin(user) && (
-                    <button onClick={() => setView('create')} className="btn-tech btn-tech-green w-auto px-6 py-2 text-sm">
-                        <i className="fa-solid fa-plus"></i> Novo Registro
-                    </button>
-                )}
             </div>
 
-            {/* --- JJK STYLE CARDS --- */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
-                {events.map((evt, index) => {
-                    const theme = getEventTheme(evt.type);
+                {displayEvents.map((evt, index) => {
                     const startDate = new Date(evt.start);
-                    
                     const day = startDate.getDate().toString().padStart(2, '0');
                     const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
                     const year = startDate.getFullYear().toString().slice(-2);
-
                     let coverImg = evt.cover || (evt.images && evt.images[0]) || (evt.featured ? evt.featured.image : 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg');
                     
-                    // Specific border/glow colors based on theme
-                    let borderColor = "border-blue-500/30 group-hover:border-blue-400";
-                    let textColor = "text-blue-100";
-                    let stripeColor = "text-blue-500";
-                    
-                    if (theme.border.includes('red')) { borderColor = "border-red-500/30 group-hover:border-red-400"; textColor = "text-red-100"; stripeColor = "text-red-500"; }
-                    if (theme.border.includes('yellow')) { borderColor = "border-yellow-500/30 group-hover:border-yellow-400"; textColor = "text-yellow-100"; stripeColor = "text-yellow-500"; }
-                    if (theme.border.includes('emerald')) { borderColor = "border-emerald-500/30 group-hover:border-emerald-400"; textColor = "text-emerald-100"; stripeColor = "text-emerald-500"; }
-                    if (theme.border.includes('fuchsia')) { borderColor = "border-fuchsia-500/30 group-hover:border-fuchsia-400"; textColor = "text-fuchsia-100"; stripeColor = "text-fuchsia-500"; }
-
                     return (
                         <div 
                             key={evt.id} 
                             onClick={() => { setSelectedEventId(evt.id); setView('details'); }}
-                            className={`
-                                group relative h-[280px] rounded-3xl overflow-hidden cursor-pointer
-                                bg-[#0f131a] border ${borderColor} transition-all duration-500
-                                hover:shadow-[0_0_40px_rgba(0,0,0,0.6)] hover:-translate-y-1
-                            `}
+                            className="group relative h-[280px] rounded-3xl overflow-hidden cursor-pointer bg-[#0f131a] border border-white/10 transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,0,0,0.6)] hover:-translate-y-1"
                         >
-                            {/* --- BACKGROUND LAYERS --- */}
                             <div className="absolute inset-0 bg-dot-pattern opacity-10"></div>
-                            
-                            {/* Masked Image on Right */}
                             <div className="absolute top-0 right-0 w-[65%] h-full overflow-hidden">
-                                <div className={`absolute inset-0 bg-gradient-to-l from-transparent via-[#0f131a]/20 to-[#0f131a] z-10`}></div>
-                                <img 
-                                    src={coverImg} 
-                                    className="w-full h-full object-cover object-center opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 filter grayscale group-hover:grayscale-0"
-                                />
+                                <div className={`absolute inset-0 bg-gradient-to-l from-transparent via-[#0f131a]/60 to-[#0f131a] z-10`}></div>
+                                <img src={coverImg} className="w-full h-full object-cover object-center opacity-50 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700 filter grayscale group-hover:grayscale-0" />
                             </div>
-
-                            {/* --- DECORATIONS (JJK STYLE) --- */}
-                            
-                            {/* Top Right Corner Tech */}
-                            <div className="absolute top-4 right-4 flex items-center gap-1 z-20 opacity-50">
-                                <div className={`w-1.5 h-1.5 rounded-full ${stripeColor.replace('text-', 'bg-')}`}></div>
-                                <div className={`w-1.5 h-1.5 rounded-full ${stripeColor.replace('text-', 'bg-')}`}></div>
-                                <div className={`w-1.5 h-1.5 rounded-full ${stripeColor.replace('text-', 'bg-')}`}></div>
-                                <span className="font-mono text-xs text-white ml-2 tracking-widest">SYS.0{index + 1}</span>
-                            </div>
-
-                            {/* Bottom Right Stripes */}
-                            <div className={`absolute bottom-0 right-6 w-24 h-4 bg-stripe-pattern ${stripeColor} transform -skew-x-12 z-20`}></div>
-
-                            {/* Left Vertical Tech Text */}
-                            <div className="absolute top-1/2 left-3 transform -translate-y-1/2 -rotate-90 origin-center opacity-30 pointer-events-none hidden sm:block">
-                                <span className="text-xs font-mono tracking-[0.3em] text-white uppercase whitespace-nowrap">
-                                    POKEMON GO EVENT PROTOCOL // {year}
-                                </span>
-                            </div>
-
-                            {/* --- CONTENT (Left Aligned) --- */}
                             <div className="absolute inset-0 p-6 z-20 flex flex-col justify-between pl-8">
-                                
-                                {/* Header: Type */}
                                 <div className="flex flex-col items-start">
-                                    <div className={`
-                                        text-xs font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded border ${borderColor} ${textColor}
-                                        bg-black/40 backdrop-blur mb-1
-                                    `}>
+                                    <div className="text-[9px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded border border-white/20 text-blue-100 bg-black/40 backdrop-blur mb-1">
                                         [{evt.type}]
                                     </div>
                                 </div>
-
-                                {/* Body: Title & Date */}
                                 <div className="relative">
-                                    {/* Giant Title */}
                                     <h3 className="text-4xl font-black text-white uppercase font-rajdhani leading-[0.85] italic mb-3 drop-shadow-lg max-w-[80%]">
                                         {evt.name}
                                     </h3>
-                                    
-                                    {/* Stylized Date Box */}
                                     <div className="flex items-center gap-2">
-                                        <div className={`flex text-2xl font-black font-rajdhani ${stripeColor} tracking-tighter`}>
+                                        <div className="flex text-2xl font-black font-rajdhani text-blue-500 tracking-tighter">
                                             <span>{day}</span>
                                             <span className="mx-1 text-slate-600">/</span>
                                             <span>{month}</span>
@@ -559,91 +307,35 @@ const App: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Status Line */}
                                 <div className="flex items-center gap-2 mt-2">
                                     <EventStatusBadge start={evt.start} end={evt.end} />
                                 </div>
                             </div>
-
-                            {/* --- ADMIN ACTIONS --- */}
-                            {isAdmin(user) && (
-                                <div className="absolute top-4 right-14 z-30 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                                    <button 
-                                        onClick={(e) => { e.stopPropagation(); setSelectedEventId(evt.id); setView('create'); }}
-                                        className="bg-black/50 hover:bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded border border-white/10"
-                                    >
-                                        <i className="fa-solid fa-pen text-xs"></i>
-                                    </button>
-                                    <button 
-                                        onClick={(e) => requestDelete(evt.id, e)}
-                                        className="bg-black/50 hover:bg-red-600 text-white w-8 h-8 flex items-center justify-center rounded border border-white/10"
-                                    >
-                                        <i className="fa-solid fa-trash text-xs"></i>
-                                    </button>
-                                </div>
-                            )}
                         </div>
                     );
                 })}
             </div>
-          </>
+          </div>
         );
     }
   };
 
   return (
     <div className="flex min-h-screen bg-[#0b0e14] text-slate-200 font-sans selection:bg-blue-500/30">
-      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} onLoginSuccess={() => { setShowAuthModal(false); checkAuth(); }} />
-      
-      <ConfirmModal 
-        isOpen={deleteConfirm.show} 
-        message="Tem certeza que deseja excluir este evento? Esta ação não pode ser desfeita."
-        onCancel={() => setDeleteConfirm({ show: false, id: null })}
-        onConfirm={executeDelete}
-        isLoading={isDeleting}
-      />
-
-      <Sidebar 
-          user={user} 
-          currentView={view} 
-          setView={(v) => { setSelectedEventId(null); setView(v); }} 
-          onLogout={handleLogout}
-          onLogin={() => setShowAuthModal(true)}
-      />
-
-      {/* Main Content Area */}
+      <Sidebar currentView={view} setView={(v) => { setSelectedEventId(null); setView(v); }} />
       <main className="flex-1 overflow-x-hidden relative">
-        
-        {/* Top Header */}
         <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#0b0e14]/80 backdrop-blur sticky top-0 z-30">
             <div className="text-sm font-bold text-slate-500 uppercase tracking-widest hidden md:block font-rajdhani">
-                Dashboard / {view === 'list' ? 'Visão Geral' : view.toUpperCase()}
+                CatchNexus / {view === 'list' ? 'Terminal' : view.toUpperCase()}
             </div>
-            
             <div className="flex items-center gap-6 ml-auto">
                 <div className="bg-[#151a25] px-4 py-2 rounded-sm border border-white/5 flex items-center gap-3 shadow-sm">
                     <span className="text-xs font-bold text-blue-400 uppercase font-rajdhani tracking-wider">Season 12</span>
                     <div className="h-4 w-px bg-slate-700"></div>
-                    <span className="text-xs font-bold text-slate-400 font-mono">v2.5.0</span>
+                    <span className="text-xs font-bold text-slate-400 font-mono text-[9px]">NEXUS CORE v3.5</span>
                 </div>
-                
-                {user && (
-                    <div className="flex items-center gap-3">
-                        <div className="text-right hidden sm:block">
-                            <div className="text-xs font-bold text-white font-rajdhani uppercase tracking-wide">{user.username}</div>
-                            <div className="text-xs text-green-400 font-bold uppercase tracking-widest">Online</div>
-                        </div>
-                        <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 p-0.5 transform -skew-x-12 shadow-[0_0_10px_rgba(34,211,238,0.3)]">
-                            <div className="w-full h-full bg-[#0b0e14] flex items-center justify-center text-xs font-bold text-white transform skew-x-12">
-                                {user.username?.substring(0,2).toUpperCase()}
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
         </header>
-
         <div className="p-6 md:p-10 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
              {renderContent()}
         </div>

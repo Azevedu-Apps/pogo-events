@@ -15,7 +15,6 @@ export const listPogoEvents = /* GraphQL */ `
         eggDesc
         bonuses
         images
-        # Custom Types must have sub-selections
         payment {
           type
           cost
@@ -31,7 +30,6 @@ export const listPogoEvents = /* GraphQL */ `
           cost
           details
         }
-        # JSON fields stored as strings
         spawnCategories
         attacks
         raidsList
@@ -45,9 +43,7 @@ export const listPogoEvents = /* GraphQL */ `
 `;
 
 export const createPogoEvent = /* GraphQL */ `
-  mutation CreatePogoEvent(
-    $input: CreatePogoEventInput!
-  ) {
+  mutation CreatePogoEvent($input: CreatePogoEventInput!) {
     createPogoEvent(input: $input) {
       id
       name
@@ -57,9 +53,7 @@ export const createPogoEvent = /* GraphQL */ `
 `;
 
 export const updatePogoEvent = /* GraphQL */ `
-  mutation UpdatePogoEvent(
-    $input: UpdatePogoEventInput!
-  ) {
+  mutation UpdatePogoEvent($input: UpdatePogoEventInput!) {
     updatePogoEvent(input: $input) {
       id
       name
@@ -69,11 +63,23 @@ export const updatePogoEvent = /* GraphQL */ `
 `;
 
 export const deletePogoEvent = /* GraphQL */ `
-  mutation DeletePogoEvent(
-    $input: DeletePogoEventInput!
-  ) {
+  mutation DeletePogoEvent($input: DeletePogoEventInput!) {
     deletePogoEvent(input: $input) {
       id
+    }
+  }
+`;
+
+export const createUserFeedback = /* GraphQL */ `
+  mutation CreateUserFeedback($input: CreateUserFeedbackInput!) {
+    createUserFeedback(input: $input) {
+      id
+      title
+      content
+      category
+      imageUrl
+      occuredAt
+      createdAt
     }
   }
 `;
