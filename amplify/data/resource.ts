@@ -85,6 +85,18 @@ const schema = a.schema({
     .authorization(allow => [
       allow.publicApiKey(), // Permite leitura/escrita via API Key (facilitará o script de seed)
     ]),
+  UserFeedback: a.model({
+    title: a.string(),
+    content: a.string().required(),
+    userEmail: a.string(),
+    category: a.string(),
+    deviceInfo: a.string(),
+    imageUrl: a.string(),
+    occuredAt: a.datetime(),
+  }).authorization(allow => [
+    allow.publicApiKey().to(['create']),
+    allow.owner().to(['read', 'delete'])
+  ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

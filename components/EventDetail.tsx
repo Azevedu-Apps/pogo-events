@@ -18,36 +18,8 @@ interface EventDetailProps {
 const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog }) => {
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
-  const [inlineCss, setInlineCss] = useState('');
   const [progressPercent, setProgressPercent] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
-
-  // Fetch External CSS for the infographic
-  useEffect(() => {
-      const loadStyles = async () => {
-          try {
-              const faUrl = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-              const fontUrl = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap';
-
-              const [faRes, fontRes] = await Promise.all([
-                  fetch(faUrl).catch(() => null),
-                  fetch(fontUrl).catch(() => null)
-              ]);
-
-              let cssCombined = '';
-              if (fontRes?.ok) cssCombined += await fontRes.text() + '\n';
-              if (faRes?.ok) {
-                  let faCss = await faRes.text();
-                  faCss = faCss.replace(/\.\.\/webfonts\//g, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/');
-                  cssCombined += faCss;
-              }
-              setInlineCss(cssCombined);
-          } catch (e) {
-              console.error('Error loading remote styles', e);
-          }
-      };
-      loadStyles();
-  }, []);
 
   // Calculate Progress & Check Start Date
   useEffect(() => {
@@ -152,7 +124,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
 
        {/* Hidden Infographic */}
        <div className="fixed top-0 left-[-9999px] pointer-events-none">
-           <EventInfographic event={event} id="event-infographic-capture" inlineStyles={inlineCss} />
+           <EventInfographic event={event} id="event-infographic-capture" />
        </div>
 
        {/* --- FIXED BACKGROUND TEXTURE --- */}
