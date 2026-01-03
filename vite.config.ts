@@ -33,8 +33,8 @@ export default defineConfig(({ mode }) => {
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
         manifest: {
-          name: 'CatchNexus | Creature Tracker',
-          short_name: 'CatchNexus',
+          name: 'Vorgex | Creature Tracker',
+          short_name: 'Vorgex',
           description: 'Nexus de inteligência para colecionadores de criaturas.',
           theme_color: '#0b0e14',
           background_color: '#0b0e14',

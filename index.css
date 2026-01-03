@@ -142,6 +142,16 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     100% { background-position: 1rem 0; }
 }
 
+.animate-progress-flow {
+    background-size: 200% 100%;
+    animation: progressFlow 2s linear infinite;
+}
+
+@keyframes progressFlow {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
 .sidebar-link {
     position: relative;
     display: flex;
