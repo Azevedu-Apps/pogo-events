@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { PogoEvent, CustomText, Raid, Attack } from '../../types';
-import { getTypeIcon } from '../../services/assets'; 
-import { getEventTheme as getTheme } from '../../utils/visuals'; 
+import { getTypeIcon } from '../../services/assets';
+import { getEventTheme as getTheme } from '../../utils/visuals';
 import { PokemonCard } from '../ui/PokemonCard';
 
 // Removed HeroSection as it is now inline in EventDetail for better control
@@ -19,7 +19,7 @@ export const TicketCard: React.FC<{ ticket: NonNullable<PogoEvent['payment']>['t
                 <ul className="space-y-2 mt-3">
                     {ticket.bonuses.map((b, i) => (
                         <li key={i} className="text-indigo-100 text-sm flex items-start gap-2">
-                            <i className="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i> 
+                            <i className="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
                             <span className="leading-tight">{b}</span>
                         </li>
                     ))}
@@ -35,6 +35,40 @@ export const FreeResearchDisplay: React.FC<{ research: string }> = ({ research }
             <i className="fa-solid fa-magnifying-glass"></i> Pesquisas Gratuitas
         </h3>
         <p className="text-slate-300 text-sm whitespace-pre-line leading-relaxed">{research}</p>
+    </section>
+);
+
+export const PaidResearchDisplay: React.FC<{ research: NonNullable<PogoEvent['paidResearch']> }> = ({ research }) => (
+    <section className="bg-gradient-to-br from-[#1a160a] to-[#2a2412] border border-yellow-600/30 rounded-2xl p-8 relative overflow-hidden group shadow-xl">
+        {/* Background Effects */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+        <div className="absolute -left-10 -bottom-10 text-yellow-500/5 text-9xl rotate-12 pointer-events-none z-0">
+            <i className="fa-solid fa-file-invoice-dollar"></i>
+        </div>
+
+        <div className="relative z-10">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-6 border-b border-yellow-500/10 pb-6">
+                <div>
+                    <span className="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded text-[10px] font-black uppercase tracking-widest text-yellow-500 mb-3 shadow-[0_0_10px_rgba(234,179,8,0.2)]">
+                        Conteúdo Premium
+                    </span>
+                    <h3 className="text-2xl font-black text-yellow-100 font-rajdhani uppercase tracking-wide leading-none">{research.name}</h3>
+                </div>
+                <div className="text-right">
+                    <div className="text-3xl font-black text-yellow-400 font-rajdhani">{research.cost}</div>
+                    <div className="text-xs text-yellow-600 uppercase font-bold tracking-widest">Preço Estimado</div>
+                </div>
+            </div>
+
+            <div className="prose prose-invert prose-sm max-w-none">
+                <p className="text-yellow-100/80 leading-relaxed whitespace-pre-line text-base">{research.details}</p>
+            </div>
+
+            <div className="mt-6 flex items-center gap-2 text-xs text-yellow-600 font-bold uppercase tracking-widest border-t border-yellow-500/10 pt-4">
+                <i className="fa-solid fa-circle-exclamation"></i>
+                <span>Disponível na loja do jogo</span>
+            </div>
+        </div>
     </section>
 );
 
@@ -55,32 +89,30 @@ export const CustomSectionsDisplay: React.FC<{ sections: CustomText[], onImageCl
                         <h3 className="text-3xl font-black text-white font-rajdhani uppercase tracking-widest text-shadow-sm">{section.title}</h3>
                         <div className="flex-1 h-px bg-gradient-to-r from-blue-500/30 to-transparent"></div>
                     </div>
-                    
+
                     {section.type === 'text' && (
                         <div className="bg-[#151a25]/60 border-l-2 border-blue-500/50 p-6 md:p-8 rounded-r-2xl backdrop-blur-sm">
                             <p className="text-slate-300 text-lg leading-relaxed whitespace-pre-line">{section.desc}</p>
                         </div>
                     )}
-                    
+
                     {section.type === 'image' && section.img && (
                         <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/5 group-hover:border-blue-500/30 transition-colors">
                             <div className="absolute inset-0 bg-blue-900/10 mix-blend-overlay pointer-events-none"></div>
-                            <img 
-                                src={section.img} 
-                                onClick={() => onImageClick(section.img!)} 
-                                className="w-full h-auto max-h-[600px] object-cover cursor-zoom-in transition-transform duration-700 hover:scale-105" 
+                            <img
+                                src={section.img}
+                                className="w-full h-auto max-h-[600px] object-cover transition-transform duration-700 hover:scale-105"
                             />
                         </div>
                     )}
-                    
+
                     {section.type === 'mixed' && section.img && (
                         <div className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-10 items-center`}>
                             <div className="md:w-1/2 w-full relative group/img">
                                 <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full opacity-0 group-hover/img:opacity-20 transition-opacity"></div>
-                                <img 
-                                    src={section.img} 
-                                    onClick={() => onImageClick(section.img!)} 
-                                    className="w-full rounded-2xl cursor-zoom-in border border-white/10 shadow-2xl relative z-10" 
+                                <img
+                                    src={section.img}
+                                    className="w-full rounded-2xl border border-white/10 shadow-2xl relative z-10"
                                 />
                             </div>
                             <div className="md:w-1/2 w-full">
@@ -96,28 +128,28 @@ export const CustomSectionsDisplay: React.FC<{ sections: CustomText[], onImageCl
     </div>
 );
 
-export const RaidDisplay: React.FC<{ raids: Raid[], title?: string, icon?: string, colorClass?: string }> = ({ 
-    raids, 
-    title = "Reides", 
-    icon = "fa-dragon", 
-    colorClass = "text-red-400" 
+export const RaidDisplay: React.FC<{ raids: Raid[], title?: string, icon?: string, colorClass?: string }> = ({
+    raids,
+    title = "Reides",
+    icon = "fa-dragon",
+    colorClass = "text-red-400"
 }) => (
     <section>
-         <h3 className={`text-2xl font-black uppercase tracking-wide ${colorClass} mb-8 flex items-center gap-3`}>
+        <h3 className={`text-2xl font-black uppercase tracking-wide ${colorClass} mb-8 flex items-center gap-3`}>
             <i className={`fa-solid ${icon}`}></i> {title}
-         </h3>
-         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-             {raids.map((raid, i) => (
-                 <PokemonCard 
-                    key={i} 
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {raids.map((raid, i) => (
+                <PokemonCard
+                    key={i}
                     name={raid.boss}
                     image={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${raid.boss.toLowerCase().replace(/\s+/g, '-').replace(/[.'":]/g, '')}.png`}
                     tier={raid.tier}
-                    shiny={true} 
+                    shiny={true}
                     className="bg-black/40 border-white/5 hover:border-white/20"
-                 />
-             ))}
-         </div>
+                />
+            ))}
+        </div>
     </section>
 );
 

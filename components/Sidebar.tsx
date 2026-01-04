@@ -56,6 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
     { id: 'list', label: 'Eventos', icon: 'fa-solid fa-layer-group' },
     { id: 'calendar', label: 'Calendário', icon: 'fa-solid fa-calendar-days' },
     { id: 'tools', label: 'Ferramentas', icon: 'fa-solid fa-screwdriver-wrench' },
+    { id: 'assets', label: 'Assets', icon: 'fa-solid fa-image' },
   ];
 
   const handleNavigation = (viewId: string) => {

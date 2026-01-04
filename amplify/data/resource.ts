@@ -11,7 +11,9 @@ const PaymentInfo = a.customType({
 const FeaturedPokemon = a.customType({
   name: a.string(),
   image: a.string(),
-  shinyRate: a.string()
+  shinyRate: a.string(),
+  form: a.string(),
+  costume: a.string(),
 });
 
 const PaidResearch = a.customType({

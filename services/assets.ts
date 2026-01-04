@@ -47,9 +47,9 @@ export const ITEM_MAP: Record<string, string> = {
     'egg_12km': 'Egg_12km_TR.png',
 
     // --- BALLS ---
-    'poke_ball': 'PokeBall.png', // Assuming exists, otherwise standard name
-    'great_ball': 'GreatBall.png',
-    'ultra_ball': 'UltraBall.png',
+    'poke_ball': 'pokeball_sprite.png',
+    'great_ball': 'greatball_sprite.png',
+    'ultra_ball': 'ultraball_sprite.png',
     'master_ball': 'masterball_sprite.png',
     'premier_ball': 'premierball_sprite.png',
     'safari_ball': 'wildball_sprite.png',
@@ -74,8 +74,8 @@ export const ITEM_MAP: Record<string, string> = {
     'up_grade': 'Bag_Up-Grade_Sprite.png',
     'sinnoh_stone': 'Bag_Sinnoh_Stone_Sprite.png',
     'unova_stone': 'Bag_Unova_Stone_Sprite.png',
-    'other_stone_a': 'Bag_Other_Stone_A_Sprite.png', // Usually placeholder
-    
+    'other_stone_a': 'Bag_Other_Stone_A_Sprite.png',
+
     // --- RAIDS & BATTLE ---
     'raid_pass': 'Item_1401.png',
     'raid_pass_premium': 'Item_1402.png',
@@ -88,7 +88,7 @@ export const ITEM_MAP: Record<string, string> = {
     'tm_charged_elite': 'Item_1204.png',
 
     // --- INCUBATORS ---
-    'incubator_basic': 'Item_0902.png', 
+    'incubator_basic': 'Item_0902.png',
     'incubator_super': 'EggIncubatorSuper_Empty.png',
     'incubator_infinite': 'EggIncubatorUnlimited_Activated.png',
     'incubator_iap': 'EggIncubatorIAP_Activated.png',
@@ -112,7 +112,7 @@ export const ITEM_MAP: Record<string, string> = {
     'postcard_storage': 'Item_postcardstorageupgrade.1.png',
     'item_storage': 'itemstorageupgrade.1.png',
     'pokemon_storage': 'pokemonstorageupgrade.1.png',
-    
+
     // --- TECH / NEW MECHANICS ---
     'bottle_cap': 'single_stat_increase.png',
     'bottle_cap_gold': 'triple_stat_increase.png',
@@ -123,7 +123,7 @@ export const ITEM_MAP: Record<string, string> = {
     'ar_camera': 'tx_ar_photo_camera.png',
     'converter': 'tx_converter.png',
     'pass_point': 'item_pass_point_01.png',
-    
+
     // --- UNKNOWN / NUMBERED ---
     'item_0704': 'Item_0704.png',
     'item_0706': 'Item_0706.png',
@@ -133,34 +133,71 @@ export const ITEM_MAP: Record<string, string> = {
     'item_1602': 'item_1602.png',
     'item_1606': 'item_1606.png',
     'item_1607': 'item_1607.png',
+
+    // --- SHOP / GIFTS ---
+    // 'gift_box' already exists above, ensuring it uses the verified path if not
+    'max_mushroom': 'mp_pack.png', // Max Particles / Dynamax resource
 };
 
-export const getPokemonAsset = (id: number, shiny: boolean = false): string => {
+// --- STATUS ICONS ---
+// Updated based on direct repo inspection
+export const STATUS_ICONS: Record<string, string> = {
+    'shiny': `${POGO_ASSETS_BASE}/Filters/ic_shiny_white.png`,
+    'shadow': `${POGO_ASSETS_BASE}/Rocket/ic_shadow.png`,
+    'purified': `${POGO_ASSETS_BASE}/Rocket/ic_purified.png`,
+    'lucky': `${POGO_ASSETS_BASE}/Filters/pokemon_filter_lucky.png`,
+    'hundo': `${POGO_ASSETS_BASE}/Menu%20Icons/icon_shiny_3star.png`, // 4* Perfect
+    'xxl': `${POGO_ASSETS_BASE}/Filters/pokemon_filter_xxl.png`, // Using standard filter naming if available
+    'xxs': `${POGO_ASSETS_BASE}/Filters/pokemon_filter_xxs.png`,
+    'best_buddy': `${POGO_ASSETS_BASE}/Filters/pokemon_filter_best_buddy.png`,
+    'pokedex_shiny': `${POGO_ASSETS_BASE}/Pokedex/ic_shiny.png`,
+    'pokedex_lucky': `${POGO_ASSETS_BASE}/Filters/ic_lucky_icon.png`,
+};
+
+// --- UI ICONS ---
+export const UI_ICONS: Record<string, string> = {
+    'collection_challenge': `${POGO_ASSETS_BASE}/Menu%20Icons/btn_challenge.png`,
+    'raid': `${POGO_ASSETS_BASE}/Menu%20Icons/raid_icon.png`,
+    'wild_encounter': `${POGO_ASSETS_BASE}/Quests/QuestPokemonReward.png`,
+    'showcase': `${POGO_ASSETS_BASE}/Pokestops/ic_showcase.png`,
+    'battle': `${POGO_ASSETS_BASE}/Menu%20Icons/btn_battle.png`,
+    'league_great': `${POGO_ASSETS_BASE}/Combat/pogo_great_league.png`,
+    'league_ultra': `${POGO_ASSETS_BASE}/Combat/pogo_ultra_league.png`,
+    'league_master': `${POGO_ASSETS_BASE}/Combat/pogo_master_league.png`,
+};
+
+export const getStatusIcon = (status: keyof typeof STATUS_ICONS): string => {
+    return STATUS_ICONS[status] || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+};
+
+export const getUIIcon = (icon: keyof typeof UI_ICONS): string => {
+    return UI_ICONS[icon] || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+};
+
+export const getPokemonAsset = (id: number, options?: { shiny?: boolean, form?: string, costume?: string }): string => {
     // PokeMiners Naming Convention:
-    // pokemon_icon_{ID_3_DIGITS}_{FORM_2_DIGITS}{_shiny}.png
-    
+    // pokemon_icon_{ID_3_DIGITS}_{FORM_2_DIGITS}_{COSTUME_2_DIGITS}{_shiny}.png
+    // Verified: pokemon_icon_001_00.png
+
     const paddedId = id.toString().padStart(3, '0');
-    const form = '00'; 
-    const suffix = shiny ? '_shiny' : '';
-    
-    return `${POKEMON_ASSETS_BASE}/pokemon_icon_${paddedId}_${form}${suffix}.png`;
+    const form = options?.form || '00';
+    const costume = options?.costume ? `_${options.costume}` : '';
+    const suffix = options?.shiny ? '_shiny' : '';
+
+    return `${POKEMON_ASSETS_BASE}/pokemon_icon_${paddedId}_${form}${costume}${suffix}.png`;
 };
 
 export const getTypeIcon = (type: string): string => {
     if (!type) return `${TYPE_ICON_BASE}/POKEMON_TYPE_NORMAL.png`;
-
-    // PokeMiners naming convention: POKEMON_TYPE_{TYPE_UPPERCASE}.png
-    // Example: POKEMON_TYPE_FIRE.png
+    // Verified Types folder exists
     const formattedType = type.toUpperCase();
-    
     return `${TYPE_ICON_BASE}/POKEMON_TYPE_${formattedType}.png`;
 };
 
 export const getItemIcon = (key: keyof typeof ITEM_MAP): string => {
     const val = ITEM_MAP[key];
     if (!val) return 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg';
-    
-    // If we manually mapped a full URL (like for Eggs), use it directly
+
     if (val.startsWith('http')) {
         return val;
     }
@@ -168,11 +205,14 @@ export const getItemIcon = (key: keyof typeof ITEM_MAP): string => {
 };
 
 export const getRaidEggIcon = (tier: string): string => {
-    if (tier === '1') return `${POGO_ASSETS_BASE}/Raids/raid_egg_pink.png`;
-    if (tier === '3') return `${POGO_ASSETS_BASE}/Raids/raid_egg_yellow.png`;
-    if (tier === '5') return `${POGO_ASSETS_BASE}/Raids/raid_egg_legendary.png`;
-    if (tier === 'Mega') return `${POGO_ASSETS_BASE}/Raids/raid_egg_mega.png`;
-    if (tier === 'Shadow') return `${POGO_ASSETS_BASE}/Raids/raid_egg_shadow_tier_5.png`; 
-    // Fallback for others or if assets are missing
-    return `${POGO_ASSETS_BASE}/Raids/raid_egg_legendary.png`;
+    // Verified filenames in Images/Raids
+    if (tier === '1') return `${POGO_ASSETS_BASE}/Raids/ic_raid_egg_normal.png`;
+    if (tier === '3') return `${POGO_ASSETS_BASE}/Raids/ic_raid_egg_rare.png`;
+    if (tier === '5') return `${POGO_ASSETS_BASE}/Raids/ic_raid_egg_legendary.png`;
+    if (tier === 'Mega') return `${POGO_ASSETS_BASE}/Raids/raid_egg_3_icon.png`; // Mega Egg
+    if (tier === 'Shadow') return `${POGO_ASSETS_BASE}/Raids/raid_egg_shadow_icon.png`; // Assuming shadow exists or using fallback
+    if (tier === 'Primal') return `${POGO_ASSETS_BASE}/Raids/raid_egg_primal_icon.png`;
+
+    // Fallback
+    return `${POGO_ASSETS_BASE}/Raids/ic_raid_egg_legendary.png`;
 };

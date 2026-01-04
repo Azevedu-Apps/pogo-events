@@ -5,6 +5,7 @@ export interface Pokemon {
   shiny?: boolean;
   shinyImage?: string;
   form?: string;
+  costume?: string;
 }
 
 export interface SpawnCategory {

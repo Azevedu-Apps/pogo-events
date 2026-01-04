@@ -67,7 +67,6 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
             if (active) setLoading(false);
         };
         load();
-        console.log('### OPA =>', item);
         return () => { active = false; };
     }, [item.name, type]);
 

@@ -14,6 +14,7 @@ import Catalog from './components/Catalog';
 import { ToolsPage } from './components/ToolsPage';
 import { BrandGenerator } from './components/BrandGenerator';
 import { Dashboard } from './components/Dashboard';
+import { AssetsViewer } from './components/AssetsViewer';
 import { EventCardSkeleton } from './components/ui/Skeletons';
 import { Button } from './components/ui/Shared';
 import { Footer } from './components/Footer';
@@ -92,8 +93,8 @@ const EventStatusBadge = ({ start, end }: { start: string, end: string }) => {
     );
 };
 
-const App: React.FC = () => {
-    const [view, setView] = useState<'list' | 'calendar' | 'details' | 'catalog' | 'tools' | 'brand_gen' | 'dashboard'>('dashboard');
+function App() {
+    const [view, setView] = useState<'list' | 'calendar' | 'details' | 'catalog' | 'tools' | 'brand_gen' | 'dashboard' | 'assets'>('dashboard');
     const [events, setEvents] = useState<PogoEvent[]>([]);
     const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -127,7 +128,14 @@ const App: React.FC = () => {
                 eggs: item.eggs ? JSON.parse(item.eggs) : [],
                 bonuses: item.bonuses || [],
                 images: item.images || [],
-                payment: item.payment,
+                payment: item.payment ? {
+                    type: item.payment.type,
+                    cost: item.payment.cost,
+                    ticket: (item.payment.ticketCost || item.payment.ticketBonuses) ? {
+                        cost: item.payment.ticketCost,
+                        bonuses: item.payment.ticketBonuses || []
+                    } : undefined
+                } : undefined,
                 featured: item.featured,
                 paidResearch: item.paidResearch,
             }));
@@ -219,6 +227,8 @@ const App: React.FC = () => {
                 return <ToolsPage events={events} />;
             case 'brand_gen':
                 return <BrandGenerator />;
+            case 'assets':
+                return <AssetsViewer />;
             case 'list':
             default:
                 const heroEvent = events[0];
