@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { PogoEvent, CatalogProgress } from '../types';
 import { fetchPokemon } from '../services/pokeapi';
-import { getTypeIcon } from '../services/assets';
+import { getTypeIcon, getPokemonAsset } from '../services/assets';
 import { CatalogCardSkeleton } from './ui/Skeletons';
 import { Lightbox } from './ui/Lightbox';
 import { CatalogInfographic } from './detail/CatalogInfographic';
@@ -58,10 +58,20 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
             const data = await fetchPokemon(item.name);
             if (active && data) {
                 setDetails({ id: data.id, types: data.types });
-                const normal = (type === 'raid' || !images.normal || images.normal.includes('random')) ? data.image : images.normal;
+
+                let normal = (type === 'raid' || !images.normal || images.normal.includes('random')) ? data.image : images.normal;
+                let shiny = data.shinyImage || normal;
+
+                // Override logic for Forms and Costumes (Matches PokemonCard logic)
+                const hasSpecificForm = (item.form && item.form !== '00');
+                if ((item.costume || hasSpecificForm) && data.id) {
+                    normal = getPokemonAsset(data.id, { costume: item.costume, form: item.form || '00' });
+                    shiny = getPokemonAsset(data.id, { costume: item.costume, form: item.form || '00', shiny: true });
+                }
+
                 setImages({
                     normal: normal,
-                    shiny: data.shinyImage || normal
+                    shiny: shiny
                 });
             }
             if (active) setLoading(false);
@@ -286,7 +296,9 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
             items: cat.spawns.map(s => ({
                 id: `${cat.name.toLowerCase().replace(/\s+/g, '')}-${s.name.toLowerCase().replace(/\s+/g, '-')}`,
                 name: s.name,
-                image: s.image
+                image: s.image,
+                form: s.form,
+                costume: s.costume
             }))
         });
     });
@@ -312,8 +324,10 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
             items: event.raidsList.map(r => ({
                 id: `raid-${r.boss.toLowerCase().replace(/\s+/g, '-')}`,
                 name: r.boss,
-                image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${Math.floor(Math.random() * 900) + 1}.png`,
-                tier: r.tier
+                image: r.image || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${Math.floor(Math.random() * 900) + 1}.png`,
+                tier: r.tier,
+                form: r.form,
+                costume: r.costume
             }))
         });
     }

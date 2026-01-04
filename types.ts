@@ -28,6 +28,9 @@ export interface Attack {
 export interface Raid {
   tier: string;
   boss: string;
+  image?: string;
+  form?: string;
+  costume?: string;
 }
 
 export interface CustomText {
@@ -69,6 +72,8 @@ export interface PogoEvent {
     name: string;
     image: string;
     shinyRate?: string;
+    form?: string;
+    costume?: string;
   };
   paidResearch?: {
     name: string;

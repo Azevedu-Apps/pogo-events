@@ -8,6 +8,7 @@ import { captureAndDownload } from '../utils/capture';
 import { Lightbox } from './ui/Lightbox';
 import { PokemonCard } from './ui/PokemonCard';
 import { getEventTheme } from '../utils/visuals';
+import { getPokemonAsset } from '../services/assets';
 
 interface EventDetailProps {
     event: PogoEvent;
@@ -275,7 +276,12 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                                 <div className="absolute inset-0 bg-gradient-to-br from-pink-900/40 to-black/80 z-0"></div>
                                 <div className="absolute inset-0 flex items-center justify-center z-10 p-10">
                                     <img
-                                        src={event.featured.image}
+                                        src={event.featured.costume
+                                            ? getPokemonAsset(parseInt(event.featured.image.split('/').pop()?.split('.')[0] || '1'), {
+                                                costume: event.featured.costume,
+                                                form: event.featured.form
+                                            })
+                                            : event.featured.image}
                                         className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(236,72,153,0.3)] transition-transform duration-700 group-hover:scale-110"
                                     />
                                 </div>

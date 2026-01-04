@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { fetchPokemon } from '../../services/pokeapi';
 import { getTypeIcon, getPokemonAsset } from '../../services/assets';
@@ -66,21 +67,21 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, ti
     }
 
     // Calculate Display Image
-    // If costume is provided and we have the ID, use getPokemonAsset
     let displayImage = (isHovered && details?.shinyImage) ? details.shinyImage : (details?.image || image);
 
-    if (costume && details?.id) {
-        // Override with PokeMiners asset
+    // Override with PokeMiners asset if we have specific Form/Costume data
+    const hasSpecificForm = (form && form !== '00');
+    if ((costume || hasSpecificForm) && details?.id) {
         displayImage = getPokemonAsset(details.id, {
             costume: costume,
-            shiny: shiny, // Assets are pre-rendered shiny if needed
-            form: '00' // Default form for costumes usually
+            shiny: shiny,
+            form: form || '00'
         });
     }
 
     if (loading) {
         return (
-            <div className={`aspect - [3 / 4] bg - [#151a25] rounded - xl border border - white / 5 relative overflow - hidden ${className} `}>
+            <div className={`aspect-[3/4] bg-[#151a25] rounded-xl border border-white/5 relative overflow-hidden ${className}`}>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer"></div>
             </div>
         );
@@ -89,37 +90,30 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, ti
     return (
         <div
             className={`
-            group relative aspect - [3 / 4] bg - [#151a25] rounded - xl border ${borderClass}
-overflow - hidden transition - all duration - 300 ${glowClass}
-            flex flex - col select - none hover: -translate - y - 1
+            group relative aspect-[3/4] bg-[#151a25] rounded-xl border ${borderClass} 
+            overflow-hidden transition-all duration-300 ${glowClass}
+            flex flex-col select-none hover:-translate-y-1
             ${className || ''}
-`}
+        `}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-        // onClick handler removed as per request
-        // onClick={(e) => {
-        //     if (onImageClick) {
-        //         e.stopPropagation();
-        //         onImageClick(displayImage);
-        //     }
-        // }}
         >
             {/* Tech Background Overlay */}
             <div className="absolute inset-0 bg-[url('https://assets.pokemon.com/static2/_ui/img/global/bg_texture.png')] opacity-[0.03] pointer-events-none"></div>
-            <div className={`absolute inset - 0 bg - gradient - to - b ${bgGradient} opacity - 60`}></div>
+            <div className={`absolute inset-0 bg-gradient-to-b ${bgGradient} opacity-60`}></div>
 
             {/* Top Bar: Tier or Tech Indicator */}
             <div className="relative z-10 flex justify-between items-start p-3 h-10 flex-shrink-0">
                 {tier ? (
                     <div className="flex items-center gap-1.5">
-                        <div className={`h - 2 w - 2 rounded - full ${barColor} animate - pulse`}></div>
-                        <span className={`text - xs font - black uppercase tracking - widest leading - none ${accentColor} `}>
+                        <div className={`h-2 w-2 rounded-full ${barColor} animate-pulse`}></div>
+                        <span className={`text-xs font-black uppercase tracking-widest leading-none ${accentColor}`}>
                             {tier.replace('Max-', 'Max ')}
                         </span>
                     </div>
                 ) : (
                     <div className="flex items-center gap-1 opacity-40">
-                        <div className={`h - 1 w - 4 rounded - full ${barColor} `}></div>
+                        <div className={`h-1 w-4 rounded-full ${barColor}`}></div>
                         <div className="h-1 w-1 rounded-full bg-slate-600"></div>
                     </div>
                 )}
@@ -140,7 +134,7 @@ overflow - hidden transition - all duration - 300 ${glowClass}
             {/* Main Image - flex-1 allows it to shrink/grow, filling available space */}
             <div className="flex-1 relative flex items-center justify-center p-2 z-10 min-h-0">
                 {/* Hover Glow Behind Image */}
-                <div className={`absolute w - 24 h - 24 rounded - full bg - white / 5 blur - xl opacity - 0 group - hover: opacity - 100 transition - opacity duration - 500`}></div>
+                <div className={`absolute w-24 h-24 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
 
                 <img
                     src={displayImage}
@@ -155,8 +149,8 @@ overflow - hidden transition - all duration - 300 ${glowClass}
             {/* Footer Data Plate - flex-shrink-0 prevents it from being crushed */}
             <div className="relative z-20 bg-[#0b0e14] border-t border-white/5 px-2 pt-3 pb-4 flex flex-col items-center gap-1.5 flex-shrink-0">
                 {/* Tech Corner Accents on Footer */}
-                <div className={`absolute top - 0 left - 0 h - [1px] w - 6 ${barColor} `}></div>
-                <div className={`absolute top - 0 right - 0 h - [1px] w - 6 ${barColor} `}></div>
+                <div className={`absolute top-0 left-0 h-[1px] w-6 ${barColor}`}></div>
+                <div className={`absolute top-0 right-0 h-[1px] w-6 ${barColor}`}></div>
 
                 <h3 className="text-white font-rajdhani font-bold uppercase tracking-wider text-xs md:text-sm text-center leading-tight line-clamp-2 w-full px-1 min-h-[1.2em]">
                     {name}

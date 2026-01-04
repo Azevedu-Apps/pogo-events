@@ -14,6 +14,7 @@ const FeaturedPokemon = a.customType({
   shinyRate: a.string(),
   form: a.string(),
   costume: a.string(),
+  background: a.string(),
 });
 
 const PaidResearch = a.customType({

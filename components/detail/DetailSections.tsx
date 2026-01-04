@@ -143,9 +143,11 @@ export const RaidDisplay: React.FC<{ raids: Raid[], title?: string, icon?: strin
                 <PokemonCard
                     key={i}
                     name={raid.boss}
-                    image={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${raid.boss.toLowerCase().replace(/\s+/g, '-').replace(/[.'":]/g, '')}.png`}
+                    image={raid.image || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${raid.boss.toLowerCase().replace(/\s+/g, '-').replace(/[.'":]/g, '')}.png`}
                     tier={raid.tier}
                     shiny={true}
+                    form={raid.form}
+                    costume={raid.costume}
                     className="bg-black/40 border-white/5 hover:border-white/20"
                 />
             ))}
