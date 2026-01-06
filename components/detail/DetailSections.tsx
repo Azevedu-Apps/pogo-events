@@ -148,6 +148,7 @@ export const RaidDisplay: React.FC<{ raids: Raid[], title?: string, icon?: strin
                     shiny={true}
                     form={raid.form}
                     costume={raid.costume}
+                    background={raid.background}
                     className="bg-black/40 border-white/5 hover:border-white/20"
                 />
             ))}

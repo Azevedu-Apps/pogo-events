@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { fetchPokemon } from '../../services/pokeapi';
-import { getTypeIcon, getPokemonAsset } from '../../services/assets';
+import { getTypeIcon, getPokemonAsset, getBackgroundAsset } from '../../services/assets';
 
 interface PokemonCardProps {
     name: string;
@@ -10,12 +10,13 @@ interface PokemonCardProps {
     tier?: string; // "1", "3", "5", "Mega", "Shadow", "Max-1", "Gigamax"
     form?: string; // Subtítulo (ex: "Costume", "Alola")
     costume?: string; // New costume ID (e.g. "06", "51")
+    background?: string; // New: Location/Special background filename
     onDelete?: () => void;
     onImageClick?: (src: string) => void;
     className?: string;
 }
 
-export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, tier, form, costume, onDelete, onImageClick, className }) => {
+export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, tier, form, costume, background, onDelete, onImageClick, className }) => {
     const [details, setDetails] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
@@ -100,7 +101,19 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, ti
         >
             {/* Tech Background Overlay */}
             <div className="absolute inset-0 bg-[url('https://assets.pokemon.com/static2/_ui/img/global/bg_texture.png')] opacity-[0.03] pointer-events-none"></div>
-            <div className={`absolute inset-0 bg-gradient-to-b ${bgGradient} opacity-60`}></div>
+
+            {/* Custom Location/Special Background */}
+            {background ? (
+                <>
+                    <div
+                        className="absolute inset-0 bg-cover bg-center transition-opacity duration-500 opacity-60 group-hover:opacity-80"
+                        style={{ backgroundImage: `url(${getBackgroundAsset(background)})` }}
+                    ></div>
+                    <div className="absolute inset-0 bg-black/40"></div>
+                </>
+            ) : (
+                <div className={`absolute inset-0 bg-gradient-to-b ${bgGradient} opacity-60`}></div>
+            )}
 
             {/* Top Bar: Tier or Tech Indicator */}
             <div className="relative z-10 flex justify-between items-start p-3 h-10 flex-shrink-0">

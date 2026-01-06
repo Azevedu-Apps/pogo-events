@@ -6,6 +6,7 @@ export interface Pokemon {
   shinyImage?: string;
   form?: string;
   costume?: string;
+  background?: string;
 }
 
 export interface SpawnCategory {
@@ -31,6 +32,7 @@ export interface Raid {
   image?: string;
   form?: string;
   costume?: string;
+  background?: string;
 }
 
 export interface CustomText {
@@ -74,6 +76,7 @@ export interface PogoEvent {
     shinyRate?: string;
     form?: string;
     costume?: string;
+    background?: string;
   };
   paidResearch?: {
     name: string;

@@ -216,3 +216,67 @@ export const getRaidEggIcon = (tier: string): string => {
     // Fallback
     return `${POGO_ASSETS_BASE}/Raids/ic_raid_egg_legendary.png`;
 };
+
+// --- BACKGROUND ASSETS ---
+
+// Location Cards (Cities & Real World Locations)
+export const LOCATION_BACKGROUNDS = [
+    "lc_AirAdv2024_bali.png", "lc_AirAdv2024_jakarta.png", "lc_AirAdv2024_surabaya.png", "lc_AirAdv2024_yogyakarta.png",
+    "lc_CherryBlossomFest2025_yeouido.png",
+    "lc_CitySafari2023_barcelona_2023.png", "lc_CitySafari2023_mexicoCity_2023.png", "lc_CitySafari2023_seoul_2023.png",
+    "lc_CitySafari2024_hongkong.png", "lc_CitySafari2024_incheon.png", "lc_CitySafari2024_milan.png", "lc_CitySafari2024_mumbai.png",
+    "lc_CitySafari2024_santiago.png", "lc_CitySafari2024_saopaulo.png", "lc_CitySafari2024_singapore.png", "lc_CitySafari2024_tainan.png",
+    "lc_GOWA_fukuoka.png",
+    "lc_GoFest2023_london.png", "lc_GoFest2023_newyork.png", "lc_GoFest2023_osaka.png",
+    "lc_GoFest2024_madrid.png", "lc_GoFest2024_newyork.png", "lc_GoFest2024_sendai.png",
+    "lc_GoFest2025_jerseycity.png", "lc_GoFest2025_osaka.png", "lc_GoFest2025_paris.png",
+    "lc_GoTour2023.png", "lc_GoTour2024_losAngeles.png", "lc_GoTour2025_losAngeles.png", "lc_GoTour2025_newTaipeiCity.png",
+    "lc_Jangheung_Water_Festival_2025.png", "lc_JejuAirAdv2023.png",
+    "lc_LotteGiants.png",
+    "lc_MLB_arizonaDiamondbacks.png", "lc_MLB_baltimoreOrioles.png", "lc_MLB_bostonRedSox.png", "lc_MLB_chicagoWhitesox.png",
+    "lc_MLB_clevelandGuardians.png", "lc_MLB_mariners.png", "lc_MLB_marlins.png", "lc_MLB_milwaukeeBrewers.png",
+    "lc_MLB_minnesotaTwins.png", "lc_MLB_newyorkMets.png", "lc_MLB_sanFranciscoGiants.png", "lc_MLB_tampaBayRays.png",
+    "lc_MLB_texasRangers.png", "lc_MLB_washingtonNationals.png",
+    "lc_OsakaEvent2025_01.png", "lc_OsakaEvent2025_02.png", "lc_OsakaEvent2025_03.png",
+    "lc_Wcs2024_honolulu.png", "lc_Wcs2025_anaheim.png",
+    "lc_roadtrip2025_berlin.png", "lc_roadtrip2025_cologne.png", "lc_roadtrip2025_hague.png",
+    "lc_roadtrip2025_london.png", "lc_roadtrip2025_manchester.png", "lc_roadtrip2025_paris.png", "lc_roadtrip2025_valencia.png"
+];
+
+// Special & Event Backgrounds (Themed Catch Backgrounds, Global Events, Seasons)
+export const SPECIAL_BACKGROUNDS = [
+    // Global Events / Catch Backgrounds (from LocationCards folder with 'sb_' prefix)
+    "sb_2024_decemberCdRecap.png",
+    "sb_9thAnniversary.png",
+    "sb_GOWA_fukuoka.png",
+    "sb_GoFest2024_radiance.png", "sb_GoFest2024_umbra.png",
+    "sb_GoFest2024_wormhole.png", "sb_GoFest2024_wormhole_moon.png", "sb_GoFest2024_wormhole_sun.png",
+    "sb_GoFest2025.png",
+    "sb_GoFest2025_Eternatus.png",
+    "sb_GoTour2025_black.png", "sb_GoTour2025_black_white.png", "sb_GoTour2025_enigma.png", "sb_GoTour2025_white.png",
+    "sb_Season17_DuelDestiny.png", "sb_Season18_MightAndMastery.png", "sb_Season19_DelightfulDays.png",
+    "sb_TeamLeader_blue.png", "sb_TeamLeader_red.png", "sb_TeamLeader_yellow.png",
+
+    // General Event Backgrounds (from Backgrounds folder)
+    "Background_Event.png",
+    "Background_Adventure.png",
+    "Sky_Stars_GoFest2021.png",
+    "background_GOFEST_2021.png",
+    "tx_eventsky_gofest2021.png",
+
+    // Quest/Season Specific (from Backgrounds)
+    "QuestListBackground_alola.png",
+    "QuestListBackground_seasonOfGO.png",
+    "QuestListBackground_seasonOfHiddenGems.png",
+    "QuestListBackground_seasonOfMythicalWishes.png",
+    "QuestListBackground_seasonOfRisingHeros.png",
+    "QuestListBg_seasonOfHeritage.png"
+];
+
+// Helper to get full URL
+export const getBackgroundAsset = (filename: string): string => {
+    if (filename.startsWith('lc_') || filename.startsWith('sb_')) {
+        return `${ASSET_FOLDERS['Location Cards']}/${filename}`;
+    }
+    return `${POGO_ASSETS_BASE}/Backgrounds/${filename}`;
+};

@@ -279,6 +279,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                                         src={event.featured.costume
                                             ? getPokemonAsset(parseInt(event.featured.image.split('/').pop()?.split('.')[0] || '1'), {
                                                 costume: event.featured.costume,
+                                                background: event.featured.background,
                                                 form: event.featured.form
                                             })
                                             : event.featured.image}
