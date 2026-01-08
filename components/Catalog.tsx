@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { PogoEvent, CatalogProgress } from '../types';
 import { fetchPokemon } from '../services/pokeapi';
-import { getTypeIcon, getPokemonAsset } from '../services/assets';
+import { getTypeIcon, getPokemonAsset, getBackgroundAsset } from '../services/assets';
 import { CatalogCardSkeleton } from './ui/Skeletons';
 import { Lightbox } from './ui/Lightbox';
 import { CatalogInfographic } from './detail/CatalogInfographic';
@@ -96,7 +96,7 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
 
     const dexNumberRaw = details?.id?.toString() || "";
     const dexNumberFormatted = details?.id ? `#${details.id.toString().padStart(3, '0')}` : '???';
-    const displayImage = (isHovered && images.shiny) ? images.shiny : images.normal;
+    const displayImage = images.normal;
 
     let cardWrapperClass = "relative group rounded-3xl overflow-hidden transition-all duration-300 border flex flex-col items-center h-full ";
     if (isShundoComplete) cardWrapperClass += "border-purple-500 shadow-[0_0_30px_rgba(168,85,247,0.4)]";
@@ -114,7 +114,18 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
                 </div>
             )}
 
-            <div className="bg-[#151a25] w-full h-full p-4 md:p-6 flex flex-col items-center relative z-10">
+            {/* Background Overlay if exists */}
+            {item.background && (
+                <>
+                    <div
+                        className="absolute inset-0 bg-cover bg-center transition-all duration-500 h-full w-full opacity-70 group-hover:opacity-100 group-hover:saturate-125"
+                        style={{ backgroundImage: `url(${getBackgroundAsset(item.background)})` }}
+                    ></div>
+                    <div className="absolute inset-0 bg-black/30 z-0"></div>
+                </>
+            )}
+
+            <div className={`bg-[#151a25] w-full h-full p-4 md:p-6 flex flex-col items-center relative z-10 ${item.background ? 'bg-opacity-70 backdrop-blur-sm' : ''}`}>
                 {/* ID and Share */}
                 <div className="w-full flex justify-between items-center mb-1 relative z-20">
                     <div className="relative group/tt">
@@ -137,7 +148,7 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
 
                 {/* Pokemon Sprite */}
                 <div
-                    className="relative flex-1 flex items-center justify-center mb-10 group/img cursor-pointer group/tt"
+                    className="relative flex-1 flex items-center justify-center mb-6 group/img cursor-pointer group/tt"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     onClick={() => copyToClipboard(item.name, 'NOME')}
@@ -145,7 +156,7 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
                     <div className={`absolute inset-0 flex items-center justify-center transition-all duration-500 pointer-events-none ${isComplete ? 'opacity-20 scale-110' : 'opacity-0 scale-50'}`}>
                         <i className={`fa-solid ${isShundoComplete ? 'fa-crown text-purple-500' : 'fa-check text-green-500'} text-7xl md:text-5xl`}></i>
                     </div>
-                    <img src={displayImage} className="w-full max-h-48 md:max-h-36 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] transition-all duration-500 group-hover/img:scale-110 z-10" />
+                    <img src={displayImage} className="w-full max-h-48 md:max-h-36 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] transition-transform duration-500 group-hover/img:scale-105 z-10 will-change-transform" />
                     <Tooltip text="Copiar Nome" />
 
 
@@ -293,13 +304,23 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
         categories.push({
             title: cat.name,
             type: 'spawn',
-            items: cat.spawns.map(s => ({
-                id: `${cat.name.toLowerCase().replace(/\s+/g, '')}-${s.name.toLowerCase().replace(/\s+/g, '-')}`,
-                name: s.name,
-                image: s.image,
-                form: s.form,
-                costume: s.costume
-            }))
+            items: cat.spawns.map(s => {
+                const idParts = [
+                    cat.name.toLowerCase().replace(/\s+/g, ''),
+                    s.name.toLowerCase().replace(/\s+/g, '-')
+                ];
+                if (s.form && s.form !== '00') idParts.push(`f-${s.form.toLowerCase().replace(/\s+/g, '-')}`);
+                if (s.costume) idParts.push(`c-${s.costume.toLowerCase().replace(/\s+/g, '-')}`);
+
+                return {
+                    id: idParts.join('-'),
+                    name: s.name,
+                    image: s.image,
+                    form: s.form,
+                    costume: s.costume,
+                    background: s.background
+                };
+            })
         });
     });
 
@@ -327,7 +348,8 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
                 image: r.image || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${Math.floor(Math.random() * 900) + 1}.png`,
                 tier: r.tier,
                 form: r.form,
-                costume: r.costume
+                costume: r.costume,
+                background: r.background
             }))
         });
     }
@@ -337,7 +359,17 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
     categories.forEach(cat => {
         cat.items.forEach(item => {
             const p = progress[item.id] || {};
-            const variantsToCheck = cat.type === 'raid' ? ['normal', 'shiny', 'hundo', 'shadow', 'purified'] : ['normal', 'shiny', 'hundo', 'xxl', 'xxs'];
+            let variantsToCheck = ['normal', 'shiny', 'hundo', 'xxl', 'xxs'];
+
+            if (cat.type === 'raid') {
+                const isShadow = item.tier && (item.tier.toLowerCase().includes('shadow') || item.tier.toLowerCase().includes('sombroso'));
+                variantsToCheck = isShadow
+                    ? ['normal', 'shiny', 'hundo', 'shadow', 'purified']
+                    : ['normal', 'shiny', 'hundo', 'shundo'];
+            } else if (cat.type === 'attack') {
+                variantsToCheck = ['move_obtained'];
+            }
+
             variantsToCheck.forEach(v => {
                 const weight = PROGRESS_WEIGHTS[v] || 1;
                 maxScore += weight;

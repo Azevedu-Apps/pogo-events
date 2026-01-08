@@ -14,7 +14,7 @@ import Catalog from './components/Catalog';
 import { ToolsPage } from './components/ToolsPage';
 import { BrandGenerator } from './components/BrandGenerator';
 import { Dashboard } from './components/Dashboard';
-import { AssetsViewer } from './components/AssetsViewer';
+
 import { EventCardSkeleton } from './components/ui/Skeletons';
 import { Button } from './components/ui/Shared';
 import { Footer } from './components/Footer';
@@ -227,8 +227,7 @@ function App() {
                 return <ToolsPage events={events} />;
             case 'brand_gen':
                 return <BrandGenerator />;
-            case 'assets':
-                return <AssetsViewer />;
+
             case 'list':
             default:
                 const heroEvent = events[0];
@@ -360,9 +359,9 @@ function App() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#0b0e14] text-slate-200 font-sans selection:bg-blue-500/30">
+        <div className="flex h-screen bg-[#0b0e14] text-slate-200 font-sans selection:bg-blue-500/30 overflow-hidden">
             <Sidebar currentView={view} setView={(v) => { setSelectedEventId(null); setView(v); }} />
-            <main className="flex-1 overflow-x-hidden relative">
+            <main className="flex-1 h-full overflow-y-auto relative scrollbar-hide">
                 <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#0b0e14]/80 backdrop-blur sticky top-0 z-30">
                     <div className="text-sm font-bold text-slate-500 uppercase tracking-widest hidden md:block font-rajdhani">
                         Vorgex / {view === 'list' ? 'Terminal' : view.toUpperCase()}

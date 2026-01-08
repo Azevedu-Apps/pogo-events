@@ -8,7 +8,8 @@ import { captureAndDownload } from '../utils/capture';
 import { Lightbox } from './ui/Lightbox';
 import { PokemonCard } from './ui/PokemonCard';
 import { getEventTheme } from '../utils/visuals';
-import { getPokemonAsset } from '../services/assets';
+import { getPokemonAsset, getBackgroundAsset } from '../services/assets';
+import { Footer } from './Footer';
 
 interface EventDetailProps {
     event: PogoEvent;
@@ -21,7 +22,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
     const [exporting, setExporting] = useState(false);
     const [progressPercent, setProgressPercent] = useState(0);
     const [hasStarted, setHasStarted] = useState(false);
-    console.log(event);
+    console.log("🔍 EVENT JSON DATA:", event);
     // Calculate Progress & Check Start Date
     useEffect(() => {
         const now = new Date();
@@ -43,7 +44,14 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                     // 1. Spawns
                     event.spawnCategories.forEach(cat => {
                         cat.spawns.forEach(s => {
-                            const pid = `${cat.name.toLowerCase().replace(/\s+/g, '')}-${s.name.toLowerCase().replace(/\s+/g, '-')}`;
+                            const idParts = [
+                                cat.name.toLowerCase().replace(/\s+/g, ''),
+                                s.name.toLowerCase().replace(/\s+/g, '-')
+                            ];
+                            if (s.form && s.form !== '00') idParts.push(`f-${s.form.toLowerCase().replace(/\s+/g, '-')}`);
+                            if (s.costume) idParts.push(`c-${s.costume.toLowerCase().replace(/\s+/g, '-')}`);
+
+                            const pid = idParts.join('-');
                             const p = progress[pid] || {};
                             ['normal', 'shiny', 'hundo', 'xxl', 'xxs'].forEach(k => {
                                 maxScore += WEIGHTS[k] || 1;
@@ -56,7 +64,13 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                     event.raidsList.forEach(r => {
                         const pid = `raid-${r.boss.toLowerCase().replace(/\s+/g, '-')}`;
                         const p = progress[pid] || {};
-                        ['normal', 'shiny', 'hundo'].forEach(k => { // Simplified check for raids
+                        const isShadow = r.tier && (r.tier.toLowerCase().includes('shadow') || r.tier.toLowerCase().includes('sombroso'));
+
+                        const variants = isShadow
+                            ? ['normal', 'shiny', 'hundo', 'shadow', 'purified']
+                            : ['normal', 'shiny', 'hundo', 'shundo'];
+
+                        variants.forEach(k => {
                             maxScore += WEIGHTS[k] || 1;
                             if (p[k]) currentScore += WEIGHTS[k] || 1;
                         });
@@ -273,13 +287,22 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                         {/* Right: Visual Feature */}
                         {event.featured && (
                             <div className="relative rounded-3xl overflow-hidden min-h-[400px] group border border-white/10 shadow-2xl bg-black">
-                                <div className="absolute inset-0 bg-gradient-to-br from-pink-900/40 to-black/80 z-0"></div>
+                                {event.featured.background ? (
+                                    <>
+                                        <div
+                                            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-70"
+                                            style={{ backgroundImage: `url(${getBackgroundAsset(event.featured.background)})` }}
+                                        ></div>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-0"></div>
+                                    </>
+                                ) : (
+                                    <div className="absolute inset-0 bg-gradient-to-br from-pink-900/40 to-black/80 z-0"></div>
+                                )}
                                 <div className="absolute inset-0 flex items-center justify-center z-10 p-10">
                                     <img
                                         src={event.featured.costume
                                             ? getPokemonAsset(parseInt(event.featured.image.split('/').pop()?.split('.')[0] || '1'), {
                                                 costume: event.featured.costume,
-                                                background: event.featured.background,
                                                 form: event.featured.form
                                             })
                                             : event.featured.image}
@@ -378,6 +401,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                                                     shiny={s.shiny}
                                                     form={s.form}
                                                     costume={s.costume}
+                                                    background={s.background}
                                                     onImageClick={setLightboxImg}
                                                     className="bg-[#151a25] border-white/5 hover:border-green-500/50"
                                                 />
@@ -455,12 +479,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
             </div>
 
             {/* --- FOOTER --- */}
-            <footer className="text-center py-12 border-t border-white/5 bg-[#0b0e14] relative z-10">
-                <div className="mb-4">
-                    <i className="fa-solid fa-dragon text-4xl text-slate-700"></i>
-                </div>
-                <p className="text-slate-500 text-sm font-rajdhani uppercase tracking-widest">PogoHub Event Database</p>
-            </footer>
+            <Footer />
         </div>
     );
 };

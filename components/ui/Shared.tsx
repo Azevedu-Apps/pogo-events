@@ -4,39 +4,39 @@ import { createPortal } from 'react-dom';
 
 /* --- INPUTS --- */
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  loading?: boolean;
+    label?: string;
+    loading?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(({ label, loading, className, ...props }, ref) => (
-  <div className={className}>
-    {label && <label className="block text-base font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1 font-rajdhani">{label}</label>}
-    <input 
-      {...props} 
-      ref={ref}
-      className={`neo-input w-full bg-[#05060a] border border-slate-800 text-slate-200 focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-300 placeholder:text-slate-700 text-base ${loading ? 'opacity-70 cursor-wait' : ''} ${props.disabled ? 'cursor-not-allowed opacity-50' : ''}`}
-    />
-  </div>
+    <div className={className}>
+        {label && <label className="block text-base font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1 font-rajdhani">{label}</label>}
+        <input
+            {...props}
+            ref={ref}
+            className={`neo-input w-full bg-[#05060a] border border-slate-800 text-slate-200 focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-300 placeholder:text-slate-700 text-base ${loading ? 'opacity-70 cursor-wait' : ''} ${props.disabled ? 'cursor-not-allowed opacity-50' : ''}`}
+        />
+    </div>
 ));
 
 /* --- SELECTS --- */
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  children: React.ReactNode;
+    label?: string;
+    children: React.ReactNode;
 }
 
 export const Select: React.FC<SelectProps> = ({ label, children, className, ...props }) => (
-  <div className={className}>
-    {label && <label className="block text-base font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1 font-rajdhani">{label}</label>}
-    <div className="relative">
-        <select {...props} className="neo-input w-full appearance-none bg-[#05060a] border border-slate-800 text-slate-200 focus:border-blue-500 cursor-pointer pr-10 text-base">
-        {children}
-        </select>
-        <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-blue-500">
-            <i className="fa-solid fa-caret-down"></i>
+    <div className={className}>
+        {label && <label className="block text-base font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1 font-rajdhani">{label}</label>}
+        <div className="relative">
+            <select {...props} className="neo-input w-full appearance-none bg-[#05060a] border border-slate-800 text-slate-200 focus:border-blue-500 cursor-pointer pr-10 text-base">
+                {children}
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-blue-500">
+                <i className="fa-solid fa-caret-down"></i>
+            </div>
         </div>
     </div>
-  </div>
 );
 
 export interface SelectOption {
@@ -72,8 +72,8 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({ label, value, onChan
     return (
         <div className={`relative ${className || ''}`} ref={wrapperRef}>
             {label && <label className="block text-base font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1 font-rajdhani">{label}</label>}
-            
-            <button 
+
+            <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className={`neo-input w-full text-left flex justify-between items-center cursor-pointer bg-[#05060a] border border-slate-800 text-slate-200 transition-all text-base ${isOpen ? 'border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : ''}`}
@@ -87,7 +87,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({ label, value, onChan
             {isOpen && (
                 <div className="absolute z-[60] w-full mt-2 left-0 neo-popover max-h-60 overflow-y-auto custom-scrollbar animate-fade-in">
                     {options.map((option) => (
-                        <div 
+                        <div
                             key={option.value}
                             onClick={() => {
                                 onChange(option.value);
@@ -109,90 +109,90 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({ label, value, onChan
 
 /* --- TEXTAREA --- */
 interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
+    label?: string;
 }
 
 export const TextArea: React.FC<TextAreaProps> = ({ label, className, ...props }) => (
-  <div className={className}>
-    {label && <label className="block text-base font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1 font-rajdhani">{label}</label>}
-    <textarea 
-        {...props} 
-        className="neo-input w-full resize-none bg-[#05060a] border border-slate-800 text-slate-200 focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all p-3 text-base" 
-    />
-  </div>
+    <div className={className}>
+        {label && <label className="block text-base font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1 font-rajdhani">{label}</label>}
+        <textarea
+            {...props}
+            className="neo-input w-full resize-none bg-[#05060a] border border-slate-800 text-slate-200 focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all p-3 text-base"
+        />
+    </div>
 );
 
 /* --- BUTTONS --- */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'ghost';
-  icon?: string;
+    variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'ghost';
+    icon?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', icon, className, ...props }) => {
-  const baseSkew = "transform -skew-x-12 transition-all duration-300 active:scale-95 inline-flex items-center justify-center";
-  const antiSkew = "transform skew-x-12 flex items-center gap-2";
+    const baseSkew = "transform -skew-x-12 transition-all duration-300 active:scale-95 inline-flex items-center justify-center";
+    const antiSkew = "transform skew-x-12 flex items-center gap-2";
 
-  let colorClasses = "";
-  
-  switch(variant) {
-      case 'primary':
-          colorClasses = "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-[0_4px_14px_rgba(37,99,235,0.4)] border border-blue-400/30";
-          break;
-      case 'secondary':
-          colorClasses = "bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 hover:border-slate-400 hover:text-white";
-          break;
-      case 'danger':
-          colorClasses = "bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white shadow-[0_4px_14px_rgba(220,38,38,0.4)] border border-red-400/30";
-          break;
-      case 'success':
-          colorClasses = "bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white shadow-[0_4px_14px_rgba(16,185,129,0.4)] border border-green-400/30";
-          break;
-      case 'ghost':
-          return (
-             <button {...props} className={`text-slate-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-lg font-bold tracking-wide transition font-rajdhani uppercase ${className || ''}`}>
-                  {icon && <i className={`${icon} mr-2`}></i>}
-                  {children}
-             </button>
-          );
-  }
+    let colorClasses = "";
 
-  return (
-    <button {...props} className={`${baseSkew} ${colorClasses} px-6 py-2.5 font-bold font-rajdhani tracking-widest uppercase text-base ${className || ''}`}>
-      <span className={antiSkew}>
-          {icon && <i className={`${icon}`}></i>}
-          {children}
-      </span>
-    </button>
-  );
+    switch (variant) {
+        case 'primary':
+            colorClasses = "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-[0_4px_14px_rgba(37,99,235,0.4)] border border-blue-400/30";
+            break;
+        case 'secondary':
+            colorClasses = "bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 hover:border-slate-400 hover:text-white";
+            break;
+        case 'danger':
+            colorClasses = "bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white shadow-[0_4px_14px_rgba(220,38,38,0.4)] border border-red-400/30";
+            break;
+        case 'success':
+            colorClasses = "bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white shadow-[0_4px_14px_rgba(16,185,129,0.4)] border border-green-400/30";
+            break;
+        case 'ghost':
+            return (
+                <button {...props} className={`text-slate-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-lg font-bold tracking-wide transition font-rajdhani uppercase ${className || ''}`}>
+                    {icon && <i className={`${icon} mr-2`}></i>}
+                    {children}
+                </button>
+            );
+    }
+
+    return (
+        <button {...props} className={`${baseSkew} ${colorClasses} px-6 py-2.5 font-bold font-rajdhani tracking-widest uppercase text-base ${className || ''}`}>
+            <span className={antiSkew}>
+                {icon && <i className={`${icon}`}></i>}
+                {children}
+            </span>
+        </button>
+    );
 };
 
 /* --- SECTION TITLE --- */
 export const SectionTitle: React.FC<{ title: string; colorClass?: string; icon?: string; children?: React.ReactNode }> = ({ title, colorClass = "text-blue-400", icon, children }) => (
-  <div className={`mb-6 flex items-center justify-between border-b border-slate-800 pb-2`}>
-      <h3 className={`text-xl font-black font-rajdhani ${colorClass} uppercase tracking-wider flex items-center gap-3 drop-shadow-md`}>
-        {icon && <i className={`${icon} opacity-80`}></i>}
-        {title}
-      </h3>
-      {children}
-  </div>
+    <div className={`mb-6 flex items-center justify-between border-b border-slate-800 pb-2`}>
+        <h3 className={`text-xl font-black font-rajdhani ${colorClass} uppercase tracking-wider flex items-center gap-3 drop-shadow-md`}>
+            {icon && <i className={`${icon} opacity-80`}></i>}
+            {title}
+        </h3>
+        {children}
+    </div>
 );
 
 export const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
-  <div className={`neo-card p-6 bg-[#151a25] border border-white/5 shadow-xl ${className}`}>
-    {children}
-  </div>
+    <div className={`neo-card p-6 bg-[#151a25] border border-white/5 shadow-xl ${className}`}>
+        {children}
+    </div>
 );
 
 /* --- MODAL --- */
-export const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }> = ({ isOpen, onClose, title, children }) => {
+export const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode; footer?: React.ReactNode }> = ({ isOpen, onClose, title, children, footer }) => {
     if (!isOpen) return null;
-    
+
     return createPortal(
         <div className="fixed inset-0 z-[100] overflow-y-auto">
             <div className="fixed inset-0 bg-black/90 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
-            
+
             <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <div 
+                <div
                     className="w-full max-w-4xl transform text-left align-middle shadow-2xl transition-all relative flex flex-col bg-[#0f131a] border border-blue-900/50 rounded-2xl"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -210,9 +210,16 @@ export const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: stri
                             <i className="fa-solid fa-xmark text-xl"></i>
                         </button>
                     </div>
-                    <div className="p-6 md:p-8 bg-[#0b0e14] relative z-10 rounded-b-2xl">
+
+                    <div className={`p-6 md:p-8 bg-[#0b0e14] relative z-10 ${footer ? '' : 'rounded-b-2xl'}`}>
                         {children}
                     </div>
+
+                    {footer && (
+                        <div className="p-4 md:p-6 border-t border-slate-800 bg-[#151a25] relative z-10 rounded-b-2xl">
+                            {footer}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>,

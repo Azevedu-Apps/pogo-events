@@ -83,14 +83,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ events, onNavigate }) => {
                     </h2>
                     <p className="text-slate-400 font-medium">Visão geral do que está acontecendo agora</p>
                 </div>
-                <div className="text-right hidden md:block">
-                    <div className="text-2xl font-black text-blue-400 font-mono">
-                        {now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </div>
-                    <div className="text-sm text-slate-500 font-bold uppercase tracking-widest">
-                        {now.toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'long' })}
-                    </div>
-                </div>
             </div>
 
             {/* Spotlight Hour Section (Only Mon-Fri) */}

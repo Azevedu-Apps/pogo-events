@@ -68,7 +68,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, ti
     }
 
     // Calculate Display Image
-    let displayImage = (isHovered && details?.shinyImage) ? details.shinyImage : (details?.image || image);
+    // Calculate Display Image
+    let displayImage = details?.image || image;
 
     // Override with PokeMiners asset if we have specific Form/Costume data
     const hasSpecificForm = (form && form !== '00');
@@ -106,7 +107,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, ti
             {background ? (
                 <>
                     <div
-                        className="absolute inset-0 bg-cover bg-center transition-opacity duration-500 opacity-60 group-hover:opacity-80"
+                        className="absolute inset-0 bg-cover bg-center transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:saturate-125"
                         style={{ backgroundImage: `url(${getBackgroundAsset(background)})` }}
                     ></div>
                     <div className="absolute inset-0 bg-black/40"></div>
@@ -151,7 +152,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, shiny, ti
 
                 <img
                     src={displayImage}
-                    className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1"
+                    className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-105 group-hover:-translate-y-1 will-change-transform"
                     onError={(e) => {
                         if (e.currentTarget.src !== image) e.currentTarget.src = image;
                         else e.currentTarget.style.display = 'none';

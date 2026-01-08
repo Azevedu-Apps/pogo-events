@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
     { id: 'list', label: 'Eventos', icon: 'fa-solid fa-layer-group' },
     { id: 'calendar', label: 'Calendário', icon: 'fa-solid fa-calendar-days' },
     { id: 'tools', label: 'Ferramentas', icon: 'fa-solid fa-screwdriver-wrench' },
-    { id: 'assets', label: 'Assets', icon: 'fa-solid fa-image' },
+
   ];
 
   const handleNavigation = (viewId: string) => {
@@ -121,8 +121,8 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
     <>
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#0b0e14]/95 border-b border-white/5 p-4 flex justify-between items-center backdrop-blur-xl">
         <div className="flex items-center gap-2">
-          <i className="fa-solid fa-location-crosshairs text-blue-500 text-xl"></i>
-          <span className="font-rajdhani font-black text-xl text-white uppercase tracking-wider">VOR<span className="text-blue-500">GEX</span></span>
+          <i className="fa-solid fa-dragon text-blue-500 text-xl"></i>
+          <span className="font-rajdhani font-black text-xl text-white uppercase tracking-wider">VORG<span className="text-blue-500">EX</span></span>
         </div>
         <button onClick={() => setIsOpen(!isOpen)} className="text-slate-300 hover:text-white p-2">
           <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars'} text-xl`}></i>
@@ -139,15 +139,15 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
       `}>
         <div className="hidden md:flex p-8 items-center gap-3 mb-4">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <i className="fa-solid fa-location-crosshairs text-white text-xl"></i>
+            <i className="fa-solid fa-dragon text-white text-xl"></i>
           </div>
           <div>
-            <h1 className="text-2xl font-black text-white leading-none tracking-wide font-rajdhani uppercase">VOR<span className="text-blue-500">GEX</span></h1>
+            <h1 className="text-2xl font-black text-white leading-none tracking-wide font-rajdhani uppercase">VORG<span className="text-blue-500">EX</span></h1>
             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-0.5">Kynox System</span>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1 custom-scrollbar scrollbar-hide">
           <div className="px-3 mb-2 mt-2">
             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-rajdhani">Navegação Principal</h3>
           </div>
@@ -188,6 +188,24 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
         isOpen={showSuggestionModal}
         onClose={() => setShowSuggestionModal(false)}
         title="Protocolo de Feedback Nexus"
+        footer={
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => { setShowSuggestionModal(false); resetForm(); }}
+              className="px-6 py-2 text-slate-500 hover:text-white font-bold uppercase text-base tracking-widest transition font-rajdhani"
+            >
+              Cancelar
+            </button>
+            <Button
+              onClick={handleSubmitFeedback}
+              disabled={isSending || !content.trim() || !title.trim()}
+              className="min-w-[180px]"
+            >
+              {isSending ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-satellite-dish mr-2"></i>}
+              {isSending ? 'Transmitindo...' : 'Transmitir Dados'}
+            </Button>
+          </div>
+        }
       >
         <div className="space-y-5 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
           <div className="bg-blue-900/10 border border-blue-500/20 p-4 rounded-xl">
@@ -273,23 +291,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
             className="h-56"
             required
           />
-
-          <div className="flex justify-end gap-3 pt-4 border-t border-white/5">
-            <button
-              onClick={() => { setShowSuggestionModal(false); resetForm(); }}
-              className="px-6 py-2 text-slate-500 hover:text-white font-bold uppercase text-base tracking-widest transition font-rajdhani"
-            >
-              Cancelar
-            </button>
-            <Button
-              onClick={handleSubmitFeedback}
-              disabled={isSending || !content.trim() || !title.trim()}
-              className="min-w-[180px]"
-            >
-              {isSending ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-satellite-dish mr-2"></i>}
-              {isSending ? 'Transmitindo...' : 'Transmitir Dados'}
-            </Button>
-          </div>
         </div>
       </Modal>
     </>
