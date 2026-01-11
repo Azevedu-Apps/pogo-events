@@ -1,4 +1,4 @@
-export const generatePokemonId = (pokemon: { name: string, form?: string, costume?: string }): string => {
+export const generatePokemonId = (pokemon: { name: string, form?: string, costume?: string, background?: string }): string => {
     const parts = [
         pokemon.name.toLowerCase().replace(/\s+/g, '-')
     ];
@@ -9,6 +9,10 @@ export const generatePokemonId = (pokemon: { name: string, form?: string, costum
 
     if (pokemon.costume) {
         parts.push(`c-${pokemon.costume.toLowerCase().replace(/\s+/g, '-')}`);
+    }
+
+    if (pokemon.background) {
+        parts.push(`bg-${pokemon.background.toLowerCase().replace(/\s+/g, '-').replace(/_/g, '-')}`);
     }
 
     return parts.join('-');

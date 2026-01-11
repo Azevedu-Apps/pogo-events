@@ -9,6 +9,7 @@ import { PokemonCard } from './ui/PokemonCard';
 import { getEventTheme } from '../utils/visuals';
 import { getPokemonAsset, getBackgroundAsset, fixPokemonSpriteUrl } from '../services/assets';
 import { generatePokemonId } from '../utils/ids';
+import { processSpawnsWithBackgrounds } from '../utils/spawnProcessing';
 
 
 interface EventDetailProps {
@@ -22,6 +23,14 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
     const [exporting, setExporting] = useState(false);
     const [progressPercent, setProgressPercent] = useState(0);
     const [hasStarted, setHasStarted] = useState(false);
+
+    // Memoize processed categories (handling background clones)
+    const processedCategories = React.useMemo(() => {
+        return event.spawnCategories?.map(cat => ({
+            ...cat,
+            spawns: processSpawnsWithBackgrounds(cat.spawns)
+        })) || [];
+    }, [event.spawnCategories]);
 
     // Calculate Progress & Check Start Date
     useEffect(() => {
@@ -43,7 +52,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                     const WEIGHTS: Record<string, number> = { normal: 1, move_obtained: 1, xxl: 2, xxs: 2, shadow: 2, purified: 2, shiny: 4, hundo: 4 };
 
                     // 1. Spawns
-                    event.spawnCategories.forEach(cat => {
+                    processedCategories.forEach(cat => {
                         cat.spawns.forEach(s => {
                             const pid = generatePokemonId(s);
                             const p = progress[pid] || {};
@@ -389,7 +398,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                             <SectionHeader title="Habitats & Encontros" subtitle="Complete sua coleção" />
 
                             <div className="space-y-16">
-                                {event.spawnCategories.map((cat, idx) => (
+                                {processedCategories.map((cat, idx) => (
                                     <div key={cat.id} className="relative">
                                         {/* Category Header */}
                                         <div className="flex items-center gap-4 mb-8">

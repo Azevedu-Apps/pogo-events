@@ -8,6 +8,8 @@ export interface Pokemon {
   costume?: string;
   background?: string;
   shinyLocked?: boolean;
+  isLocationBg?: boolean;
+  isSpecialBg?: boolean;
 }
 
 export interface SpawnCategory {

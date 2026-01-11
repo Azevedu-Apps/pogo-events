@@ -8,6 +8,7 @@ import { CatalogInfographic } from './detail/CatalogInfographic';
 import { PokemonSocialCard } from './detail/PokemonSocialCard';
 import { captureAndDownload } from '../utils/capture';
 import { generatePokemonId } from '../utils/ids';
+import { processSpawnsWithBackgrounds } from '../utils/spawnProcessing';
 
 interface CatalogProps {
     event: PogoEvent;
@@ -319,7 +320,7 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
         categories.push({
             title: cat.name,
             type: 'spawn',
-            items: cat.spawns.map(s => {
+            items: processSpawnsWithBackgrounds(cat.spawns).map(s => {
                 return {
                     id: generatePokemonId(s),
                     name: s.name,
@@ -373,7 +374,7 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
             categories.push({
                 title: `Ovos (${eggGroup.distance})`,
                 type: 'spawn', // Reuse spawn type to get standard capture icons
-                items: eggGroup.spawns.map(s => {
+                items: processSpawnsWithBackgrounds(eggGroup.spawns).map(s => {
                     return {
                         id: generatePokemonId(s),
                         name: s.name,
