@@ -204,6 +204,26 @@ export const getItemIcon = (key: keyof typeof ITEM_MAP): string => {
     return `${ITEMS_BASE_URL}/${val}`;
 };
 
+/**
+ * Global helper to fix known broken sprite URLs (e.g. Mega Diancie on PokemonDB).
+ */
+export const fixPokemonSpriteUrl = (url: string): string => {
+    if (!url) return '';
+
+    const lowerUrl = url.toLowerCase();
+
+    // Fix: Mega Diancie (PokemonDB is missing this asset, use Serebii art)
+    // Also catches PokeMiners ID 719 (Diancie) which is missing/broken for Shiny
+    if (
+        (lowerUrl.includes('diancie') && (lowerUrl.includes('mega') || lowerUrl.includes('10075'))) ||
+        /[\/_]719[\/_.]/.test(lowerUrl)
+    ) {
+        return "https://www.serebii.net/pokemon/art/719-m.png";
+    }
+
+    return url;
+};
+
 export const getRaidEggIcon = (tier: string): string => {
     // Verified filenames in Images/Raids
     if (tier === '1') return `${POGO_ASSETS_BASE}/Raids/ic_raid_egg_normal.png`;

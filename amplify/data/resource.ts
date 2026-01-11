@@ -37,6 +37,7 @@ const schema = a.schema({
       location: a.string(),
       cover: a.string(),
       research: a.string(),
+      researchTitle: a.string(),
       eggTitle: a.string(),
       eggDesc: a.string(),
       bonuses: a.string().array(),
@@ -45,7 +46,7 @@ const schema = a.schema({
       payment: PaymentInfo,
       featured: FeaturedPokemon,
       paidResearch: PaidResearch,
-      spawnCategories: a.json(),
+      spawnCategories: a.json(), // [{ id, name, desc, spawns: [...] }]
       attacks: a.json(),
       raidsList: a.json(),
       customTexts: a.json(),

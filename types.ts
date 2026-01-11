@@ -7,11 +7,13 @@ export interface Pokemon {
   form?: string;
   costume?: string;
   background?: string;
+  shinyLocked?: boolean;
 }
 
 export interface SpawnCategory {
   id: number;
   name: string;
+  desc?: string;
   spawns: Pokemon[];
 }
 
@@ -33,6 +35,7 @@ export interface Raid {
   form?: string;
   costume?: string;
   background?: string;
+  shinyLocked?: boolean;
 }
 
 export interface CustomText {
@@ -65,6 +68,7 @@ export interface PogoEvent {
   location: string;
   cover?: string;
   research?: string;
+  researchTitle?: string;
   eggTitle?: string;
   eggDesc?: string;
   bonuses: string[];
@@ -77,6 +81,7 @@ export interface PogoEvent {
     form?: string;
     costume?: string;
     background?: string;
+    shinyLocked?: boolean;
   };
   paidResearch?: {
     name: string;

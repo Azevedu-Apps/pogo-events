@@ -3,7 +3,7 @@
 export const getEggSvg = (color: string) => `
     <svg viewBox="0 0 100 120" class="w-full h-full drop-shadow-xl filter">
         <defs>
-            <radialGradient id="eggGrad-${color.replace('#','')}" cx="30%" cy="30%" r="70%">
+            <radialGradient id="eggGrad-${color.replace('#', '')}" cx="30%" cy="30%" r="70%">
                 <stop offset="0%" style="stop-color:white;stop-opacity:0.3" />
                 <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
             </radialGradient>
@@ -14,7 +14,7 @@ export const getEggSvg = (color: string) => `
         <circle cx="30" cy="85" r="10" fill="${color}" fill-opacity="0.8"/>
         <circle cx="75" cy="90" r="6" fill="${color}" fill-opacity="0.8"/>
         <circle cx="50" cy="25" r="5" fill="${color}" fill-opacity="0.8"/>
-        <path d="M50 5 C 20 5, 5 45, 5 75 C 5 105, 25 115, 50 115 C 75 115, 95 105, 95 75 C 95 45, 80 5, 50 5" fill="url(#eggGrad-${color.replace('#','')})"/>
+        <path d="M50 5 C 20 5, 5 45, 5 75 C 5 105, 25 115, 50 115 C 75 115, 95 105, 95 75 C 95 45, 80 5, 50 5" fill="url(#eggGrad-${color.replace('#', '')})"/>
     </svg>
 `;
 
@@ -36,7 +36,7 @@ export const getEventTheme = (type: string) => {
             shadow: "shadow-cyan-500/20"
         };
     }
-    
+
     // Spotlight Hour (Gold/Orange Neon)
     if (t.includes('destaque') || t.includes('spotlight')) {
         return {
@@ -104,4 +104,8 @@ export const getEventTheme = (type: string) => {
         icon: "fa-earth-americas",
         shadow: "shadow-indigo-500/20"
     };
+};
+
+export const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
 };

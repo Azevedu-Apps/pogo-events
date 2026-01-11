@@ -5,6 +5,21 @@ import { getEggSvg } from '../../utils/visuals';
 import { getPokemonAsset } from '../../services/assets';
 
 const EggCardIncubator: React.FC<{ pokemon: any, eggSvg: string, glowColor: string, accentColor: string }> = ({ pokemon, eggSvg, glowColor, accentColor }) => {
+    // Determine initial image URL (PokeMiners logic)
+    const initialImage = pokemon.costume
+        ? getPokemonAsset(parseInt(pokemon.image.split('/').pop()?.split('.')[0] || '1'), {
+            costume: pokemon.costume,
+            form: pokemon.form
+        })
+        : pokemon.image;
+
+    const [imgSrc, setImgSrc] = React.useState(initialImage);
+
+    // If the prop changes (e.g. reused component), reset the image
+    React.useEffect(() => {
+        setImgSrc(initialImage);
+    }, [initialImage]);
+
     return (
         <div className={`relative w-40 h-56 rounded-xl bg-[#151a25] border border-white/5 flex flex-col items-center overflow-hidden transition-all duration-300 hover:-translate-y-2 group shadow-lg ${glowColor}`}>
 
@@ -34,12 +49,19 @@ const EggCardIncubator: React.FC<{ pokemon: any, eggSvg: string, glowColor: stri
                 <div className={`absolute w-20 h-20 rounded-full bg-white/5 blur-xl group-hover:bg-white/10 transition-colors`}></div>
 
                 <img
-                    src={pokemon.costume
-                        ? getPokemonAsset(parseInt(pokemon.image.split('/').pop()?.split('.')[0] || '1'), {
-                            costume: pokemon.costume,
-                            form: pokemon.form
-                        })
-                        : pokemon.image}
+                    src={imgSrc}
+                    onError={() => {
+                        // Attempt fallback to PokeAPI
+                        // We use the pokemon name to fetch from PokeAPI
+                        // This handles Toxel, Tadbulb, etc. where PokeMiners might be missing
+                        import('../../services/pokeapi').then(({ fetchPokemon }) => {
+                            fetchPokemon(pokemon.name).then(data => {
+                                if (data?.image && data.image !== imgSrc) {
+                                    setImgSrc(data.image);
+                                }
+                            });
+                        });
+                    }}
                     className="w-28 h-28 object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-110"
                 />
 

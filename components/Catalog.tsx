@@ -1,12 +1,13 @@
 import React, { useState, useEffect, memo } from 'react';
 import { PogoEvent, CatalogProgress } from '../types';
 import { fetchPokemon } from '../services/pokeapi';
-import { getTypeIcon, getPokemonAsset, getBackgroundAsset } from '../services/assets';
+import { getTypeIcon, getPokemonAsset, getBackgroundAsset, fixPokemonSpriteUrl } from '../services/assets';
 import { CatalogCardSkeleton } from './ui/Skeletons';
 import { Lightbox } from './ui/Lightbox';
 import { CatalogInfographic } from './detail/CatalogInfographic';
 import { PokemonSocialCard } from './detail/PokemonSocialCard';
 import { captureAndDownload } from '../utils/capture';
+import { generatePokemonId } from '../utils/ids';
 
 interface CatalogProps {
     event: PogoEvent;
@@ -33,7 +34,7 @@ const Tooltip = ({ text }: { text: string }) => (
     </div>
 );
 
-const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, toggleVariant, type, onExportCard, isLocked, mergedProgress }: {
+const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, toggleVariant, type, onExportCard, mergedProgress }: {
     item: any,
     isComplete: boolean,
     isShundoComplete: boolean,
@@ -41,10 +42,10 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
     toggleVariant: (id: string, variant: string, name: string) => void,
     type: 'spawn' | 'raid' | 'attack',
     onExportCard: (item: any, progress: any, types: string[], id: number) => void,
-    isLocked: boolean,
     mergedProgress: any
 }) => {
     const [images, setImages] = useState<{ normal: string, shiny: string }>({ normal: item.image, shiny: '' });
+    const [fallbackImage, setFallbackImage] = useState<string | null>(null);
     const [details, setDetails] = useState<{ id: number, types: string[] } | null>(null);
     const [loading, setLoading] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
@@ -58,6 +59,7 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
             const data = await fetchPokemon(item.name);
             if (active && data) {
                 setDetails({ id: data.id, types: data.types });
+                setFallbackImage(data.image);
 
                 let normal = (type === 'raid' || !images.normal || images.normal.includes('random')) ? data.image : images.normal;
                 let shiny = data.shinyImage || normal;
@@ -89,10 +91,15 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
     if (loading) return <CatalogCardSkeleton />;
 
     const isShadowRaid = type === 'raid' && item.tier && (item.tier.toLowerCase().includes('shadow') || item.tier.toLowerCase().includes('sombroso'));
+    const isShinyLocked = item.shinyLocked === true;
 
-    const variants = type === 'raid'
+    let variants = type === 'raid'
         ? (isShadowRaid ? ['normal', 'shiny', 'hundo', 'shadow', 'purified'] : ['normal', 'shiny', 'hundo', 'shundo'])
         : ['normal', 'shiny', 'hundo', 'xxl', 'xxs'];
+
+    if (isShinyLocked) {
+        variants = variants.filter(v => v !== 'shiny' && v !== 'shundo');
+    }
 
     const dexNumberRaw = details?.id?.toString() || "";
     const dexNumberFormatted = details?.id ? `#${details.id.toString().padStart(3, '0')}` : '???';
@@ -156,7 +163,15 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
                     <div className={`absolute inset-0 flex items-center justify-center transition-all duration-500 pointer-events-none ${isComplete ? 'opacity-20 scale-110' : 'opacity-0 scale-50'}`}>
                         <i className={`fa-solid ${isShundoComplete ? 'fa-crown text-purple-500' : 'fa-check text-green-500'} text-7xl md:text-5xl`}></i>
                     </div>
-                    <img src={displayImage} className="w-full max-h-48 md:max-h-36 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] transition-transform duration-500 group-hover/img:scale-105 z-10 will-change-transform" />
+                    <img
+                        src={displayImage}
+                        onError={() => {
+                            if (fallbackImage && images.normal !== fallbackImage) {
+                                setImages(prev => ({ ...prev, normal: fallbackImage }));
+                            }
+                        }}
+                        className="h-32 md:h-28 w-auto object-contain p-2 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] transition-transform duration-500 group-hover/img:scale-105 z-10 will-change-transform"
+                    />
                     <Tooltip text="Copiar Nome" />
 
 
@@ -164,7 +179,7 @@ const CatalogItem = memo(({ item, isComplete, isShundoComplete, progressState, t
 
                 {/* Pokemon Info - Name and Types aligned horizontally */}
                 <div className="flex items-center justify-center gap-3 z-10 flex-wrap w-full px-2">
-                    <div class="flex flex-col items-center">
+                    <div className="flex flex-col items-center">
                         <div className="flex gap-1.5 h-7 md:h-5">
                             {details?.types.map(t => (
                                 <div key={t} className="relative group/tt">
@@ -305,20 +320,14 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
             title: cat.name,
             type: 'spawn',
             items: cat.spawns.map(s => {
-                const idParts = [
-                    cat.name.toLowerCase().replace(/\s+/g, ''),
-                    s.name.toLowerCase().replace(/\s+/g, '-')
-                ];
-                if (s.form && s.form !== '00') idParts.push(`f-${s.form.toLowerCase().replace(/\s+/g, '-')}`);
-                if (s.costume) idParts.push(`c-${s.costume.toLowerCase().replace(/\s+/g, '-')}`);
-
                 return {
-                    id: idParts.join('-'),
+                    id: generatePokemonId(s),
                     name: s.name,
-                    image: s.image,
+                    image: fixPokemonSpriteUrl(s.image),
                     form: s.form,
                     costume: s.costume,
-                    background: s.background
+                    background: s.background,
+                    shinyLocked: s.shinyLocked
                 };
             })
         });
@@ -345,12 +354,37 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
             items: event.raidsList.map(r => ({
                 id: `raid-${r.boss.toLowerCase().replace(/\s+/g, '-')}`,
                 name: r.boss,
-                image: r.image || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${Math.floor(Math.random() * 900) + 1}.png`,
+                image: fixPokemonSpriteUrl(r.image) || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${Math.floor(Math.random() * 900) + 1}.png`,
                 tier: r.tier,
                 form: r.form,
                 costume: r.costume,
-                background: r.background
+                background: r.background,
+                shinyLocked: r.shinyLocked
             }))
+        });
+    }
+
+    if (event.eggs?.length > 0) {
+        // Sort eggs by distance for better display order
+        const sortOrder: Record<string, number> = { "2 km": 1, "5 km": 2, "7 km": 3, "10 km": 4, "12 km": 5 };
+        const sortedEggs = [...event.eggs].sort((a, b) => (sortOrder[a.distance] || 99) - (sortOrder[b.distance] || 99));
+
+        sortedEggs.forEach(eggGroup => {
+            categories.push({
+                title: `Ovos (${eggGroup.distance})`,
+                type: 'spawn', // Reuse spawn type to get standard capture icons
+                items: eggGroup.spawns.map(s => {
+                    return {
+                        id: generatePokemonId(s),
+                        name: s.name,
+                        image: fixPokemonSpriteUrl(s.image),
+                        form: s.form,
+                        costume: s.costume,
+                        background: s.background,
+                        shinyLocked: s.shinyLocked
+                    };
+                })
+            });
         });
     }
 
@@ -447,7 +481,6 @@ const Catalog: React.FC<CatalogProps> = ({ event, user, onBack }) => {
                                             toggleVariant={toggleVariant}
                                             type={cat.type}
                                             onExportCard={(item, progress, types, id) => setExportCardData({ item, progress, types, id })}
-                                            isLocked={false}
                                         />
                                     </div>
                                 );

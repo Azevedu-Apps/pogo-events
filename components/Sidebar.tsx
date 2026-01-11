@@ -1,12 +1,11 @@
-
 import React, { useState, useRef } from 'react';
 import { generateClient } from 'aws-amplify/data';
 import { createUserFeedback } from '../services/graphql';
 import { Modal, TextArea, Button, Input, Select } from './ui/Shared';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
-  currentView: string;
-  setView: (view: any) => void;
+  onNavigate?: () => void; // Optional callback for mobile closing
 }
 
 const CATEGORIES = [
@@ -19,25 +18,9 @@ const CATEGORIES = [
   { id: 'other', label: 'Outros' },
 ];
 
-// --- SUB-COMPONENT: NAV ITEM ---
-// Fixed: Move NavItem outside of Sidebar and use proper prop types to resolve TypeScript error regarding 'key' prop.
-interface NavItemProps {
-  item: { id: string; label: string; icon: string };
-  isActive: boolean;
-  onClick: (id: string) => void;
-}
-
-const NavItem: React.FC<NavItemProps> = ({ item, isActive, onClick }) => (
-  <button
-    onClick={() => onClick(item.id)}
-    className={`w-full sidebar-link ${isActive ? 'active' : ''}`}
-  >
-    <i className={`${item.icon} w-5 text-center`}></i>
-    <span>{item.label}</span>
-  </button>
-);
-
-const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
+const Sidebar = ({ onNavigate }: SidebarProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [showSuggestionModal, setShowSuggestionModal] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -52,16 +35,23 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
   const dateInputRef = useRef<HTMLInputElement>(null);
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: 'fa-solid fa-chart-line' },
-    { id: 'list', label: 'Eventos', icon: 'fa-solid fa-layer-group' },
-    { id: 'calendar', label: 'Calendário', icon: 'fa-solid fa-calendar-days' },
-    { id: 'tools', label: 'Ferramentas', icon: 'fa-solid fa-screwdriver-wrench' },
-
+    { id: 'dashboard', label: 'Dashboard', icon: 'fa-chart-pie', path: '/dashboard' },
+    { id: 'list', label: 'Terminal', icon: 'fa-terminal', path: '/' },
+    { id: 'calendar', label: 'Calendário', icon: 'fa-calendar-days', path: '/calendar' },
+    { id: 'tools', label: 'Ferramentas', icon: 'fa-toolbox', path: '/tools' },
+    // { id: 'assets', label: 'Assets', icon: 'fa-folder-open', path: '/assets' },
   ];
 
-  const handleNavigation = (viewId: string) => {
-    setView(viewId);
+  const isActive = (path: string) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
     setIsOpen(false);
+    if (onNavigate) onNavigate();
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,6 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
 
   return (
     <>
+      {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#0b0e14]/95 border-b border-white/5 p-4 flex justify-between items-center backdrop-blur-xl">
         <div className="flex items-center gap-2">
           <i className="fa-solid fa-dragon text-blue-500 text-xl"></i>
@@ -132,37 +123,43 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
       {isOpen && <div className="md:hidden fixed inset-0 bg-black/80 z-40 backdrop-blur-sm" onClick={() => setIsOpen(false)}></div>}
 
       <aside className={`
-        fixed md:sticky top-0 left-0 h-screen z-50 w-64 flex flex-col 
-        bg-[#0f131a] border-r border-white/5 transition-transform duration-300 ease-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        md:h-screen pt-20 md:pt-0
-      `}>
-        <div className="hidden md:flex p-8 items-center gap-3 mb-4">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <i className="fa-solid fa-dragon text-white text-xl"></i>
+                fixed md:sticky top-0 left-0 h-screen z-50 w-64 flex flex-col 
+                bg-[#0f131a] border-r border-white/5 transition-transform duration-300 ease-out
+                ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+                md:h-screen pt-20 md:pt-0
+            `}>
+        <div className="flex flex-col gap-2 p-3 md:p-6">
+          <div className="flex items-center gap-3 px-2 mb-8 mt-2 group cursor-pointer" onClick={() => handleNavigation('/')}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-900/20 group-hover:scale-105 transition-transform duration-300">
+              <i className="fa-solid fa-dragon text-white text-xl"></i>
+            </div>
+            <div className="hidden md:flex flex-col">
+              <span className="font-black text-white text-lg tracking-tight font-rajdhani uppercase leading-none">PogoHub</span>
+              <span className="text-[10px] font-bold text-blue-500 tracking-[0.2em] uppercase">Events</span>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-black text-white leading-none tracking-wide font-rajdhani uppercase">VORG<span className="text-blue-500">EX</span></h1>
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-0.5">Kynox System</span>
-          </div>
+
+          <nav className="flex flex-col gap-1">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavigation(item.path)}
+                className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${isActive(item.path)
+                  ? 'bg-blue-600/10 text-blue-400'
+                  : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'
+                  }`}
+              >
+                {isActive(item.path) && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                )}
+                <i className={`fa-solid ${item.icon} w-6 text-center text-lg transition-transform duration-300 ${isActive(item.path) ? 'scale-110 drop-shadow-[0_0_10px_rgba(59,130,246,0.4)]' : 'group-hover:scale-110'}`}></i>
+                <span className="hidden md:block font-bold text-sm tracking-wide font-rajdhani uppercase">{item.label}</span>
+              </button>
+            ))}
+          </nav>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1 custom-scrollbar scrollbar-hide">
-          <div className="px-3 mb-2 mt-2">
-            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-rajdhani">Navegação Principal</h3>
-          </div>
-          {/* Fixed: Use NavItem with updated props and outside definition to avoid 'key' prop TS error */}
-          {menuItems.map(item => (
-            <NavItem
-              key={item.id}
-              item={item}
-              isActive={currentView === item.id}
-              onClick={handleNavigation}
-            />
-          ))}
-
-
-        </div>
+        <div className="flex-1"></div>
 
         <div className="px-4 pb-2 text-center">
           <div className="text-[10px] font-bold text-slate-600 uppercase tracking-widest flex items-center justify-center gap-1.5">
@@ -292,7 +289,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
             required
           />
         </div>
-      </Modal>
+      </Modal >
     </>
   );
 };

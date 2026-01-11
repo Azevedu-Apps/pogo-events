@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { PogoEvent } from '../types';
 import { CustomSectionsDisplay, RaidDisplay, AttackDisplay, FeaturedDisplay, FreeResearchDisplay, PaidResearchDisplay, TicketCard } from './detail/DetailSections';
@@ -8,8 +7,9 @@ import { captureAndDownload } from '../utils/capture';
 import { Lightbox } from './ui/Lightbox';
 import { PokemonCard } from './ui/PokemonCard';
 import { getEventTheme } from '../utils/visuals';
-import { getPokemonAsset, getBackgroundAsset } from '../services/assets';
-import { Footer } from './Footer';
+import { getPokemonAsset, getBackgroundAsset, fixPokemonSpriteUrl } from '../services/assets';
+import { generatePokemonId } from '../utils/ids';
+
 
 interface EventDetailProps {
     event: PogoEvent;
@@ -22,7 +22,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
     const [exporting, setExporting] = useState(false);
     const [progressPercent, setProgressPercent] = useState(0);
     const [hasStarted, setHasStarted] = useState(false);
-    console.log("🔍 EVENT JSON DATA:", event);
+
     // Calculate Progress & Check Start Date
     useEffect(() => {
         const now = new Date();
@@ -41,17 +41,11 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
 
                     // Replicate simplified weighting logic
                     const WEIGHTS: Record<string, number> = { normal: 1, move_obtained: 1, xxl: 2, xxs: 2, shadow: 2, purified: 2, shiny: 4, hundo: 4 };
+
                     // 1. Spawns
                     event.spawnCategories.forEach(cat => {
                         cat.spawns.forEach(s => {
-                            const idParts = [
-                                cat.name.toLowerCase().replace(/\s+/g, ''),
-                                s.name.toLowerCase().replace(/\s+/g, '-')
-                            ];
-                            if (s.form && s.form !== '00') idParts.push(`f-${s.form.toLowerCase().replace(/\s+/g, '-')}`);
-                            if (s.costume) idParts.push(`c-${s.costume.toLowerCase().replace(/\s+/g, '-')}`);
-
-                            const pid = idParts.join('-');
+                            const pid = generatePokemonId(s);
                             const p = progress[pid] || {};
                             ['normal', 'shiny', 'hundo', 'xxl', 'xxs'].forEach(k => {
                                 maxScore += WEIGHTS[k] || 1;
@@ -59,6 +53,20 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                             });
                         });
                     });
+
+                    // 1b. Eggs
+                    if (event.eggs) {
+                        event.eggs.forEach(group => {
+                            group.spawns.forEach(s => {
+                                const pid = generatePokemonId(s);
+                                const p = progress[pid] || {};
+                                ['normal', 'shiny', 'hundo', 'xxl', 'xxs'].forEach(k => {
+                                    maxScore += WEIGHTS[k] || 1;
+                                    if (p[k]) currentScore += WEIGHTS[k] || 1;
+                                });
+                            });
+                        });
+                    }
 
                     // 2. Raids
                     event.raidsList.forEach(r => {
@@ -272,6 +280,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                             </h3>
 
                             <div className="prose prose-invert prose-sm max-w-none relative z-10">
+                                {event.researchTitle && <h4 className="text-xl font-bold text-white mb-2 font-rajdhani uppercase tracking-wide">{event.researchTitle}</h4>}
                                 {event.research && <p className="text-lg leading-relaxed text-slate-300">{event.research}</p>}
                                 {event.customTexts?.[0] && <p className="text-lg leading-relaxed text-slate-300 mt-4">{event.customTexts[0].desc}</p>}
 
@@ -300,12 +309,12 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                                 )}
                                 <div className="absolute inset-0 flex items-center justify-center z-10 p-10">
                                     <img
-                                        src={event.featured.costume
+                                        src={fixPokemonSpriteUrl(event.featured.costume
                                             ? getPokemonAsset(parseInt(event.featured.image.split('/').pop()?.split('.')[0] || '1'), {
                                                 costume: event.featured.costume,
                                                 form: event.featured.form
                                             })
-                                            : event.featured.image}
+                                            : event.featured.image)}
                                         className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(236,72,153,0.3)] transition-transform duration-700 group-hover:scale-110"
                                     />
                                 </div>
@@ -390,6 +399,11 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
                                             <h3 className="text-2xl font-bold text-green-400 font-rajdhani uppercase tracking-widest">{cat.name}</h3>
                                             <div className="flex-1 h-px bg-gradient-to-r from-green-500/50 to-transparent"></div>
                                         </div>
+                                        {cat.desc && (
+                                            <p className="text-slate-400 mb-6 -mt-4 pl-14 font-rajdhani text-lg leading-relaxed">
+                                                {cat.desc}
+                                            </p>
+                                        )}
 
                                         {/* Grid */}
                                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -478,8 +492,6 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onBack, onOpenCatalog 
 
             </div>
 
-            {/* --- FOOTER --- */}
-            <Footer />
         </div>
     );
 };
